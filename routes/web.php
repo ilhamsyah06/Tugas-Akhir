@@ -96,6 +96,7 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     Route::get('listpenjualan','PenjualanController@listpenjualan');
     Route::get('datapenjualan','PenjualanController@datapenjualan');
     Route::get('getdetailpenjualan', 'PenjualanController@getdetailpenjualan');
+    Route::post('siapkankoreksipenjualan', 'PenjualanController@siapkanKoreksi');
     
     //Route dashboard menguntungkan 
     Route::get('menguntungkan', 'SearchController@menguntungkan')->name('menguntungkan');

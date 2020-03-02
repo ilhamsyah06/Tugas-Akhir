@@ -130,10 +130,10 @@
 <div id="title">
     <table width="100%" cellpadding="0">
         <tr>
-            <td class="title-header-3">{{ env('TOKO_NAMA') }}</td>
+            <td class="title-header-3">TOKO ANDIKA</td>
         </tr>
         <tr>
-            <td class="title-header-alamat">{{ env('TOKO_ALAMAT').' '.env('TOKO_HP', '') }}</td>
+            <td class="title-header-alamat">Bogem - Gurah. HP: 085856886313</td>
         </tr>
     </table>
 
@@ -171,7 +171,7 @@
        cellspacing="0" width="100%" border="1" style="margin-top: 10px;">
     <thead>
     <tr>
-        <th style="width: 4%;" class="tg-3wr7" rowspan="2"><strong>#</strong></th>
+        <th style="width: 4%;" class="tg-3wr7" rowspan="2"><strong>NO</strong></th>
         <th style="width:15%;" class="tg-3wr7" rowspan="2"><strong>Tanggal</strong></th>
         <th style="width:10%;" class="tg-3wr7" rowspan="2"><strong>Nama</strong></th>
         <th style="width:10%;" class="tg-3wr7" rowspan="2"><strong>No. Bukti</strong></th>
@@ -193,12 +193,12 @@
             <td style="width:15%; text-align: center;" class="tg-rv4w">{{ $value->tgl->format('d/m/Y H:i:s') }}</td>
             <td style="width:10%; text-align: center;" class="tg-rv4w">{{ $value->nama }}</td>
             <td style="width:10%; text-align: center;" class="tg-rv4w">{{ $value->kode }}</td>
-            <td class="tg-rv4w">{{ $value->barang->kode.'  -  '.$value->barang->nama }}</td>
+            <td class="tg-rv4w">{{ $value->barang->kode.'  -  '.$value->barang->nama_barang }}</td>
             <td style="width: 7%; text-align: right;" class="tg-rv4w">{{ number_format($value->stok, 0, ',', '.') }}</td>
             <td style="width: 7%; text-align: right;" class="tg-rv4w">{{ number_format($value->masuk,0,',', '.') }}</td>
             <td style="width: 7%; text-align: right;" class="tg-rv4w">{{ number_format($value->keluar,0,',', '.') }}</td>
             <td style="width: 7%; text-align: right;" class="tg-rv4w">{{ number_format($value->saldo,0,',', '.') }}</td>
-            <td style="width: 10%; text-align: center;" class="tg-rv4w">{{ $value->user->fullname }}</td>
+            <td style="width: 10%; text-align: center;" class="tg-rv4w">{{ $value->user->name }}</td>
         </tr>
     @endforeach
 

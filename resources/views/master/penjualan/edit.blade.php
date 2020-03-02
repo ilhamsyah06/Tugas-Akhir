@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
-@section('title','Penjualan')
+@section('title','Koreksi Penjualan')
 
 @section('content')
 <div class="row">
-
+    <input type="hidden" id="idubahsekali" value="{{$penjualan->id}}">
     <!--------->
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -18,7 +18,7 @@
                             <label for="kasir" class="control-label col-sm-4"><i class="fa fa-user"></i> Kasir :
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" name="kasir" id="kasir" value="{{ Auth::user()->name }}"
+                                <input type="text" name="kasir" id="kasir" value="{{ $penjualan->user->name}}"
                                     class="form-control" disabled />
                                 <input type="hidden" name="totalbayar" id="totalbayar" value="" class="form-control"
                                     disabled />
@@ -30,7 +30,7 @@
                             <label for="tgl" class="control-label col-sm-4"><i class="fa fa-calendar"></i> Tanggal :
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" name="tgl" id="tgl" value="" class="form-control inputantgl"
+                            <input type="text" name="tgl" id="tgl" value="{{ $penjualan->tgl_penjualan }}" class="form-control inputantgl"
                                     placeholder="MM/DD/YYYY" />
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                             <label for="invoice" class="control-label col-sm-4"><i class="fa fa-address-card-o"></i> No.
                                 Invoice : </label>
                             <div class="col-sm-8">
-                                <input type="text" name="invoice" id="invoice" value="" class="form-control" disabled />
+                                <input type="text" name="invoice" id="invoice" value="{{$penjualan->no_invoice}}" class="form-control" disabled />
                             </div>
                         </div>
                     </div>
@@ -220,69 +220,18 @@
         </div>
     </div>
 </div>
-
 @include('master.penjualan.modal')
 @include('layouts.modalhapus')
 @endsection
 
 @section('footer')
-
-
-<script>
-    window.addEventListener('keydown', function (event) {
-        switch (event.keyCode) {
-            // case 118: // F7
-            // 	$('#barang').focus();
-            // 	break;
-            case 118: // f7
-                $('#jumlahbayar').focus();
-                break;
-            case 119: //f8
-                $('#diskonitem').focus();
-                break;
-            case 113: // f2
-                $('#printstruk').trigger('click');
-                break;
-            case 115: //f4
-                $('#qty').focus();
-                break;
-            case 112: //f1
-                $('#kode').focus();
-                break;
-            case 114: // f3
-                $('#caribarang').trigger('click');
-                break;
-            case 116: // f5
-                $('#totalbarang').val(null);
-                $('#diskonview').val(null);
-                $('#kembalian').val(null);
-                $('#batal').location.reload();
-                break;
-            case 32: // space
-                $('#simpantambah').trigger('click');
-                $('#barangasli').val(null);
-                $('#namabarang').val(null);
-                $('#harga_jual').val(null);
-                $('#stok').val(null);
-                $('#total').val(null);
-                $('#qty').val('1');
-                $('#diskonitem').val(null);
-                $('#kategori').val(null);
-                $('#subtotal').val(null);
-                $('#kode').val(null);
-
-                $('#kode').focus();
-                break;
-        }
-    }, false);
-
-    $(document).ready(function () {
+    <script>
+            $(document).ready(function () {
         var table = $('#tabelpenjualan').DataTable({
             ordering: false,
             searching: false,
             paging: false,
             responsive: true,
-            scrollX: true,
             info: false,
             'ajax': {
                 'url': '/getsementarapenjualan',
@@ -298,13 +247,13 @@
                 'sClass': "col-md-2",
             }, {
                 'targets': 2,
-                'sClass': "text-center col-md-1",
+                'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return number_format(intVal(data), 0, ',', '.');
                 }
             }, {
                 'targets': 3,
-                'sClass': "text-center col-md-1",
+                'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return number_format(intVal(data), 0, ',', '.');
                 }
@@ -312,9 +261,10 @@
                 'targets': 4,
                 'sClass': "text-right col-md-2",
                 'render': function (data, type, full, meta) {
+                    // return number_format(intVal(data), 0, ',', '.');
                     return number_format(intVal(data), 0, ',', '.');
                 }
-            }, {
+            },{
                 'targets': 5,
                 'sClass': "text-right col-md-2",
                 'render': function (data, type, full, meta) {
@@ -353,7 +303,6 @@
                             // console.log(a);
                             return intVal(a) + intVal(b);
                         });
-
                     diskon = api
                         .column(3)
                         .data()
@@ -361,28 +310,29 @@
                             // console.log(a);
                             return intVal(a) + intVal(b);
                         });
-                    // Update footer ditampilkan
+                    // Update footer
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
-
-                        'Rp.' + number_format(total, 0, ',', '.') + ''
+                        'Rp.'
+                         + number_format(total, 0, ',', '.') + ''
                     );
-                    $('#diskonview').val(formatRibuan(diskon));
                     $('#totalbayar').val(total);
+                    $('#diskonview').val(formatRibuan(diskon));
                     loadTotalBayar();
                     var rows = table.rows().count();
                     $('#totalbarang').val(rows + ' Barang');
                 } else {
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
-                        'Rp.0'
+                        'Rp 0'
                     );
+                    loadTotalBayar();
                 }
             },
         });
 
-        kodeOtomatis();
 
+        
         $('.inputanangka').on('keypress', function (e) {
             var c = e.keyCode || e.charCode;
             switch (c) {
@@ -403,9 +353,6 @@
             loadTotal();
             loadTotalBayar();
         });
-
-
-        $('#barangasli').val(null);
 
         //--- Pencarian Barang ketik ajax--//
         var timer;
@@ -451,26 +398,7 @@
     });
 
 
-    function kodeOtomatis() {
-        route = "/getpenjualanautocode";
-        $.get(route, function (res) {
-            $('#invoice').val(res);
-            reloadTable();
-        });
-    }
-
-    //---datepicker javascript----//
-    var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-    $('.inputantgl').datepicker({
-        format: "dd/mm/yyyy",
-        container: container,
-        todayHighlight: true,
-        autoclose: true,
-    });
-    $(".inputantgl").datepicker("setDate", new Date());
-    //--- datepicker javascript----//
-
-
+    
     // ----- Cari Barang ------- //
     $('#tabelcaritoko').DataTable({
         responsive: true,
@@ -529,39 +457,8 @@
         }
     });
 
-    //--merefresh data di table pencarian barang--//
-    function CariClick(btn) {
-        reloadTableCari();
-    }
-
-    function reloadTableCari() {
-        var table = $('#tabelcaritoko').dataTable();
-        table.cleanData;
-        table.api().ajax.reload();
-    }
-    //-----------------------------------------//
-
-
-    function loadTotalBayar() {
-        var bayarnilai = $('#jumlahbayar').val();
-        var bayartotal = $('#totalbayar').val();
-        $('#kembalian').val(number_format($('#totalbayar').val(), 0, ',', '.'));
-
-        if (bayartotal != undefined && jQuery.trim(bayartotal) != '' && intVal(bayartotal) > 0 && bayarnilai !=
-            undefined && jQuery.trim(bayarnilai) != '' && intVal(bayarnilai) > 0) {
-            var kembali = intVal(bayarnilai) - intVal(bayartotal);
-            $('#kembalian').val(number_format(kembali, 0, ',', '.'));
-        }
-    }
-
-    function reloadTable() {
-        var table = $('#tabelpenjualan').dataTable();
-        table.cleanData;
-        table.api().ajax.reload();
-    }
-
-    //cari barang lewat modal//
-    function PilihClickBarang(btn) {
+       //cari barang lewat modal//
+       function PilihClickBarang(btn) {
         route = "/findbarangtoko/id/" + btn.value;
 
         $.get(route, function (res) {
@@ -580,6 +477,36 @@
 
 
         });
+    }
+
+        //--merefresh data di table pencarian barang--//
+        function CariClick(btn) {
+        reloadTableCari();
+    }
+
+    function reloadTableCari() {
+        var table = $('#tabelcaritoko').dataTable();
+        table.cleanData;
+        table.api().ajax.reload();
+    }
+    //-----------------------------------------//
+
+    function loadTotalBayar() {
+        var bayarnilai = $('#jumlahbayar').val();
+        var bayartotal = $('#totalbayar').val();
+        $('#kembalian').val(number_format($('#totalbayar').val(), 0, ',', '.'));
+
+        if (bayartotal != undefined && jQuery.trim(bayartotal) != '' && intVal(bayartotal) > 0 && bayarnilai !=
+            undefined && jQuery.trim(bayarnilai) != '' && intVal(bayarnilai) > 0) {
+            var kembali = intVal(bayarnilai) - intVal(bayartotal);
+            $('#kembalian').val(number_format(kembali, 0, ',', '.'));
+        }
+    }
+
+    function reloadTable() {
+        var table = $('#tabelpenjualan').dataTable();
+        table.cleanData;
+        table.api().ajax.reload();
     }
 
     function loadTotal() {
@@ -613,6 +540,7 @@
             $('#totalubah').val(number_format(total2, 0, ',', '.'));
         }
     }
+
 
     $('#simpantambah').click(function () {
         var invoice = $('#invoice').val();
@@ -729,6 +657,8 @@
         });
     });
 
+
+    
     function HapusClick(btn) {
         $('#idHapus').val(btn.value);
     }
@@ -760,7 +690,6 @@
             }
         });
     });
-
 
     function UbahClick(btn) {
         route = "/sementara/" + btn.value + "/edit";
@@ -893,13 +822,14 @@
             return;
         }
 
-        var route = "/penjualan";
+        var id = $('#idubahsekali').val();
         var token = $('#token').val();
+        var route = "/penjualan/" + id;
         var tanggal = $('#tgl').val();
 
         $.ajax({
             url: route,
-            type: 'POST',
+            type: 'PUT',
             headers: {
                 'X-CSRF-TOKEN': token
             },
@@ -928,55 +858,12 @@
             },
             success: function () {
                 $('#modalBayar').modal('toggle');
-                return swal({
-                    type: 'success',
-                    title: 'Sukses Penjualan Disimpan !',
-                    showConfirmButton: true,
-                    timer: 1000
-                }).catch(function (timeout) {
-                    $('#modalStruk').modal('toggle')
-                });
+                alert('Sukses Melakukan Koreksi Transaksi Penjualan !!');
+                window.location.href = '/penjualan';
 
             }
         });
     });
 
-    $('#printstruk').click(function () {
-        var kode = $('#invoice').val();
-        $.get('/strukjual/' + kode, function (res) {
-            kodeOtomatis();
-            $('#kode').val(null);
-            $('#barangasli').val(null);
-            $('#namabarang').val(null);
-            $('#harga_jual').val(null);
-            $('#total').val(null);
-            $('#qty').val(null);
-            $('#bayar').val(null);
-
-            $('#kode').focus();
-
-            $('#modalStruk').modal('toggle');
-        });
-    });
-
-    $('#batalstruk').click(function () {
-        kodeOtomatis();
-        $('#kode').val(null);
-        $('#barangasli').val(null);
-        $('#namabarang').val(null);
-        $('#harga_jual').val(null);
-        $('#stok').val(null);
-        $('#total').val(null);
-        $('#qty').val(null);
-        $('#diskonitem').val(null);
-        $('#kategori').val(null);
-        $('#subtotal').val(null);
-        $('#kembalian').val(null);
-        $('#jumlahbayar').val(null);
-
-        $('#modalStruk').modal('toggle');
-        $('#kode').focus();
-        $('#kode').focus();
-    });
-</script>
+    </script>
 @endsection

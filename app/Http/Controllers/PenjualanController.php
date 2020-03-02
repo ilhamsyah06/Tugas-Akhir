@@ -285,6 +285,68 @@ class PenjualanController extends Controller
         ]);
     }
 
+    public function siapkanKoreksi(Request $request) {
+
+        if ($request->ajax()) {
+            $input = $request->all();
+
+            if (!isset($input['_token'])) {
+                return response()->json([
+                    'data' => $input->toArray()
+                ]);
+            } else {
+                $penjualan = Penjualan::find($input['id']);
+
+                if ($penjualan != null) {
+                    $hasil = $this->memprosesKoreksi($penjualan);
+                    if ($hasil == '') {
+                        return response()->json([
+                                'data' => 'Sukses menyiapkan data koreksi'
+                            ]);
+                    } else {
+                            return response()->json([
+                                'data' => ['Gagal menyiapkan data koreksi! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
+                            ], 422);
+                    }
+                    
+                } else {
+                    return response()->json([
+                        'data' => ['Gagal menyiapkan data koreksi! Transaksi tidak ditemukan di database']
+                    ], 422);
+                }
+            }
+        }
+    }
+
+    protected function memprosesKoreksi($penjualan) {
+        DB::beginTransaction();
+
+        try {
+            DB::table('sementara')->truncate();
+
+            foreach ($penjualan->penjualandetail as $key => $value) {
+                $sementara = new Sementara;
+                $sementara->kode = $penjualan->no_invoice;
+                $sementara->barang_id = $value->barang_id;
+                $sementara->harga = $value->harga;
+                $sementara->diskon = $value->diskon_item;
+                $sementara->jumlah = $value->qty;
+
+                $sementara->save();
+            }
+        } catch (ValidationException $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        } catch (Exception $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        }
+
+        DB::commit();
+
+        return '';
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -293,7 +355,12 @@ class PenjualanController extends Controller
      */
     public function edit($id)
     {
-        //
+        $penjualan = Penjualan::find($id);
+        if ($penjualan == null) {
+            return redirect('/penjualan');
+        }
+
+        return view('master.penjualan.edit', compact('penjualan'));
     }
 
     /**
@@ -305,7 +372,122 @@ class PenjualanController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            $input = $request->all();
+
+            if (!isset($input['_token'])) {
+                return response()->json([
+                    'data' => $input->toArray()
+                ]);
+            } else {
+                $sementara = Sementara::where('kode', $input['kode'])->get();
+                $penjualan = Penjualan::where('no_invoice', $input['kode'])->first();
+
+                if ($sementara != null && $penjualan != null) {
+                    $hasil = $this->simpanTransaksiUpdate($input, $sementara, $penjualan);
+                    if ($hasil == '') {
+                        return response()->json([
+                                'data' => 'Sukses koreksi penjualan barang'
+                            ]);
+                    } else {
+                        dd($hasil);
+                            return response()->json([
+                                'data' => ['Gagal koreksi transaksi penjualan! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
+                            ], 422);
+                    }
+                    
+                } else {
+                    return response()->json([
+                        'data' => ['Gagal  koreksi transaksi penjualan! Data transaksi tidak ditemukan di database']
+                    ], 422);
+                }
+            }
+        }
+    }
+
+    protected function simpanTransaksiUpdate($input, $sementara, $penjualan) {
+        DB::beginTransaction();
+    try {
+
+            foreach ($penjualan->penjualandetail as $key => $value) {
+                $barang = $value->barang;
+
+                $dataubah = [
+                    'stok' => $barang->stok + $value->qty
+                ];
+
+                DB::table('barang')
+                    ->where('id', $barang->id)
+                    ->update($dataubah);
+
+                $value->delete();
+
+                $historylama = History::where(['barang_id' => $barang->id, 'kode' => $penjualan->no_invoice, 'nama' => 'penjualan'])->first();
+
+                if ($historylama != null) {
+                    $historylama->delete();
+                }
+            }
+
+            foreach ($sementara as $key => $value) {
+                $penjualandetail = new Detailpenjualan;
+                $penjualandetail->penjualan_id = $penjualan->id;
+                $barang = $value->barang;
+
+                $penjualandetail->barang_id = $barang->id;
+                $penjualandetail->harga = $value->harga;
+                $penjualandetail->qty = $value->jumlah;
+                $penjualandetail->diskon_item = $value->diskon;
+                $penjualandetail->total = $value->jumlah * $value->harga;
+                $penjualandetail->save();
+
+                $stok_sebelumnya = $barang->stok;
+
+                $dataubah = [
+                    'stok' => $barang->stok - $value->jumlah,
+                    'updated_at' => date('Y/m/d H:i:s')
+                ];
+
+                DB::table('barang')
+                    ->where('id', $barang->id)
+                    ->update($dataubah);
+
+                $history = new History;
+                $history->nama = 'penjualan';
+                $history->kode = $penjualan->no_invoice;
+                $history->tgl = $penjualan->tgl_penjualan;
+                $history->barang_id = $barang->id;
+                $history->stok = $stok_sebelumnya;
+                $history->masuk = 0;
+                $history->keluar = $value->jumlah;
+                $history->saldo = $stok_sebelumnya - $value->jumlah;
+                $history->user_id = $penjualan->user_id;
+                $history->keterangan = 'Penjualan Barang, No. Bukti : '.$penjualan->no_invoice;
+                $history->save();
+            }
+
+                    $dataubahtotalbayar = [
+                        'total_bayar' => $input['totalbayar'],
+                        'jumlah_bayar' => $input['bayar'],
+                        'kembalian' => $input['kembalian'],
+                        'updated_at' => date('Y/m/d H:i:s')
+                    ];
+                    DB::table('penjualan')
+                        ->where('id', $penjualan->id)
+                        ->update($dataubahtotalbayar);
+
+            DB::table('sementara')->truncate();
+        } catch (ValidationException $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        } catch (Exception $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        }
+
+        DB::commit();
+
+        return '';
     }
 
     /**
