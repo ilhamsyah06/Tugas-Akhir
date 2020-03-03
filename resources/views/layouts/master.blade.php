@@ -138,6 +138,8 @@
 
     <script src="{{ asset('js/jquery.pos.js') }}"></script>
 
+    <script src="{{ asset('assets/Datejs-master/build/date.js') }}"></script>
+
   <!-- PACE -->
 <script src="{{ asset('js/pace/pace.min.js') }}"></script>
 

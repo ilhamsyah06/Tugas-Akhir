@@ -163,7 +163,9 @@ class Utility extends Model
         $printer->text("Jumlah Barang : ".Utility::tambahSpasi($jumlah, 14, 'front')."\n");
 
         $printer->text("--------------------------------\n");
-       
+        $printer->text("** Barang Yang Sudah Dibeli **\n");
+        $printer->text("** Tidak Dapat Dikembalikan **\n");
+        $printer->text("--------------------------------\n");
         $printer->text("Terima Kasih Atas Kunjungan Anda\n");
         
         $printer -> feed(1);

@@ -106,9 +106,9 @@ $(document).ready(function() {
         autoclose: true,
     });
 
-    var fd = new Date();
+    var fd = Date.today().clearTime().moveToFirstDayOfMonth();
     // var firstday = fd.toString("MM/dd/yyyy");
-    var ld = new Date();
+    var ld = Date.today().clearTime().moveToFirstDayOfMonth();
     // var lastday = ld.toString("MM/dd/yyyy");
     
     $("#start").datepicker("setDate", fd);
