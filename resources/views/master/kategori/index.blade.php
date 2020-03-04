@@ -7,7 +7,7 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Tambah Kategori</h4>
+                <h4><i class="fa fa-plus"></i> Tambah Kategori</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -24,7 +24,7 @@
 <div class="col-md-8">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h4>List Kategori Barang</h4>
+            <h4><i class="fa fa-list"></i> List Kategori Barang</h4>
         </div>
         <div class="panel-body">
             <table id="kategori" class="table table-bordered table-striped">

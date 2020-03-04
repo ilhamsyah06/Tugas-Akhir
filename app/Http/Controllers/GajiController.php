@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\User;
-use App\NominalGaji;
 
 class GajiController extends Controller
 {
@@ -93,25 +92,6 @@ class GajiController extends Controller
         foreach ($user as $i => $d) {
         	$data[$cacah] = [
         		$d->name, 
-        		$d->id
-        	];
-
-        	$cacah++;    
-        }
-
-        return response()->json([
-            'data' => $data
-        ]);
-    }
-
-    public function nominalapi() {
-    	$nominal = NominalGaji::all();
-        $cacah = 0;
-        $data = [];
-
-        foreach ($nominal as $i => $d) {
-        	$data[$cacah] = [
-        		$d->nominal, 
         		$d->id
         	];
 

@@ -29,7 +29,7 @@
                 @include('master.barang.form-lihat')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+                <button type="button" class="btn btn-default btn-flat" data-dismiss="modal"><i class="fa fa-close"></i> Tutup</button>
             </div>
         </div>
         <!-- /.modal-content -->
@@ -49,7 +49,7 @@
                 @include('master.barang.form-ubah-toko')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
                 {!! link_to('#', $title='Simpan Data', $attributes=['id'=>'simpanubah', 'class'=>'btn btn-primary']) !!}
             </div>
         </div>
@@ -94,8 +94,8 @@
                 @include('master.barang.form-ubah-gudang')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                {!! link_to('#', $title='Simpan Data', $attributes=['id'=>'simpanubahg', 'class'=>'btn btn-primary']) !!}
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+                <a href="#" id="simpanubahg" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</a>
             </div>
         </div>
         <!-- /.modal-content -->

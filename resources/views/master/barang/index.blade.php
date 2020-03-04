@@ -13,6 +13,7 @@ if($stokhabis != 0){
 @endphp
 
 @section('content')
+<div class="container">
 @if (Auth::user()->level === 'kasir')
 <div class="row">
     <div class="col-md-12">
@@ -76,6 +77,7 @@ if($stokhabis != 0){
         </div>
     </div>
 </div>
+</div>
 @include('master.barang.modal')
 @endsection
 
@@ -116,7 +118,7 @@ if($stokhabis != 0){
                 'sClass': "col-md-2"
             }, {
                 'targets': 3,
-                'sClass': "col-md-1",
+                'sClass': "col-md-2",
                 render: function (data, type, row, meta) {
                     return '<span style="font-size: 12px;" class="label label-primary' +
                         '">' + data + '</span>';
@@ -153,11 +155,11 @@ if($stokhabis != 0){
                 "sClass": "text-center col-md-2 td-aksi",
                 'render': function (data, type, full, meta) {
                     var button =
-                        '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="glyphicon glyphicon-eye-open"></i> </button>';
+                        '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="fa fa-eye"></i> </button>';
                     button +=
-                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbahg" onclick="UbahClickg(this);"><i class="fa fa-pencil-square-o fa-fw"></i> </button>';
+                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbahg" onclick="UbahClickg(this);"><i class="fa fa-pencil"></i> </button>';
                     button +=
-                        '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="glyphicon glyphicon-trash"></i> </button>';
+                        '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash"></i> </button>';
 
                     return button;
 
@@ -300,11 +302,6 @@ if($stokhabis != 0){
         var profit = intVal($('#profitubahgudang').val());
 
         var stok = $('#stokubahgudang').val();
-        if (jQuery.trim(stok) == '' || stok == ' ' || intVal(stok) < 0) {
-            alert('Stok tidak boleh kosong.');
-            $('#stokubahgudang').focus();
-            return;
-        }
         stok = intVal(stok);
 
         var tanggal = $('#tanggalubahgudang').val();
@@ -476,7 +473,7 @@ if($stokhabis != 0){
                 'sClass': "col-md-2"
             }, {
                 'targets': 3,
-                'sClass': "col-md-1",
+                'sClass': "col-md-2",
                 render: function (data, type, row, meta) {
                     return '<span style="font-size: 12px;" class="label label-primary' +
                         '">' + data + '</span>';
@@ -513,11 +510,11 @@ if($stokhabis != 0){
                 "sClass": "text-center col-md-2 td-aksi",
                 'render': function (data, type, full, meta) {
                     var button =
-                        '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="glyphicon glyphicon-eye-open"></i> </button>';
+                        '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="fa fa-eye"></i> </button>';
                     button +=
-                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="glyphicon glyphicon-pencil"></i> </button>';
+                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="fa fa-pencil"></i> </button>';
                     button +=
-                        '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="glyphicon glyphicon-trash"></i> </button>';
+                        '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash"></i> </button>';
 
                     return button;
 

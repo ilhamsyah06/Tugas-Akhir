@@ -37,9 +37,9 @@
   <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
   <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
   <script src="{{ asset('assets/bootstrap/js/ie-emulation-modes-warning.js') }}"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+  <link rel="stylesheet" href="{{ asset('assets/font-awesome/css/font-awesome.min.css')}}" />
   <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.css">
+<link rel="stylesheet" href="{{ asset('assets/bootstrap-datepicker-master/bootstrap-datepicker3.css') }}">
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -49,7 +49,7 @@
   <!--modal merah danger-->
   <style>
     body {
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Helvetica';
       font-weight: bold;
       background-color: #eeeeee;
       margin-left: 20px;
@@ -116,7 +116,7 @@
 
 
   {{-- countertext --}}
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+  <script src="{{ asset('js/waypoints.min.js')}}"></script>
   <script src="{{ asset('js/countertext/jquery.counterup.min.js') }}"></script>
 
   {{-- dataTables --}}
@@ -143,9 +143,7 @@
   <!-- PACE -->
 <script src="{{ asset('js/pace/pace.min.js') }}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/recta/dist/recta.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.js"></script>
+<script src="{{ asset('assets/bootstrap-datepicker-master/bootstrap-datepicker.min.js')}}"></script>
 
 
 

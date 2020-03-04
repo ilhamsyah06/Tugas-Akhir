@@ -103,9 +103,13 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     Route::get('daftarhabis', 'SearchController@daftarhabis')->name('daftarhabis');
     Route::get('getkembalian', 'SearchController@getkembalian');//belum difungsikan
 
+    //Route gaji
     Route::resource('gaji','GajiController');
     Route::get('userapi', 'GajiController@userapi')->name('userapi');
-    Route::get('nominalapi', 'GajiController@nominalapi')->name('nominalapi');
+
+    //Route Nominal Gaji
+    Route::resource('nominal','NominalController');
+    Route::get('nominalapi','NominalController@nominalapi')->name('nominalapi');
 
     //Route Laporan penjualan
     Route::get('laporanpenjualan','LaporanpenjualanController@index')->name('laporanpenjualan');
@@ -115,9 +119,6 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     Route::get('histories', 'LaporanHistoryController@datahistories');
     Route::get('get_select_barang', 'SearchController@getSelectBarang');
     Route::post('history', 'LaporanHistoryController@previewcetak');
-
-    //Route Nominal Gaji
-    Route::resource('nominal','NominalController');
 
 
 });
