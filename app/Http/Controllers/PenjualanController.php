@@ -380,11 +380,18 @@ class PenjualanController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
+                $tanggal = date('Y-m-d');
+                $uangmodal = Uang_modal_kasir::where('tanggal', $tanggal)->first();
                 $sementara = Sementara::where('kode', $input['kode'])->get();
                 $penjualan = Penjualan::where('no_invoice', $input['kode'])->first();
+                if ($uangmodal === null) {
+                    return response()->json([
+                        'data' => ['Silahkan Isi Uang Modal Kasir Agar Bisa Melakukan Transaksi!']
+                    ], 422);
+            }
 
                 if ($sementara != null && $penjualan != null) {
-                    $hasil = $this->simpanTransaksiUpdate($input, $sementara, $penjualan);
+                    $hasil = $this->simpanTransaksiUpdate($input, $sementara, $penjualan, $uangmodal);
                     if ($hasil == '') {
                         return response()->json([
                                 'data' => 'Sukses koreksi penjualan barang'
@@ -405,9 +412,10 @@ class PenjualanController extends Controller
         }
     }
 
-    protected function simpanTransaksiUpdate($input, $sementara, $penjualan) {
+    protected function simpanTransaksiUpdate($input, $sementara, $penjualan, $uangmodal) {
         DB::beginTransaction();
     try {
+
 
             foreach ($penjualan->penjualandetail as $key => $value) {
                 $barang = $value->barang;
@@ -419,6 +427,16 @@ class PenjualanController extends Controller
                 DB::table('barang')
                     ->where('id', $barang->id)
                     ->update($dataubah);
+
+                $dataubahuangmodal = [
+                        'uang_akhir' => $uangmodal->uang_akhir - $penjualan->total_bayar
+                ];
+
+                $now = date('Y-m-d');
+
+                DB::table('uang_modal_kasir')
+                    ->where('tanggal', $now)
+                    ->update($dataubahuangmodal);
 
                 $value->delete();
 
@@ -466,7 +484,7 @@ class PenjualanController extends Controller
                 $history->save();
             }
 
-                    $dataubahtotalbayar = [
+                $dataubahtotalbayar = [
                         'total_bayar' => $input['totalbayar'],
                         'jumlah_bayar' => $input['bayar'],
                         'kembalian' => $input['kembalian'],
@@ -475,6 +493,22 @@ class PenjualanController extends Controller
                     DB::table('penjualan')
                         ->where('id', $penjualan->id)
                         ->update($dataubahtotalbayar);
+
+
+                $tanggal = date('Y-m-d');
+                $uangkasir = DB::table('uang_modal_kasir')
+                        ->select('uang_akhir')
+                        ->where('tanggal', $tanggal)
+                        ->first();
+            
+                    $hasilakhir = $uangkasir->uang_akhir;
+                    $updateuangkasir = $hasilakhir;
+                    $totaluangmodal = $input['totalbayar'];
+                    $totalakhir = $totaluangmodal + $updateuangkasir;
+                    $update = DB::table('uang_modal_kasir')
+                        ->where('tanggal', $tanggal)
+                        ->update(['uang_akhir' => $totalakhir]); 
+                       
 
             DB::table('sementara')->truncate();
         } catch (ValidationException $ex) {
