@@ -108,7 +108,7 @@ $(document).ready(function() {
 
     var fd = Date.today().clearTime().moveToFirstDayOfMonth();
     // var firstday = fd.toString("MM/dd/yyyy");
-    var ld = Date.today().clearTime().moveToFirstDayOfMonth();
+    var ld = Date.today().clearTime().moveToLastDayOfMonth();
     // var lastday = ld.toString("MM/dd/yyyy");
     
     $("#start").datepicker("setDate", fd);

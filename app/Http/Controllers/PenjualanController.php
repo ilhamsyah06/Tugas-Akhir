@@ -205,7 +205,7 @@ class PenjualanController extends Controller
                 $history = new History;
                 $history->nama = 'penjualan';
                 $history->kode = $penjualan->no_invoice;
-                $history->tgl = $penjualan->tgl_penjualan;
+                $history->tgl = Carbon::now();
                 $history->barang_id = $barang->id;
                 $history->stok = $stok_sebelumnya;
                 $history->masuk = 0;
@@ -473,7 +473,7 @@ class PenjualanController extends Controller
                 $history = new History;
                 $history->nama = 'penjualan';
                 $history->kode = $penjualan->no_invoice;
-                $history->tgl = $penjualan->tgl_penjualan;
+                $history->tgl = Carbon::now();
                 $history->barang_id = $barang->id;
                 $history->stok = $stok_sebelumnya;
                 $history->masuk = 0;

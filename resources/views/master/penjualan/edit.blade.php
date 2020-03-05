@@ -30,8 +30,8 @@
                             <label for="tgl" class="control-label col-sm-4"><i class="fa fa-calendar"></i> Tanggal :
                             </label>
                             <div class="col-sm-8">
-                            <input type="text" name="tgl" id="tgl" value="{{ $penjualan->tgl_penjualan }}" class="form-control inputantgl"
-                                    placeholder="MM/DD/YYYY" />
+                            <input type="text" name="tgl" id="tgl" value="{{ date('d-m-Y', strtotime($penjualan->tgl_penjualan)) }}" class="form-control inputantgl"
+                                    placeholder="MM/DD/YYYY" readonly />
                             </div>
                         </div>
                     </div>
