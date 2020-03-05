@@ -1,5 +1,5 @@
 .card-counter{
-    box-shadow: 2px 2px 10px #DADADA;
+    box-shadow: 2px 2px 10px rgb(49, 49, 49);
     margin: 5px;
     padding: 20px 10px;
     background-color: #fff;
@@ -9,7 +9,7 @@
   }
 
   .card-counter:hover{
-    box-shadow: 4px 4px 20px #DADADA;
+    box-shadow: 4px 4px 20px rgb(24, 24, 24);
     transition: .3s linear all;
   }
 
@@ -34,81 +34,81 @@
   }  
 
   .card-counter.uangmodal{
-    background-color: #8bc41b;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
   .card-counter.toko{
-    background-color: #abc41b;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.user{
-    background-color: #045a97;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.category{
-    background-color: #23c9a5;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }
 
   .card-counter.supplier{
-    background-color: #ec7a0f;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
   
   .card-counter.gudang{
-    background-color: #ff7657;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }
   
   .card-counter.retur{
-    background-color: #e036d7;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.returkeseluruhan{
-    background-color: #4fcf05;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.penjualanhariini{
-    background-color: #f1ce4d;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.pembelianharini{
-    background-color: #8413c5;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.penjulankeseluruhan{
-    background-color: #0ed873;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.pembeiankeseluruhan{
-    background-color: #e7455f;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.pendapatjualharini{
-    background-color: #c70d45;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.pendapatjualkeseluruhan{
-    background-color: #204ad4;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.pendapatanbeliharini{
-    background-color: #ffd00c;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 
   .card-counter.pendapatanbelikeseluruhan{
-    background-color: #f73859;
+    background-image: linear-gradient(to right, #ee0979,#ff6a00);
     color: #FFF;
   }  
 

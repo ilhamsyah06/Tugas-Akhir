@@ -148,10 +148,11 @@ class SearchController extends Controller
 		->select('kembalian')
 		->where('tgl_penjualan', $tanggal)
 		->first();
+		$barang = Barang::where('kode', '=', 'BA00001', 'and')->where('status', '=', 'gudang')->first();
 
 		$uangku = $penjualan->kembalian;
 
-		return response()->json($uangku); 
+		return response()->json($barang); 
 
 	}
 	

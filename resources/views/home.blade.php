@@ -36,99 +36,99 @@ $tanggal = date('Y-m-d');
 @endif
 <div class="row">
   <div class="col-md-3">
-    <div class="card-counter pendapatjualharini">
+    <div class="card-counter pendapatjualharini animated bounceIn delay-1s">
       <i class="fa fa-money"></i>
-    <span class="count-numbers">Rp.<span class="counter">{{ number_format($total_bayar) }}</span>,-</span>
+    <span class="count-numbers">Rp.<span>{{ number_format($total_bayar) }}</span>,-</span>
       <span class="count-name">Pendapatan Jual Hari Ini</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pendapatjualkeseluruhan">
+    <div class="card-counter pendapatjualkeseluruhan animated bounceIn delay-1s">
       <i class="fa fa-money"></i>
-    <span class="count-numbers">Rp.<span class="counter">{{ number_format($total_bayar_keseluruhan) }}</span>,-</span>
+    <span class="count-numbers">Rp.<span>{{ number_format($total_bayar_keseluruhan) }}</span>,-</span>
       <span class="count-name">Pendapatan Jual Keseluruhan</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pendapatanbeliharini">
+    <div class="card-counter pendapatanbeliharini animated bounceIn delay-1s">
       <i class="fa fa-money"></i>
-      <span class="count-numbers">Rp.<span class="counter">{{ number_format($total_beli) }}</span>,-</span>
+      <span class="count-numbers">Rp.<span >{{ number_format($total_beli) }}</span>,-</span>
       <span class="count-name">Pengeluaran Beli Hari Ini</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pendapatanbelikeseluruhan">
+    <div class="card-counter pendapatanbelikeseluruhan animated bounceIn delay-1s">
       <i class="fa fa-money"></i>
-      <span class="count-numbers">Rp.<span class="counter">{{ number_format($total_beli_keseluruhan) }}</span>,-</span>
+      <span class="count-numbers">Rp.<span >{{ number_format($total_beli_keseluruhan) }}</span>,-</span>
       <span class="count-name">Pengeluaran Beli Keseluruhan</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter uangmodal">
+    <div class="card-counter uangmodal animated bounceIn delay-1s">
       <i class="fa fa-money"></i>
       @foreach ($uangawal as $item)
-      <span class="count-numbers">Rp.<span class="counter">{{ number_format($item->uang_akhir) }}</span>,-</span>
+      <span class="count-numbers">Rp.<span>{{ number_format($item->uang_akhir) }}</span>,-</span>
       @endforeach
       <span class="count-name">Uang Modal Kasir</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter toko">
+    <div class="card-counter toko animated bounceIn delay-1s">
       <i class="fa fa-database"></i>
-    <span class="count-numbers counter">{{ $totalbarangtoko }}</span>
+    <span class="count-numbers">{{ $totalbarangtoko }}</span>
       <span class="count-name">Barang Toko</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter gudang">
+    <div class="card-counter gudang animated bounceIn delay-1s">
       <i class="fa fa-database"></i>
-      <span class="count-numbers counter">{{ $totalbaranggudang }}</span>
+      <span class="count-numbers">{{ $totalbaranggudang }}</span>
       <span class="count-name">Barang Gudang</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter user">
+    <div class="card-counter user animated bounceIn delay-1s">
       <i class="fa fa-users"></i>
-    <span class="count-numbers counter">{{ $totaluser }}</span>
+    <span class="count-numbers">{{ $totaluser }}</span>
       <span class="count-name">User</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter category">
+    <div class="card-counter category animated bounceIn delay-1s">
       <i class="fa fa-sort-amount-desc"></i>
-    <span class="count-numbers counter">{{ $totalkategori }}</span>
+    <span class="count-numbers">{{ $totalkategori }}</span>
       <span class="count-name">Kategori Barang</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter supplier">
+    <div class="card-counter supplier animated bounceIn delay-1s">
       <i class="fa fa-user-o"></i>
-    <span class="count-numbers counter">{{ $totalsupplier }}</span>
+    <span class="count-numbers">{{ $totalsupplier }}</span>
       <span class="count-name">Supplier</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter retur">
+    <div class="card-counter retur animated bounceIn delay-1s">
       <i class="fa fa-refresh"></i>
-    <span class="count-numbers counter">7870</span>
+    <span class="count-numbers">7870</span>
       <span class="count-name">Retur Penjualan Hari Ini</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter returkeseluruhan">
+    <div class="card-counter returkeseluruhan animated bounceIn delay-1s">
       <i class="fa fa-refresh"></i>
-    <span class="count-numbers counter">7870</span>
+    <span class="count-numbers">7870</span>
       <span class="count-name">Retur Penjualan Keseluruhan</span>
     </div>
   </div>
@@ -137,43 +137,43 @@ $tanggal = date('Y-m-d');
 
 <div class="row">
   <div class="col-md-3">
-    <div class="card-counter penjualanhariini">
+    <div class="card-counter penjualanhariini animated bounceIn delay-1s">
       <i class="fa fa-cart-plus"></i>
-    <span class="count-numbers counter">{{ $totalpenjualanharini }}</span>
+    <span class="count-numbers">{{ $totalpenjualanharini }}</span>
       <span class="count-name">Penjualan Hari Ini</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pembelianharini">
+    <div class="card-counter pembelianharini animated bounceIn delay-1s">
       <i class="fa fa-cart-plus"></i>
-    <span class="count-numbers counter">{{ $totalpembelianhariini }}</span>
+    <span class="count-numbers">{{ $totalpembelianhariini }}</span>
       <span class="count-name">Pembelian Hari Ini</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter penjulankeseluruhan">
+    <div class="card-counter penjulankeseluruhan animated bounceIn delay-1s">
       <i class="fa fa-shopping-cart"></i>
-    <span class="count-numbers counter">{{ $totalpenjualan }}</span>
+    <span class="count-numbers">{{ $totalpenjualan }}</span>
       <span class="count-name">Penjualan Keseluruhan</span>
     </div>
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pembeiankeseluruhan">
+    <div class="card-counter pembeiankeseluruhan animated bounceIn delay-1s">
       <i class="fa fa-shopping-cart"></i>
-    <span class="count-numbers counter">{{ $totalpembelian }}</span>
-      <span class="count-name">Pembelian Keselururhan</span>
+    <span class="count-numbers">{{ $totalpembelian }}</span>
+      <span class="count-name">Pembelian Keseluruhan</span>
     </div>
   </div>
 
 </div>
-
+<br>
 <div class="row">
   <div class="col-md-6">
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel panel-heading">
             <h4><i class="fa fa-list-alt"></i> Barang Terlaris</h4>
         </div>
         <div class="panel-body">
@@ -221,7 +221,7 @@ $tanggal = date('Y-m-d');
 <script>
   jQuery(document).ready(function($) {
       $('.counter').counterUp({
-          delay: 10,
+          delay-1s0,
           time: 1000
       });
   });

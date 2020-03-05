@@ -49,6 +49,7 @@
       aria-expanded="false"><i class="fa fa-file"></i> Laporan <span class="caret"></span></a>
     <ul class="dropdown-menu">
       <li class="{{ Request::path() === 'laporanpenjualan' ? 'active' : '' }}"><a href="{{ url('laporanpenjualan')}}"><i class="fa fa-file-text-o"></i> Laporan Penjualan</a></li>
+      <li class="{{ Request::path() === 'laporanpembelian' ? 'active' : '' }}"><a href="{{ url('laporanpembelian')}}"><i class="fa fa-file-text-o"></i> Laporan Pembelian</a></li>
       <li><a href="#"><i class="fa fa-file-text-o"></i> Laporan Retur</a></li>
     <li class="{{ Request::path() === 'absen' ? 'active' : '' }}"><a href="{{ url('absen') }}"><i class="fa fa-file-text-o"></i> Laporan Absen</a></li>
       <li><a href=""><i class="fa fa-file-text-o"></i> Laporan Uang Modal Kasir</a></li>

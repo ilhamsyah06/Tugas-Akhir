@@ -102,7 +102,7 @@ class SementaraController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
-            	$barang = Barang::where('kode', $input['barang'])->first();
+            	$barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'gudang')->first();
             	$sementara = Sementara::where(['kode'=> $input['kode'], 'barang_id'=>$barang->id])->first();
 
             	if ($sementara != null) {
@@ -139,7 +139,7 @@ class SementaraController extends Controller
 // "barang" => "BA00001"
         try {
            // dd(Auth::user());
-        	$barang = Barang::where('kode', $input['barang'])->first();
+           $barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'gudang')->first();
 
             $sementara = new Sementara;
             $sementara->barang_id = $barang->id;
@@ -170,7 +170,7 @@ class SementaraController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
-                $barang = Barang::where('kode', $input['barang'])->first();
+                $barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'toko')->first();
                 $sementara = Sementara::where(['kode'=> $input['invoice'], 'barang_id'=>$barang->id])->first();
 
                 if ($sementara != null) {
@@ -214,7 +214,7 @@ class SementaraController extends Controller
 // "barang" => "BA00001"
         try {
            // dd(Auth::user());
-            $barang = Barang::where('kode', $input['barang'])->first();
+           $barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'toko')->first();
 
             $sementara = new Sementara;
             $sementara->barang_id = $barang->id;

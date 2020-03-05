@@ -40,6 +40,8 @@
   <link rel="stylesheet" href="{{ asset('assets/font-awesome/css/font-awesome.min.css')}}" />
   <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/bootstrap-datepicker-master/bootstrap-datepicker3.css') }}">
+
+<link rel="stylesheet" href="{{ asset('css/animate.css') }}">
   <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -55,6 +57,32 @@
       margin-left: 20px;
       margin-right: 20px;
     }
+
+    @media (prefers-color-scheme: light) {
+  body {
+    font-family: 'Helvetica';
+      font-weight: bold;
+      background-color: #eeeeee;
+      margin-left: 20px;
+      margin-right: 20px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    font-family: 'Helvetica';
+      font-weight: bold;
+      background-color: #0a0a09;
+      margin-left: 20px;
+      margin-right: 20px;
+  }
+
+  .navbar {
+  border:none;
+  background-color: #1b1c1c;
+}
+
+}
 
     textarea {
       max-width: 100%;
@@ -72,6 +100,7 @@
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     }
+    
   </style>
   @yield('style')
 </head>
