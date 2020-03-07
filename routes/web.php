@@ -113,10 +113,12 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
 
     //Route Laporan penjualan
     Route::get('laporanpenjualan','LaporanpenjualanController@index')->name('laporanpenjualan');
+    Route::get('datalaporanpenjualan', 'LaporanpenjualanController@datalaporanpenjualan');
+    Route::post('cetakpenjualan', 'LaporanpenjualanController@preview');
 
     //Route Laporan Pembelian
     Route::get('laporanpembelian','LaporanpembelianController@index')->name('laporanpembelian');
-    Route::get('datalaporanpembelian', 'LaporanpembelianController@datalaporanpembelian');
+    Route::get('datalaporanpembelian','LaporanpembelianController@datalaporanpembelian');
     Route::post('cetakpembelian', 'LaporanpembelianController@preview');
 
     //Route Laporan Histori

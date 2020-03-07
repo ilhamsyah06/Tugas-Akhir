@@ -10,7 +10,7 @@
 
   .card-counter:hover{
     box-shadow: 4px 4px 20px rgb(24, 24, 24);
-    transition: .3s linear all;
+    transition: .1s linear all;
   }
 
   .card-counter.primary{

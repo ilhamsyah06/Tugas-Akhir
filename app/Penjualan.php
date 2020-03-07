@@ -19,4 +19,15 @@ class Penjualan extends Model
     public function user() {
         return $this->belongsTo('App\User');
     }
+
+    public function keuntungan() {
+        $details = $this->penjualandetail;
+
+        $t = 0;
+        foreach ($details as $key => $value) {
+            $t += ($value->qty * $value->harga) - ($value->qty * $value->harga_beli);
+        }
+
+        return $t;
+    }
 }

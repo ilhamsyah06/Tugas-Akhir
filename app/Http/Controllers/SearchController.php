@@ -152,7 +152,10 @@ class SearchController extends Controller
 
 		$uangku = $penjualan->kembalian;
 
-		return response()->json($barang); 
+		$uangkasir = DB::table('uang_modal_kasir')->select('uang_akhir')->where('tanggal', $tanggal)->first();
+		$hasilakhir = $uangkasir->uang_akhir;
+
+		return response()->json($hasilakhir); 
 
 	}
 	

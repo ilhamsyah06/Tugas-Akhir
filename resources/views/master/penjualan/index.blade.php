@@ -122,7 +122,7 @@
                             </div>
                             <div class="col-sm-3">
                                 <a href="#" class="btn btn-primary btn-flat btn-block" id="simpantambah"><i
-                                        class="fa fa-plus"></i> Tambah (SPACE)</a>
+                                        class="fa fa-plus"></i> ADD (SPACE)</a>
                             </div>
                             <div class="col-sm-3">
                                 <a href="{{ url('penjualan') }}" class="btn btn-warning btn-flat btn-block"
@@ -855,6 +855,10 @@
         });
     });
 
+
+
+    var notif = new Audio();
+
     $('#simpan').click(function () {
         var kembali = $('#kembalian').val();
         if (jQuery.trim(kembali) == '' || kembali == undefined || intVal(kembali) < 0) {
@@ -931,9 +935,10 @@
                 return swal({
                     type: 'success',
                     title: 'Sukses Penjualan Disimpan !',
-                    showConfirmButton: true,
-                    timer: 1000
+                    timer: 700
                 }).catch(function (timeout) {
+                    notif.src = "/tingtong.mp3";
+                    notif.play();
                     $('#modalStruk').modal('toggle')
                 });
 

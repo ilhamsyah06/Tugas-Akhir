@@ -50,19 +50,23 @@
 
   <!--modal merah danger-->
   <style>
+    @font-face{
+      font-family: "Gilroy-FREE";
+      src: url('font/roboto/Roboto-Medium.ttf') format('truetype');
+    }
     body {
-      font-family: 'Helvetica';
+      font-family:Arial, Helvetica, sans-serif;
       font-weight: bold;
-      background-color: #eeeeee;
+      background-color: #f7f7f7;
       margin-left: 20px;
       margin-right: 20px;
     }
 
     @media (prefers-color-scheme: light) {
   body {
-    font-family: 'Helvetica';
+    font-family:Arial, Helvetica, sans-serif;
       font-weight: bold;
-      background-color: #eeeeee;
+      background-color: #f7f7f7;
       margin-left: 20px;
       margin-right: 20px;
   }
@@ -70,7 +74,7 @@
 
 @media (prefers-color-scheme: dark) {
   body {
-    font-family: 'Helvetica';
+    font-family:Arial, Helvetica, sans-serif;
       font-weight: bold;
       background-color: #0a0a09;
       margin-left: 20px;

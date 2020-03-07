@@ -45,7 +45,7 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="">Note: Silahkan Tekan Tombol Dibawah Untuk Absen Hari Ini</label><br>
-            <button name="absenhariini" id="absenhariini" class="btn btn-primary btn-lg"  @if ($count === 1 ) disabled @else  @endif><i class="fa fa-calendar-check-o"></i> ABSEN SEKARANG</button><br>
+            <button name="absenhariini" id="absenhariini" class="btn btn-primary btn-lg animated bounceIn"  @if ($count === 1 ) disabled @else  @endif><i class="fa fa-calendar-check-o"></i> ABSEN SEKARANG</button><br>
             @foreach ($ambildataabsen as $item)
             <span class="label label-warning"> Waktu Absen : {{ date($item->created_at) }}</span><br>
             @endforeach
@@ -69,9 +69,9 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <h3 style="margin:5px;">NAMA : {{ Auth::user()->name}}</h3>
-                    <h3 style="margin:5px;">TOTAL GAJI : Rp.2.3000.000,-</h3>
-                    <span class="label label-danger">Dibayar Tanggal : 2020-03-12</span>
+                    <h3 style="margin:5px;" class="animated fadeInRight">NAMA : {{ Auth::user()->name}}</h3>
+                    <h3 style="margin:5px;" class="animated fadeInRight">TOTAL GAJI : Rp.2.3000.000,-</h3>
+                    <span class="label label-danger animated fadeInRight">Dibayar Tanggal : 2020-03-12</span>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@
 
 @section('footer')
 <script>
-
+  var alert = new Audio();
     $('#absenhariini').click(function () {
         var route = "/absenhariini";
         var token = $('#token').val();
@@ -110,11 +110,17 @@
           }).catch(function(timeout) { });
             },
             success: function () {
+                alert.src = "/terimakasih.mp3";
+                alert.play();
             return swal({
               type: 'success',
-              title: 'Terima Kasih Sudah Absen, Selamat Bekerja !!.',
+              title: 'Terima Kasih, Selamat Beraktifitas !!.',
               timer: 2000
-          }).catch(function(timeout) {location.reload()});
+          }).catch(function(timeout) {
+            setTimeout(function(){
+                window.location.href = window.location.href;
+                  },3000)
+          });
             }
         });
     });

@@ -130,8 +130,9 @@ class PenjualanController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
-                $sementara = Sementara::where('kode', $input['kode'])->get();
                 $tanggal = date('Y-m-d');
+                $uangkasir = DB::table('uang_modal_kasir')->select('uang_akhir')->where('tanggal', $tanggal)->first();
+                $sementara = Sementara::where('kode', $input['kode'])->get();
                 $uangmodalCari = Uang_modal_kasir::where('tanggal', $tanggal)->first();
                 if ($uangmodalCari === null) {
                         return response()->json([
@@ -141,7 +142,7 @@ class PenjualanController extends Controller
 
                 if ($sementara != null) {
 
-                    $hasil = $this->simpanTransaksiCreate($input, $sementara);
+                    $hasil = $this->simpanTransaksiCreate($input, $sementara, $uangkasir);
                     if ($hasil == '') {
                         return response()->json([
                                 'data' => 'Sukses menyimpan penjualan barang'
@@ -162,7 +163,7 @@ class PenjualanController extends Controller
         }
     }
 
-    protected function simpanTransaksiCreate($input, $sementara) {
+    protected function simpanTransaksiCreate($input, $sementara, $uangkasir) {
         DB::beginTransaction();
         try {
             
@@ -186,6 +187,7 @@ class PenjualanController extends Controller
 
                 $penjualandetail->barang_id = $barang->id;
                 $penjualandetail->harga = $value->harga;
+                $penjualandetail->harga_beli = $barang->harga_beli;
                 $penjualandetail->qty = $value->jumlah;
                 $penjualandetail->diskon_item = $value->diskon;
                 $penjualandetail->total = $value->jumlah * $value->harga;
@@ -214,17 +216,15 @@ class PenjualanController extends Controller
                 $history->user_id = $penjualan->user_id;
                 $history->keterangan = 'Penjualan Barang, No. Bukti : '.$penjualan->no_invoice;
                 $history->save();
-                
-             $tanggal = date('Y-m-d');
-             $uangkasir = DB::table('uang_modal_kasir')
-             ->select('uang_akhir')
-             ->where('tanggal', $tanggal)
-             ->first();
-             $hasilakhir = $uangkasir->uang_akhir;
-             $updateuangkasir = $hasilakhir + $penjualan->total_bayar;
-            $update = DB::table('uang_modal_kasir')
-                  ->where('tanggal', $tanggal)
-                  ->update(['uang_akhir' => $updateuangkasir]); 
+
+                $dataubahuangmodal = [
+                    'uang_akhir' => $input['totalbayar'] + $uangkasir->uang_akhir
+                ];
+
+                DB::table('uang_modal_kasir')
+                    ->where('tanggal', date('Y-m-d'))
+                    ->update($dataubahuangmodal);
+             
             }
 
             DB::table('sementara')->truncate();
@@ -454,6 +454,7 @@ class PenjualanController extends Controller
 
                 $penjualandetail->barang_id = $barang->id;
                 $penjualandetail->harga = $value->harga;
+                $penjualandetail->harga_beli = $barang->harga_beli;
                 $penjualandetail->qty = $value->jumlah;
                 $penjualandetail->diskon_item = $value->diskon;
                 $penjualandetail->total = $value->jumlah * $value->harga;
@@ -623,4 +624,6 @@ class PenjualanController extends Controller
     public function strukjual($kode) {
         Utility::printStruk($kode);
     }
+
+
 }
