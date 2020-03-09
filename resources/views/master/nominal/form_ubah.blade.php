@@ -9,7 +9,7 @@
                 <input type="hidden" id="idubah">
                 <div class="form-group">
                     {!! Form::label('nominalubah', 'Nominal Gaji') !!}
-                    {!! Form::text('nominalubah', null, ['class' => 'form-control', 'id'=>'nominalubah','placeholder' => 'Masukan Nominal Gaji']) !!}
+                    {!! Form::text('nominalubah', null, ['class' => 'form-control inputanangka', 'id'=>'nominalubah','placeholder' => 'Masukan Nominal Gaji']) !!}
                 </div>
 
             </div>

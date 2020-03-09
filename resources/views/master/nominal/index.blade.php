@@ -12,7 +12,7 @@
             <div class="panel panel-body">
                 <div class="form-group">
                     <label for="nominal">Nominal Gaji :</label>
-                    <input type="text" name="nominalgaji" id="nominalgaji" class="form-control" placeholder="Masukan Nominal Gaji">
+                    <input type="text" name="nominalgaji" id="nominalgaji" class="form-control inputanangka" placeholder="Masukan Nominal Gaji">
                 </div>
                 <div class="form-group">
                     <a href="#" class="btn btn-primary pull-right" name="simpantambah" id="simpantambah"><i class="fa fa-plus"></i> Tambah</a>
@@ -82,6 +82,23 @@
             
         }
     });
+
+    $('.inputanangka').on('keypress', function (e) {
+            var c = e.keyCode || e.charCode;
+            switch (c) {
+                case 8: case 9: case 27: case 13:
+                    return;
+                case 65:
+                    if (e.ctrlKey === true) return;
+            }
+            if (c < 48 || c > 57) e.preventDefault();
+        }).on('keyup', function () {
+            //alert('disini');
+            var inp = $(this).val().replace(/\./g, '');
+            $(this).val(formatRibuan(inp));
+        });
+
+    $('#nominalgaji').focus();
 });
 
 function reloadTable() {//membuat function yang bernama reload table
@@ -100,6 +117,8 @@ $('#simpantambah').click(function() {
         $('#nominalgaji').focus();
         return;
     }
+
+    nominal = intVal(nominal);
 
 	$.ajax({
 		url: route,
@@ -150,6 +169,7 @@ $('#simpanubah').click(function () {
     var route = "/nominal/" + id;
 
     var nominalubah = $('#nominalubah').val();
+    nominalubah = intVal(nominalubah);
 
     $.ajax({
         url: route,

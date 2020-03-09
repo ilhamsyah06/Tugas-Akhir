@@ -105,7 +105,9 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
 
     //Route gaji
     Route::resource('gaji','GajiController');
+    Route::get('gajiapi','GajiController@gajiapi')->name('gajiapi');
     Route::get('userapi', 'GajiController@userapi')->name('userapi');
+    Route::get('gajiautokode', 'GajiController@getAutoKode');
 
     //Route Nominal Gaji
     Route::resource('nominal','NominalController');
@@ -126,6 +128,13 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     Route::get('histories', 'LaporanHistoryController@datahistories');
     Route::get('get_select_barang', 'SearchController@getSelectBarang');
     Route::post('history', 'LaporanHistoryController@previewcetak');
+
+
+    //Laporan Chart Penjualan
+    Route::get('chartpenjualan','ChartpenjualanController@chartpenjualan');
+
+    //laporan Chart Pembelian
+    Route::get('chartpembelian','ChartpembelianController@chartpembelian');
 
 
 });

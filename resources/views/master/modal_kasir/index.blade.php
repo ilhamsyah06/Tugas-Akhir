@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-3">
-        <div class="card-counter primary">
+        <div class="card-counter supplier animated flipInX">
             <i class="fa fa-money"></i>
             @foreach ($uangawal as $item)
             <span class="count-numbers">Rp.{{ number_format($item->uang_awal) }},-</span>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card-counter danger">
+        <div class="card-counter supplier animated flipInX">
             <i class="fa fa-money"></i>
             @foreach ($uangawal as $item)
             <span class="count-numbers">Rp.{{ number_format($item->uang_akhir) }},-</span>
@@ -32,7 +32,7 @@
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>Tambah Uang Modal Kasir</h4>
+                <h4><i class="fa fa-money"></i> Tambah Uang Modal Kasir</h4>
             </div>
             <div class="panel-body">
                 <div class="form-group">
@@ -56,7 +56,7 @@
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>List Uang Modal Kasir</h4>
+                <h4><i class="fa fa-list"></i> List Uang Modal Kasir</h4>
             </div>
             <div class="panel-body">
                 <table id="uangmodal" class="table table-bordered table-striped">

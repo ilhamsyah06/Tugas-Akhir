@@ -18,6 +18,7 @@ use App\Detailpenjualan;
 use App\Uang_modal_kasir;
 
 
+
 class PenjualanController extends Controller
 {
     /**
@@ -273,7 +274,7 @@ class PenjualanController extends Controller
         if ($penjualan != null) {
             foreach ($penjualan->penjualandetail as $i => $d) {
                 $barang = $d->barang;
-                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->harga, $d->qty, $d->qty * $d->harga];
+                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga];
                 $cacah++;
 
             }

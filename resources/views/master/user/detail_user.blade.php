@@ -47,7 +47,7 @@
             <label for="">Note: Silahkan Tekan Tombol Dibawah Untuk Absen Hari Ini</label><br>
             <button name="absenhariini" id="absenhariini" class="btn btn-primary btn-lg animated bounceIn"  @if ($count === 1 ) disabled @else  @endif><i class="fa fa-calendar-check-o"></i> ABSEN SEKARANG</button><br>
             @foreach ($ambildataabsen as $item)
-            <span class="label label-warning"> Waktu Absen : {{ date($item->created_at) }}</span><br>
+            <span class="label label-warning"> Waktu Absen : {{ date('d-m-Y H:i:s', strtotime($item->created_at)) }}</span><br>
             @endforeach
 
             @if ($count === 1 ) 
@@ -69,9 +69,15 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <h3 style="margin:5px;" class="animated fadeInRight">NAMA : {{ Auth::user()->name}}</h3>
-                    <h3 style="margin:5px;" class="animated fadeInRight">TOTAL GAJI : Rp.2.3000.000,-</h3>
-                    <span class="label label-danger animated fadeInRight">Dibayar Tanggal : 2020-03-12</span>
+                    @if ($countgaji === 0)
+                    <h3>Gaji Belum Dibayarkan</h3>                        
+                    @endif
+                    @foreach ($gaji as $item)
+                    <h3 style="margin:5px;" class="animated fadeInRight">Nama : {{ $item->user->name}}</h3>
+                    <h3 style="margin:5px;" class="animated fadeInRight">Total Gaji Dibayar Sebesar : Rp.{{ number_format($item->total_gaji) }},-</h3>
+                    <span style="font-size: 15px;" class="label label-primary animated fadeInRight">Jumlah Hari Masuk : {{ $item->jumlah_hari_kerja }} Hari</span>
+                    <span style="font-size: 15px;" class="label label-danger animated fadeInRight">Dibayar Tanggal : {{ date('d-m-Y', strtotime($item->tgl_gajian)) }}</span>
+                    @endforeach
                 </div>
             </div>
         </div>

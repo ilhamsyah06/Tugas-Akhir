@@ -3,16 +3,16 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-handshake-o"></i> Pembelian <span class="caret"></span></a>
     <ul class="dropdown-menu">
-    <li class="{{ Request::path() === 'pembelian' ? 'active' : '' }}"><a href="{{ url('pembelian') }}">Pembelian</a></li>
-    <li class="{{ Request::path() === 'listpembelian' ? 'active' : '' }}"><a href="{{ url('listpembelian') }}">List Pembelian</a></li>
+    <li class="{{ Request::path() === 'pembelian' ? 'active' : '' }}"><a href="{{ url('pembelian') }}"><i class="fa fa-send"></i> Pembelian</a></li>
+    <li class="{{ Request::path() === 'listpembelian' ? 'active' : '' }}"><a href="{{ url('listpembelian') }}"><i class="fa fa-list-ul"></i> List Pembelian</a></li>
     </ul>
   </li>
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-dollar"></i> Penjualan <span class="caret"></span></a>
     <ul class="dropdown-menu">
-    <li class="{{ Request::path() === 'penjualan' ? 'active' : '' }}"><a href="{{ url('penjualan') }}">Penjualan</a></li>
-    <li class="{{ Request::path() === 'listpenjualan' ? 'active' : '' }}"><a href="{{ url('listpenjualan') }}">List Penjualan</a></li>
+    <li class="{{ Request::path() === 'penjualan' ? 'active' : '' }}"><a href="{{ url('penjualan') }}"><i class="fa fa-money"></i> Penjualan</a></li>
+    <li class="{{ Request::path() === 'listpenjualan' ? 'active' : '' }}"><a href="{{ url('listpenjualan') }}"><i class="fa fa-list-ul"></i> List Penjualan</a></li>
     </ul>
   </li>
   <li class="dropdown">
@@ -49,20 +49,22 @@
       aria-expanded="false"><i class="fa fa-file"></i> Laporan <span class="caret"></span></a>
     <ul class="dropdown-menu">
       <li class="{{ Request::path() === 'laporanpenjualan' ? 'active' : '' }}"><a href="{{ url('laporanpenjualan')}}"><i class="fa fa-file-text-o"></i> Laporan Penjualan</a></li>
+      <li class="{{ Request::path() === 'chartpenjualan' ? 'active' : '' }}"><a href="{{ url('chartpenjualan')}}"><i class="fa fa-bar-chart"></i> Laporan Grafik Penjualan</a></li>
       <li class="{{ Request::path() === 'laporanpembelian' ? 'active' : '' }}"><a href="{{ url('laporanpembelian')}}"><i class="fa fa-file-text-o"></i> Laporan Pembelian</a></li>
+      <li class="{{ Request::path() === 'chartpembelian' ? 'active' : '' }}"><a href="{{ url('chartpembelian')}}"><i class="fa fa-bar-chart"></i> Laporan Grafik Pembelian</a></li>
       <li><a href="#"><i class="fa fa-file-text-o"></i> Laporan Retur</a></li>
     <li class="{{ Request::path() === 'absen' ? 'active' : '' }}"><a href="{{ url('absen') }}"><i class="fa fa-file-text-o"></i> Laporan Absen</a></li>
       <li><a href=""><i class="fa fa-file-text-o"></i> Laporan Uang Modal Kasir</a></li>
     </ul>
   </li>
 </ul>
-<ul class="nav navbar-nav navbar-right" style="margin-right:5px;">
+<ul class="nav navbar-nav navbar-right animated zoomIn" style="margin-right:5px;">
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-user"></i> {{ Auth::user()->name }} <span class="caret"></span></a>
     <ul class="dropdown-menu">
-      <li class="{{ Request::path() === 'detailuser' ? 'active' : '' }}"><a href="{{ url('detailuser')}}">Detail Profil</a></li>
-    <li><a href="{{ url('logout') }}">Logout</a></li>
+      <li class="{{ Request::path() === 'detailuser' ? 'active' : '' }}"><a href="{{ url('detailuser')}}"><i class="fa fa-user"></i> Detail Profil</a></li>
+    <li><a href="{{ url('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
     </ul>
   </li>
 </ul>

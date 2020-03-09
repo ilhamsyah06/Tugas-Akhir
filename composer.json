@@ -7,17 +7,19 @@
     "require": {
         "php": ">=7.0.0",
         "barryvdh/laravel-dompdf": "^0.8.0",
+        "consoletvs/charts": "5.*",
         "fideloper/proxy": "~3.3",
-        "laravel/framework": "5.5.*",
         "jenssegers/date": "^3.5",
+        "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
-        "mike42/escpos-php": "1.5",
         "laravelcollective/html": "~5.2",
+        "mike42/escpos-php": "1.5",
         "milon/barcode": "6.0",
         "nesbot/carbon": "1.39.1",
         "yajra/laravel-datatables-oracle": "~8.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.2",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",

@@ -26,6 +26,7 @@ $tanggal = date('Y-m-d');
           </div>
     </div>
     <br>
+
     <section class="content">
       <div class="row">
            <div class="col-xs-12">
@@ -97,7 +98,6 @@ $tanggal = date('Y-m-d');
       <!-- /.row -->
   </section>
 @endsection
-
 @section('footer')
     <script>
       $(document).ready(function() {

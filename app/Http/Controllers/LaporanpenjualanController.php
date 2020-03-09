@@ -7,6 +7,9 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\App;
 use Exception;
 use App\Penjualan;
+use App\User;
+use DB;
+
 
 class LaporanpenjualanController extends Controller
 {

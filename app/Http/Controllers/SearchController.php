@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 //--- Model ---//
 use App\Barang;
 use App\Penjualan;
+use Carbon\Carbon;
+use App\Gaji;
 
 class SearchController extends Controller
 {
@@ -143,19 +145,35 @@ class SearchController extends Controller
 	//belum difungsikan
 	public function getkembalian() {
 
-		$tanggal = date('Y-m-d');
-		$penjualan = DB::table('penjualan')
-		->select('kembalian')
-		->where('tgl_penjualan', $tanggal)
-		->first();
-		$barang = Barang::where('kode', '=', 'BA00001', 'and')->where('status', '=', 'gudang')->first();
+		$tanggal = date('Y-m-d H:i:s');
+	//	$penjualan = DB::table('penjualan')
+		//->select('kembalian')
+	//	->where('tgl_penjualan', $tanggal)
+	//	->first();
+	//	$barang = Barang::where('kode', '=', 'BA00001', 'and')->where('status', '=', 'gudang')->first();
 
-		$uangku = $penjualan->kembalian;
+		//$uangku = $penjualan->kembalian;
 
-		$uangkasir = DB::table('uang_modal_kasir')->select('uang_akhir')->where('tanggal', $tanggal)->first();
-		$hasilakhir = $uangkasir->uang_akhir;
+		//$uangkasir = DB::table('uang_modal_kasir')->select('uang_akhir')->where('tanggal', $tanggal)->first();
+		//$hasilakhir = $uangkasir->uang_akhir;
 
-		return response()->json($hasilakhir); 
+		$sekarang = Carbon::now()->addMonth(1)->format('m');    
+		$gaji = Gaji::where('user_id', 1)->where('tgl_gajian', '>=', Carbon::now()->startOfMonth())->get();
+		
+		$users = DB::table('gaji')
+        ->whereMonth('created_at', $tanggal)
+		->get();
+		
+		$orders = Penjualan::select(
+			DB::raw('sum(total_bayar) as total'),
+			DB::raw('MONTH(tgl_penjualan) as bulan'),
+            DB::raw("DATE_FORMAT(tgl_penjualan,'%M %Y') as bulanstring")
+  )
+  ->groupBy('bulanstring','bulan')
+  ->orderBy('bulan','asc')
+  ->get();
+
+		return response()->json($orders); 
 
 	}
 	

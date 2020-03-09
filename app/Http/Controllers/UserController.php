@@ -13,7 +13,9 @@ use Illuminate\Validation\ValidationException;
 //model
 use App\User;
 use App\Absen;
+use App\Gaji;
 use Auth;
+use Carbon\Carbon;
 
 class UserController extends Controller
 {
@@ -118,11 +120,14 @@ class UserController extends Controller
     public function detailuser()
     {
         $now = date('Y-m-d');
+        $sekarang = Carbon::now()->addMonth(1)->format('m');        
         $id =  Auth::user()->id;
         $ambildataid = User::find($id);
         $ambildataabsen = DB::table('absen')->where('user_id', $id)->where('tgl_absen',$now)->limit(1)->get();
         $count = Absen::where('tgl_absen','=',$now)->where('user_id',$id)->count();
-        return view('master.user.detail_user', compact('count','ambildataid','ambildataabsen'));
+        $gaji = Gaji::where('user_id', $id)->where('tgl_gajian', '>=', Carbon::now()->startOfMonth())->take(1)->get();
+        $countgaji = Gaji::where('user_id', $id)->where('tgl_gajian', '>=', Carbon::now()->startOfMonth())->take(1)->count();
+        return view('master.user.detail_user', compact('count','ambildataid','ambildataabsen','gaji','countgaji'));
     }
 
     /**
