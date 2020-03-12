@@ -129,6 +129,10 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     Route::get('get_select_barang', 'SearchController@getSelectBarang');
     Route::post('history', 'LaporanHistoryController@previewcetak');
 
+    //Route Laporan Absen
+    Route::get('laporanabsen','LaporanabsenController@index');
+    Route::get('get_select_user','LaporanabsenController@getselectuser');
+    Route::get('datauser', 'LaporanabsenController@datauser');
 
     //Laporan Chart Penjualan
     Route::get('chartpenjualan','ChartpenjualanController@chartpenjualan');

@@ -38,8 +38,8 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-money"></i> Gaji <span class="caret"></span></a>
     <ul class="dropdown-menu">
-      <li class="{{ Request::path() === 'gaji' ? 'active' : '' }}"><a href="{{ url('gaji') }}"><i class="fa fa-file-text-o"></i> Gaji</a></li>
-      <li class="{{ Request::path() === 'nominal' ? 'active' : '' }}"><a href="{{ url('nominal') }}"><i class="fa fa-file-text-o"></i> Nominal Gaji</a></li>
+      <li class="{{ Request::path() === 'gaji' ? 'active' : '' }}"><a href="{{ url('gaji') }}"><i class="fa fa-dollar"></i> Gaji</a></li>
+      <li class="{{ Request::path() === 'nominal' ? 'active' : '' }}"><a href="{{ url('nominal') }}"><i class="fa fa-plus"></i> Nominal Gaji</a></li>
     </ul>
   </li>
   <li class="{{ Request::path() === 'user' ? 'active' : '' }}"><a href="{{ url('user')}}"><i class="fa fa-user-circle"></i> User</a></li>
@@ -53,7 +53,7 @@
       <li class="{{ Request::path() === 'laporanpembelian' ? 'active' : '' }}"><a href="{{ url('laporanpembelian')}}"><i class="fa fa-file-text-o"></i> Laporan Pembelian</a></li>
       <li class="{{ Request::path() === 'chartpembelian' ? 'active' : '' }}"><a href="{{ url('chartpembelian')}}"><i class="fa fa-bar-chart"></i> Laporan Grafik Pembelian</a></li>
       <li><a href="#"><i class="fa fa-file-text-o"></i> Laporan Retur</a></li>
-    <li class="{{ Request::path() === 'absen' ? 'active' : '' }}"><a href="{{ url('absen') }}"><i class="fa fa-file-text-o"></i> Laporan Absen</a></li>
+    <li class="{{ Request::path() === 'laporanabsen' ? 'active' : '' }}"><a href="{{ url('laporanabsen') }}"><i class="fa fa-file-text-o"></i> Laporan Absen</a></li>
       <li><a href=""><i class="fa fa-file-text-o"></i> Laporan Uang Modal Kasir</a></li>
     </ul>
   </li>

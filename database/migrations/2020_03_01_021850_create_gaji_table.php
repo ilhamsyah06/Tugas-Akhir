@@ -15,6 +15,7 @@ class CreateGajiTable extends Migration
     {
         Schema::create('gaji', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nomor_gaji');
             $table->string('jumlah_hari_kerja');
             $table->string('total_gaji');
             $table->string('tgl_gajian');

@@ -55,7 +55,6 @@ class AbsenController extends Controller
             $absen = new Absen();
             $absen->user_id = Auth::user()->id;
             $absen->tgl_absen = $tanggal;
-            $absen->jam_absen = $jam;
             $absen->save();
         } catch (ValidationException $ex) {
             DB::rollback();
