@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Charts;
 use App\Penjualan;
 use DB;
+use Calendar;
 
 class ChartpenjualanController extends Controller
 {
@@ -35,8 +36,22 @@ class ChartpenjualanController extends Controller
 			      ->elementLabel("Jumlah Transaksi Penjualan")
 			      ->dimensions(1000, 500)
 			      ->responsive(true)
-			      ->groupByMonth(date('Y'), true);
+                  ->groupByMonth(date('Y'), true);
+                  
+                  $events = [];
+                  $data = Penjualan::all();
+                  if($data->count()) {
+                      foreach ($data as $key => $value) {
+                          $events[] = Calendar::event(
+                              $value->no_invoice,
+                              true,
+                              new \DateTime($value->tgl_penjualan),
+                              new \DateTime($value->tgl_penjualan.' +1 day')
+                          );
+                      }
+                  }
+                  $calendar = Calendar::addEvents($events);
 
-    return view('laporan.grafikpenjualan.index',compact('chart', 'chartjumlah'));
+    return view('laporan.grafikpenjualan.index',compact('chart', 'chartjumlah','calendar'));
     }
 }

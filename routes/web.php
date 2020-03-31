@@ -140,5 +140,19 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     //laporan Chart Pembelian
     Route::get('chartpembelian','ChartpembelianController@chartpembelian');
 
+    //Route Retur
+    Route::resource('retur','ReturController');
+    Route::get('returkode', 'ReturController@getAutoKode');
+    Route::get('apipenjualan', 'ReturController@ApiPenjualan');
+    Route::get('tambahretur/{id}/returadd', 'ReturController@tambahretur');
+    Route::post('siapkanretur', 'ReturController@siapkanretur');
+    Route::get('getsementararetur','ReturController@getsementararetur');
+    //-----------------------------------------------------------//
+    Route::post('retursemua','ReturController@retursemua');
+    Route::post('kembalisemua','ReturController@kembalisemua');
+    //-----------------------------------------------------------//
+    Route::post('retursatu','ReturController@retursatu');//kirim satu ke keranjang retur
+    Route::post('kembalisatu','ReturController@kembalisatu');//kirim satu ke keranjang retur
+
 
 });

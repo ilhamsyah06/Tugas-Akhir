@@ -1,5 +1,4 @@
 .card-counter{
-    box-shadow: 2px 2px 10px rgb(49, 49, 49);
     margin: 5px;
     padding: 20px 10px;
     background-color: #fff;
@@ -14,22 +13,27 @@
   }
 
   .card-counter.primary{
-    background-color: #007bff;
+    background: linear-gradient(45deg,#4099ff,#73b4ff);
     color: #FFF;
   }
 
   .card-counter.danger{
-    background-color: #ef5350;
+    background: linear-gradient(45deg,#FF5370,#ff869a);
     color: #FFF;
   }  
 
   .card-counter.success{
-    background-color: #66bb6a;
+    background: linear-gradient(45deg,#2ed8b6,#59e0c5);
     color: #FFF;
   }  
 
   .card-counter.info{
     background-color: #26c6da;
+    color: #FFF;
+  }  
+
+  .card-counter.warning{
+    background: linear-gradient(45deg,#FFB64D,#ffcb80);
     color: #FFF;
   }  
 

@@ -36,7 +36,7 @@ $tanggal = date('Y-m-d');
 @endif
 <div class="row">
   <div class="col-md-3">
-    <div class="card-counter pendapatjualharini animated flipInX">
+    <div class="card-counter primary animated flipInX">
       <i class="fa fa-money"></i>
     <span class="count-numbers">Rp.<span>{{ number_format($total_bayar) }}</span>,-</span>
       <span class="count-name">Pendapatan Jual Hari Ini</span>
@@ -44,7 +44,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pendapatjualkeseluruhan animated flipInX">
+    <div class="card-counter success animated flipInX">
       <i class="fa fa-money"></i>
     <span class="count-numbers">Rp.<span>{{ number_format($total_bayar_keseluruhan) }}</span>,-</span>
       <span class="count-name">Pendapatan Jual Keseluruhan</span>
@@ -52,7 +52,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pendapatanbeliharini animated flipInX">
+    <div class="card-counter warning animated flipInX">
       <i class="fa fa-money"></i>
       <span class="count-numbers">Rp.<span >{{ number_format($total_beli) }}</span>,-</span>
       <span class="count-name">Pengeluaran Beli Hari Ini</span>
@@ -60,7 +60,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pendapatanbelikeseluruhan animated flipInX">
+    <div class="card-counter danger animated flipInX">
       <i class="fa fa-money"></i>
       <span class="count-numbers">Rp.<span >{{ number_format($total_beli_keseluruhan) }}</span>,-</span>
       <span class="count-name">Pengeluaran Beli Keseluruhan</span>
@@ -68,7 +68,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter uangmodal animated flipInX">
+    <div class="card-counter primary animated flipInX">
       <i class="fa fa-money"></i>
       @foreach ($uangawal as $item)
       <span class="count-numbers">Rp.<span>{{ number_format($item->uang_akhir) }}</span>,-</span>
@@ -78,7 +78,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter toko animated flipInX">
+    <div class="card-counter success animated flipInX">
       <i class="fa fa-database"></i>
     <span class="count-numbers">{{ $totalbarangtoko }}</span>
       <span class="count-name">Barang Toko</span>
@@ -86,7 +86,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter gudang animated flipInX">
+    <div class="card-counter warning animated flipInX">
       <i class="fa fa-database"></i>
       <span class="count-numbers">{{ $totalbaranggudang }}</span>
       <span class="count-name">Barang Gudang</span>
@@ -94,7 +94,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter user animated flipInX">
+    <div class="card-counter danger animated flipInX">
       <i class="fa fa-users"></i>
     <span class="count-numbers">{{ $totaluser }}</span>
       <span class="count-name">User</span>
@@ -102,7 +102,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter category animated flipInX">
+    <div class="card-counter primary animated flipInX">
       <i class="fa fa-sort-amount-desc"></i>
     <span class="count-numbers">{{ $totalkategori }}</span>
       <span class="count-name">Kategori Barang</span>
@@ -110,7 +110,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter supplier animated flipInX">
+    <div class="card-counter success animated flipInX">
       <i class="fa fa-user-o"></i>
     <span class="count-numbers">{{ $totalsupplier }}</span>
       <span class="count-name">Supplier</span>
@@ -118,7 +118,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter retur animated flipInX">
+    <div class="card-counter warning animated flipInX">
       <i class="fa fa-refresh"></i>
     <span class="count-numbers">7870</span>
       <span class="count-name">Retur Penjualan Hari Ini</span>
@@ -126,7 +126,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter returkeseluruhan animated flipInX">
+    <div class="card-counter danger animated flipInX">
       <i class="fa fa-refresh"></i>
     <span class="count-numbers">7870</span>
       <span class="count-name">Retur Penjualan Keseluruhan</span>
@@ -137,7 +137,7 @@ $tanggal = date('Y-m-d');
 
 <div class="row">
   <div class="col-md-3">
-    <div class="card-counter penjualanhariini animated flipInX">
+    <div class="card-counter primary animated flipInX">
       <i class="fa fa-cart-plus"></i>
     <span class="count-numbers">{{ $totalpenjualanharini }}</span>
       <span class="count-name">Penjualan Hari Ini</span>
@@ -145,7 +145,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pembelianharini animated flipInX">
+    <div class="card-counter success animated flipInX">
       <i class="fa fa-cart-plus"></i>
     <span class="count-numbers">{{ $totalpembelianhariini }}</span>
       <span class="count-name">Pembelian Hari Ini</span>
@@ -153,7 +153,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter penjulankeseluruhan animated flipInX">
+    <div class="card-counter warning animated flipInX">
       <i class="fa fa-shopping-cart"></i>
     <span class="count-numbers">{{ $totalpenjualan }}</span>
       <span class="count-name">Penjualan Keseluruhan</span>
@@ -161,7 +161,7 @@ $tanggal = date('Y-m-d');
   </div>
 
   <div class="col-md-3">
-    <div class="card-counter pembeiankeseluruhan animated flipInX">
+    <div class="card-counter danger animated flipInX">
       <i class="fa fa-shopping-cart"></i>
     <span class="count-numbers">{{ $totalpembelian }}</span>
       <span class="count-name">Pembelian Keseluruhan</span>
@@ -215,14 +215,4 @@ $tanggal = date('Y-m-d');
   </div>
 </div>
 </div>
-@endsection
-
-@section('footer')
-<script>
-  jQuery(document).ready(function($) {
-      $('.counter').counterUflipInX0,
-          time: 1000
-      });
-  });
-</script>
 @endsection

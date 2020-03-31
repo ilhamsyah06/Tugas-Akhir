@@ -169,9 +169,7 @@ class KategoriController extends Controller
 
     protected function simpanTransaksiUpdate($input, $jenis) {
         DB::beginTransaction();
-
         try {
-
             DB::table('kategori')
                 ->where('id', $jenis->id)
                 ->update(
