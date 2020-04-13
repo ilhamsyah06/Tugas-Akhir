@@ -7,7 +7,6 @@ $stokhabis = DB::table('barang')->where('stok', 0 )->where('status','toko')->cou
 
 if($stokhabis != 0){
     echo "<script> alert('Ada $stokhabis Stok Barang Yang Sudah Habis');</script>";
-
 }
 
 @endphp
@@ -45,8 +44,7 @@ if($stokhabis != 0){
         </div>
     </div>
 </div>
-@endif
-
+@elseif(Auth::user()->level === 'gudang')
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -77,6 +75,7 @@ if($stokhabis != 0){
         </div>
     </div>
 </div>
+@endif
 </div>
 @include('master.barang.modal')
 @endsection

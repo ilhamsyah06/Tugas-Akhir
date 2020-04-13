@@ -22,7 +22,7 @@ $tanggal = date('Y-m-d');
 
 @endphp
 
-@if ($count === 1 ) 
+<!---@if ($count === 1 ) 
 
 @else  
  <script>
@@ -33,7 +33,7 @@ $tanggal = date('Y-m-d');
       timer: 3000
   }).catch(function(timeout) { });
  </script>
-@endif
+@endif-->
 <div class="row">
   <div class="col-md-3">
     <div class="card-counter primary animated flipInX">

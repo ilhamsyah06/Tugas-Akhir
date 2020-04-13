@@ -20,8 +20,6 @@
                             <div class="col-sm-8">
                                 <input type="text" name="kasir" id="kasir" value="{{ $retur->user->name}}"
                                     class="form-control" disabled />
-                                <input type="hidden" name="totalbayar" id="totalbayar" value="" class="form-control"
-                                    disabled />
                             </div>
                         </div>
                     </div>
@@ -80,6 +78,8 @@
 
                     </tbody>
                 </table>
+                <input type="hidden" id="totalbayar" name="totalbayar">
+                <input type="hidden" id="kembalian" name="kembalian" value="{{ $retur->kembalian }}">
                 <hr>
                 <h4 class="text-center"><span class="label label-success"><i class="fa fa-refresh"></i> Keranjang Barang Yang Di Retur</span></h4>
                 <table width="100%" class="table table-striped table-bordered table-hover" id="tabelretur">
@@ -104,7 +104,6 @@
 
                     </tbody>
                 </table>
-
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-12">
@@ -221,13 +220,9 @@
                     // Update footer
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
-                        'Rp.' +
-                        number_format(total, 0, ',', '.') + ''
+                        'Rp.' + number_format(total, 0, ',', '.') + ''
                     );
                     $('#totalbayar').val(total);
-                    $('#diskonview').val(formatRibuan(diskon));
-                    var rows = table.rows().count();
-                    $('#totalbarang').val(rows + ' Barang');
                 } else {
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
@@ -307,15 +302,8 @@
                 var api = this.api(),
                     data;
                 if (data.length > 0) {
-                    total = api
+                    totalretur = api
                         .column(5)
-                        .data()
-                        .reduce(function (a, b) {
-                            // console.log(a);
-                            return intVal(a) + intVal(b);
-                        });
-                    diskon = api
-                        .column(3)
                         .data()
                         .reduce(function (a, b) {
                             // console.log(a);
@@ -324,13 +312,18 @@
                     // Update footer
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
+                        'Rp.' + number_format(totalretur, 0, ',', '.') + ''
+                    );
+                    // Update footer
+                    $(api.column(1).footer()).html(
+                        //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
                         'Rp.' +
-                        number_format(total, 0, ',', '.') + ''
+                        number_format(totalretur, 0, ',', '.') + ''
                     );
                 } else {
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
-                        'Rp 0'
+                        'Rp.0'
                     );
                 }
             },
@@ -511,5 +504,73 @@
             }
         });
     });
+
+    $('#simpan').click(function () {
+  
+
+        var totalbayar = $('#totalbayar').val();
+
+        var invoice = $('#invoice').val();
+        if (jQuery.trim(invoice) == '' || invoice == undefined) {
+            alert("Kode invoice tidak valid!");
+            window.location.href = '/retur';
+            return;
+        }
+
+        var invoice = $('#invoice').val();
+        if (jQuery.trim(invoice) == '' || invoice == undefined) {
+            alert("Kode invoice tidak valid!");
+            window.location.href = '/retur';
+            return;
+        }
+
+        var route = "/retur";
+        var token = $('#token').val();
+        var tanggal = $('#tgl').val();
+
+        $.ajax({
+            url: route,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token
+            },
+            dataType: 'json',
+            data: {
+                bayar: bayar,
+                totalbayar: totalbayar,
+                kembalian: kembalian,
+                invoice: invoice,
+                tgl: tanggal,
+                _token: token
+            },
+            error: function (res) {
+                var errors = res.responseJSON;
+                var pesan = '';
+                $.each(errors, function (index, value) {
+                    pesan += value + "\n";
+                });
+
+                return swal({
+                    type: 'error',
+                    title: pesan,
+                    showConfirmButton: true,
+                    timer: 2000
+                }).catch(function (timeout) {});
+            },
+            success: function () {
+                $('#modalBayar').modal('toggle');
+                return swal({
+                    type: 'success',
+                    title: 'Sukses Penjualan Disimpan !',
+                    timer: 700
+                }).catch(function (timeout) {
+                    notif.src = "/tingtong.mp3";
+                    notif.play();
+                });
+
+            }
+        });
+    });
+    
 </script>
 @endsection

@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6">
+   <!-- <div class="col-md-6">
         <div class="form-group">
             <label for="">Note: Silahkan Tekan Tombol Dibawah Untuk Absen Hari Ini</label><br>
             <button name="absenhariini" id="absenhariini" class="btn btn-primary btn-lg animated bounceIn"  @if ($count === 1 ) disabled @else  @endif><i class="fa fa-calendar-check-o"></i> ABSEN SEKARANG</button><br>
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>
 @endsection
 

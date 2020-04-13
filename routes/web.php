@@ -25,7 +25,7 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 //--------------------------------------------------------------------------------------//
 
-Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
+Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], function () {
     //Route Kategori Barang
     Route::resource('kategori', 'KategoriController');
     Route::get('api/kategori', 'KategoriController@apiKategori')->name('api.kategori');
@@ -148,11 +148,11 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir']], function () {
     Route::post('siapkanretur', 'ReturController@siapkanretur');
     Route::get('getsementararetur','ReturController@getsementararetur');
     //-----------------------------------------------------------//
-    Route::post('retursemua','ReturController@retursemua');
-    Route::post('kembalisemua','ReturController@kembalisemua');
+    Route::post('retursemua','ReturController@retursemua');// kirim semua jumlah barang ke keranjang retur
+    Route::post('kembalisemua','ReturController@kembalisemua');// kirim semua jumlah barang ke keranjang penjualan
     //-----------------------------------------------------------//
     Route::post('retursatu','ReturController@retursatu');//kirim satu ke keranjang retur
-    Route::post('kembalisatu','ReturController@kembalisatu');//kirim satu ke keranjang retur
+    Route::post('kembalisatu','ReturController@kembalisatu');//kirim satu ke keranjang penjualan
 
 
 });

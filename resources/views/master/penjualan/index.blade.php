@@ -95,7 +95,7 @@
 
                             <div class="col-sm-3">
                                 {!! Form::text('harga_jual', null, ['id'=>'harga_jual', 'class' => 'form-control
-                                inputanangka', 'placeholder'=>'Harga Jual']) !!}
+                                inputanangka', 'placeholder'=>'Harga Jual','disabled']) !!}
                             </div>
 
                             {!! Form::label('stok', 'Stok ', ['class' => 'control-label col-sm-1', 'style' =>
@@ -443,7 +443,7 @@
                         }
                     });
                 }
-            }, 500);
+            }, 200);
         });
 
         //--Pencarian Barang ketik ajax--- //
