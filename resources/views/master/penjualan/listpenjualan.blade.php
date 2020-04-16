@@ -59,7 +59,15 @@
 
 @section('footer')
     <script>
-        $(document).ready(function() {
+
+    $(document).ready(function() {
+
+    var route = "/cekhakakses";
+    var bolehUbah;
+    $.get(route, function (res) {
+        bolehUbah = res;
+    });
+
     var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
 
     $('.input-daterange').datepicker({
@@ -113,23 +121,22 @@
                     var kembali = '';
                     kembali += '<a title="Lihat Transaksi" class="btn btn-info btn-flat" href="/penjualan/'+data+'"><i class="fa fa-eye fa-fw"></i> </a>';
                     kembali += '<button title="Cetak Struk Jual" class="btn btn-default btn-flat" onclick="CetakClick(this)"><i class="fa fa-print fa-fw"></i> </button>';
-                        kembali += '<a title="Koreksi Transaksi" class="btn btn-warning btn-flat" href="#" onclick="UbahClick('+data+');"><i class="fa fa-pencil-square-o fa-fw"></i> </a>';
-                    
-                        kembali += '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash fa-fw"></i> </button>';
-                    
-
+                        
+                        if (bolehUbah == 'admin') {
+                            kembali += '<a title="Koreksi Transaksi" class="btn btn-warning btn-flat" href="#" onclick="UbahClick('+data+');"><i class="fa fa-pencil-square-o fa-fw"></i> </a>';
+                            kembali += '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash fa-fw"></i> </button>';
+                        }
+                       
                     return kembali;
 
                 }
             }
         ],
         'rowCallback': function (row, data, dataIndex) {
+             if (bolehUbah == 'admin') {
                 $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[4]);
-            
-
-            // if (bolehUbah == true) {
-                $(row).find('button[class="btn btn-default btn-flat"]').prop('value', data[0]);
-            // }
+                }
+            $(row).find('button[class="btn btn-default btn-flat"]').prop('value', data[0]);
 
         }
     });

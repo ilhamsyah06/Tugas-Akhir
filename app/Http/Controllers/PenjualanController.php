@@ -503,13 +503,13 @@ class PenjualanController extends Controller
                         ->where('tanggal', $tanggal)
                         ->first();
             
-                    $hasilakhir = $uangkasir->uang_akhir;
-                    $updateuangkasir = $hasilakhir;
-                    $totaluangmodal = $input['totalbayar'];
-                    $totalakhir = $totaluangmodal + $updateuangkasir;
-                    $update = DB::table('uang_modal_kasir')
-                        ->where('tanggal', $tanggal)
-                        ->update(['uang_akhir' => $totalakhir]); 
+                $hasilakhir = $uangkasir->uang_akhir;
+                $updateuangkasir = $hasilakhir;
+                $totaluangmodal = $input['totalbayar'];
+                $totalakhir = $totaluangmodal + $updateuangkasir;
+                $update = DB::table('uang_modal_kasir')
+                            ->where('tanggal', $tanggal)
+                            ->update(['uang_akhir' => $totalakhir]); 
                        
 
             DB::table('sementara')->truncate();

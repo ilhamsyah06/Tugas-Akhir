@@ -65,20 +65,165 @@ class ReturController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $input = $request->all();
+
+            if (!isset($input['_token'])) {
+                return response()->json([
+                    'data' => $input->toArray()
+                ]);
+            } else {
+                $tanggal = date('Y-m-d');
+                $uangmodal = Uang_modal_kasir::where('tanggal', $tanggal)->first();
+                $sementara = Sementara::where('kode', $input['invoice'])->get();
+                $sementararetur = SementaraRetur::where('noretur', $input['nomoretur']);
+                $penjualan = Penjualan::where('no_invoice', $input['invoice'])->first();
+                if ($uangmodal === null) {
+                    return response()->json([
+                        'data' => ['Silahkan Isi Uang Modal Kasir Agar Bisa Melakukan Transaksi!']
+                    ], 422);
+                }
+
+                if ($sementara != null && $penjualan != null && $sementararetur != null) {
+                    $hasil = $this->simpanTransaksiUpdate($input, $sementara, $sementararetur, $penjualan, $uangmodal);
+                    if ($hasil == '') {
+                        return response()->json([
+                                'data' => 'Sukses retur penjualan barang'
+                            ]);
+                    } else {
+                        dd($hasil);
+                            return response()->json([
+                                'data' => ['Gagal koreksi transaksi retur! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
+                            ], 422);
+                    }
+                    
+                } else {
+                    return response()->json([
+                        'data' => ['Gagal  koreksi transaksi retur! Data transaksi tidak ditemukan di database']
+                    ], 422);
+                }
+            }
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    protected function simpanTransaksiUpdate($input, $sementara, $sementararetur, $penjualan, $uangmodal) {
+        DB::beginTransaction();
+    try {
 
+
+            foreach ($penjualan->penjualandetail as $key => $value) {
+
+                $barang = $value->barang; //proses foregnkey
+
+                $dataubah = [
+                    'stok' => $barang->stok + $value->qty //dikembalikan seperti awal dulu stoknya
+                ];
+
+                DB::table('barang')
+                    ->where('id', $barang->id)
+                    ->update($dataubah);
+
+                $dataubahuangmodal = [
+                        'uang_akhir' => $uangmodal->uang_akhir - $penjualan->total_bayar //dikembalikan / dikurangi lagi uang akhir lama
+                ];
+
+                $now = date('Y-m-d');
+
+                DB::table('uang_modal_kasir')
+                    ->where('tanggal', $now)
+                    ->update($dataubahuangmodal);
+
+                $value->delete(); //menghapus data lama di penjualan detail
+
+                $historylama = History::where(['barang_id' => $barang->id, 'kode' => $penjualan->no_invoice, 'nama' => 'penjualan'])->first();
+
+                if ($historylama != null) {
+                    $historylama->delete(); // mengahapus history lama
+                }
+            }
+
+            foreach ($sementara as $key => $value) {
+                $penjualandetail = new Detailpenjualan;
+                $penjualandetail->penjualan_id = $penjualan->id;
+                $barang = $value->barang;
+
+                $penjualandetail->barang_id = $barang->id;
+                $penjualandetail->harga = $value->harga;
+                $penjualandetail->harga_beli = $barang->harga_beli;
+                $penjualandetail->qty = $value->jumlah;
+                $penjualandetail->diskon_item = $value->diskon;
+                $penjualandetail->total = $value->jumlah * $value->harga;
+                $penjualandetail->save();
+
+                $stok_sebelumnya = $barang->stok;
+
+                $dataubah = [
+                    'stok' => $barang->stok - $value->jumlah,
+                    'updated_at' => date('Y/m/d H:i:s')
+                ];
+
+                DB::table('barang')
+                    ->where('id', $barang->id)
+                    ->update($dataubah);
+
+                $history = new History;
+                $history->nama = 'penjualan';
+                $history->kode = $penjualan->no_invoice;
+                $history->tgl = Carbon::now();
+                $history->barang_id = $barang->id;
+                $history->stok = $stok_sebelumnya;
+                $history->masuk = 0;
+                $history->keluar = $value->jumlah;
+                $history->saldo = $stok_sebelumnya - $value->jumlah;
+                $history->user_id = $penjualan->user_id;
+                $history->keterangan = 'Penjualan Barang, No. Bukti : '.$penjualan->no_invoice;
+                $history->save();
+            }
+
+                $t = $input['totalbayar'];
+                $j = $input['jumlahbayar'];
+                $upadtekembalianreturbaru = $t - $j;
+
+                $dataubahtotalbayar = [
+                        'total_bayar' => $input['totalbayar'],
+                        'jumlah_bayar' => $input['jumlahbayar'],
+                        'kembalian' => $upadtekembalianreturbaru,
+                        'updated_at' => date('Y/m/d H:i:s')
+                    ];
+
+                    DB::table('penjualan')
+                        ->where('id', $penjualan->id)
+                        ->update($dataubahtotalbayar);
+
+
+                $tanggal = date('Y-m-d');
+                $uangkasir = DB::table('uang_modal_kasir')
+                        ->select('uang_akhir')
+                        ->where('tanggal', $tanggal)
+                        ->first();
+            
+                $hasilakhir = $uangkasir->uang_akhir;
+                $updateuangkasir = $hasilakhir;
+                $totaluangmodal = $input['totalbayar'];
+                $totalakhir = $totaluangmodal + $updateuangkasir;
+                $update = DB::table('uang_modal_kasir')
+                            ->where('tanggal', $tanggal)
+                            ->update(['uang_akhir' => $totalakhir]); 
+                       
+
+            DB::table('sementara')->truncate();
+        } catch (ValidationException $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        } catch (Exception $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        }
+
+        DB::commit();
+
+        return '';
+    }
     /**
      * Show the form for editing the specified resource.
      *

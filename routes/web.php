@@ -64,6 +64,9 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::post('/absenhariini','AbsenController@absenmasuk')->name('absenhariini');
     Route::get('absen','AbsenController@laporan')->name('absen');
 
+    //Route Cek Hak Akses
+    Route::get('cekhakakses', 'SearchController@cekhakakses');
+
     //Route Pembelian
     Route::resource('pembelian','PembelianController');
     Route::get('barangpembelian', 'PembelianController@barangpembelian');

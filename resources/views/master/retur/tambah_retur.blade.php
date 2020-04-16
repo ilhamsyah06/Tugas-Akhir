@@ -2,9 +2,13 @@
 
 @section('title','Tambah Retur')
 
+@php
+    $date = date('Y-m-d');
+@endphp
+
 @section('content')
 <div class="row">
-    <input type="hidden" id="idubahsekali" value="{{$retur->id}}">
+    <input type="hidden" id="idpenjualan" value="{{$retur->id}}">
     <!--------->
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -25,11 +29,11 @@
                     </div>
                     <div class="col-sm-6 form-horizontal">
                         <div class="form-group">
-                            <label for="tgl" class="control-label col-sm-4"><i class="fa fa-calendar"></i> Tanggal :
+                            <label for="tgl" class="control-label col-sm-4"><i class="fa fa-calendar"></i> Tanggal Retur:
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" name="tgl" id="tgl"
-                                    value="{{ date('d-m-Y', strtotime($retur->tgl_penjualan)) }}"
+                                <input type="date" name="tgl" id="tgl"
+                                    value="{{ $date }}"
                                     class="form-control inputantgl" placeholder="MM/DD/YYYY" readonly />
                             </div>
                         </div>
@@ -79,7 +83,7 @@
                     </tbody>
                 </table>
                 <input type="hidden" id="totalbayar" name="totalbayar">
-                <input type="hidden" id="kembalian" name="kembalian" value="{{ $retur->kembalian }}">
+                <input type="hidden" id="jumlahbayar" name="jumlahbayar" value="{{ $retur->jumlah_bayar }}">
                 <hr>
                 <h4 class="text-center"><span class="label label-success"><i class="fa fa-refresh"></i> Keranjang Barang Yang Di Retur</span></h4>
                 <table width="100%" class="table table-striped table-bordered table-hover" id="tabelretur">
@@ -104,6 +108,7 @@
 
                     </tbody>
                 </table>
+                <input type="hidden" id="totalbayarretur" name="totalbayarretur">
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-12">
@@ -114,7 +119,7 @@
                             <div class="btn-group pull-right row">
                                 <div class="col-md-3"><a class="btn btn-default" type="button" href="{{ url('retur') }}"><i class="fa fa-close"></i> Batalkan</a></div>
                                 <div class="col-md-1"></div>
-                                <div class="col-md-3"><a class="btn btn-primary" type="button"><i class="fa fa-send"></i> Selesai dan Simpan
+                                <div class="col-md-3"><a class="btn btn-primary" id="simpan" type="button"><i class="fa fa-send"></i> Selesai dan Simpan
                                         (ENTER)</a>
                                 </div>
                             </div>
@@ -320,6 +325,7 @@
                         'Rp.' +
                         number_format(totalretur, 0, ',', '.') + ''
                     );
+                    $('totalbayarretur').val(totalretur);
                 } else {
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
@@ -508,25 +514,24 @@
     $('#simpan').click(function () {
   
 
+        //data penjualan yang diretur
+        var idpenjualan = $('#idpenjualan').val();
         var totalbayar = $('#totalbayar').val();
-
+        var jumlahbayar = $('#jumlahbayar').val();
         var invoice = $('#invoice').val();
         if (jQuery.trim(invoice) == '' || invoice == undefined) {
-            alert("Kode invoice tidak valid!");
+            alert("Nomor invoice tidak valid!");
             window.location.href = '/retur';
             return;
         }
 
-        var invoice = $('#invoice').val();
-        if (jQuery.trim(invoice) == '' || invoice == undefined) {
-            alert("Kode invoice tidak valid!");
-            window.location.href = '/retur';
-            return;
-        }
+        //data retur
+        var nomoretur = $('#noretur').val();
+        var totalbayarretur = $('#totalbayarretur').val();
+        var tglretur = $('#tgl').val();
 
         var route = "/retur";
         var token = $('#token').val();
-        var tanggal = $('#tgl').val();
 
         $.ajax({
             url: route,
@@ -536,11 +541,13 @@
             },
             dataType: 'json',
             data: {
-                bayar: bayar,
+                idpenjualan: idpenjualan,
                 totalbayar: totalbayar,
-                kembalian: kembalian,
+                jumlahbayar: jumlahbayar,
                 invoice: invoice,
-                tgl: tanggal,
+                nomoretur: nomoretur,
+                totalbayarretur: totalbayarretur,
+                tglretur: tglretur,
                 _token: token
             },
             error: function (res) {

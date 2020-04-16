@@ -46,6 +46,20 @@
   <li class="{{ Request::path() === 'barcode' ? 'active' : '' }}"><a href="{{ url('barcode') }}"><i class="fa fa-barcode"></i> Cetak Barcode Barang</a></li>
   @endif
   @if(Auth::user()->level === 'admin')
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+      aria-expanded="false"><i class="fa fa-dollar"></i> Penjualan <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+    <li class="{{ Request::path() === 'listpenjualan' ? 'active' : '' }}"><a href="{{ url('listpenjualan') }}"><i class="fa fa-list-ul"></i> List Penjualan</a></li>
+    </ul>
+  </li>
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+      aria-expanded="false"><i class="fa fa-handshake-o"></i> Pembelian <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+    <li class="{{ Request::path() === 'listpembelian' ? 'active' : '' }}"><a href="{{ url('listpembelian') }}"><i class="fa fa-list-ul"></i> List Pembelian</a></li>
+    </ul>
+  </li>
   <li class="{{ Request::path() === 'user' ? 'active' : '' }}"><a href="{{ url('user')}}"><i class="fa fa-user-circle"></i> User</a></li>
   <li class="{{ Request::path() === 'supplier' ? 'active' : '' }}"><a href="{{ url('supplier') }}"><i class="fa fa-users"></i> Supplier</a></li>
   <li class="{{ Request::path() === 'laporanhistory' ? 'active' : '' }}"><a href="{{ url('laporanhistory') }}"><i class="fa fa-history"></i> Histori</a></li>

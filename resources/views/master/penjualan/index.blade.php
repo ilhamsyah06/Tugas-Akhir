@@ -276,6 +276,8 @@
         }
     }, false);
 
+  
+
     $(document).ready(function () {
         var table = $('#tabelpenjualan').DataTable({
             ordering: false,

@@ -10,9 +10,14 @@ use App\Barang;
 use App\Penjualan;
 use Carbon\Carbon;
 use App\Gaji;
+use Auth;
 
 class SearchController extends Controller
 {
+	public function cekhakakses()
+	{
+		 return response()->json(Auth::user()->level);
+	}
 
     public function findBarang(Request $request, $kolom, $keyword) {
     	if (!$request->ajax()) {

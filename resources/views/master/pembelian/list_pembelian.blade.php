@@ -63,6 +63,12 @@
     <script>
         $(document).ready(function () {
 
+            var route = "/cekhakakses";
+            var bolehUbah;
+            $.get(route, function (res) {
+                bolehUbah = res;
+            });
+
             var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
 
             $('.input-daterange').datepicker({
@@ -128,24 +134,25 @@
                             '<a title="Lihat Transaksi" class="btn btn-info btn-flat" href="/pembelian/' +
                             data + '"><i class="fa fa-eye fa-fw"></i> </a>';
 
-                        kembali +=
+                            if (bolehUbah == 'admin') { // yang boleh ubah admin
+                                kembali +=
                             '<a title="Koreksi Transaksi" class="btn btn-warning btn-flat" href="#" onclick="UbahClick(' +
                             data + ');"><i class="fa fa-pencil-square-o fa-fw"></i> </a>';
 
-                        kembali +=
-                            '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash fa-fw"></i> </button>';
+                                kembali +=
+                                    '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash fa-fw"></i> </button>';
+                            }
+                     
 
                         return kembali;
 
                     }
                 }],
                 'rowCallback': function (row, data, dataIndex) {
-                    $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[5]);
 
-
-                    // if (bolehUbah == true) {
-                    //     $(row).find('button[class="btn btn-warning btn-flat"]').prop('value', data[4]);
-                    // }
+                     if (bolehUbah == 'admin') {// yang boleh ubah admin
+                        $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[5]);
+                     }
 
                 }
             });
