@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col-md-3">
-        <div class="card-counter supplier animated flipInX">
+        <div class="card-counter danger animated flipInX">
             <i class="fa fa-money"></i>
             @foreach ($uangawal as $item)
             <span class="count-numbers">Rp.{{ number_format($item->uang_awal) }},-</span>
@@ -16,7 +16,7 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card-counter supplier animated flipInX">
+        <div class="card-counter success animated flipInX">
             <i class="fa fa-money"></i>
             @foreach ($uangawal as $item)
             <span class="count-numbers">Rp.{{ number_format($item->uang_akhir) }},-</span>

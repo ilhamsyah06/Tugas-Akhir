@@ -9,13 +9,26 @@ use Exception;
 use App\Penjualan;
 use App\User;
 use DB;
+use Carbon\Carbon;
+use App\Detailpenjualan;
 
 
 class LaporanpenjualanController extends Controller
 {
     public function index()
     {
-        return view('laporan.penjualan.index');
+        $penjualandetail = Detailpenjualan::all();
+        $profitkeseleuruhan = 0;
+        foreach ($penjualandetail as $key => $value) {
+            $profitkeseleuruhan += ($value->qty * $value->harga) - ($value->qty * $value->harga_beli);//profit
+        }
+
+		$penjualan = Detailpenjualan::whereDate('created_at', '=', Carbon::today()->toDateString())->get();
+        $profithariini = 0;
+        foreach ($penjualan as $key => $value) {
+            $profithariini += ($value->qty * $value->harga) - ($value->qty * $value->harga_beli);//profit
+        }
+        return view('laporan.penjualan.index', compact('profitkeseleuruhan','profithariini'));
     }
 
     public function datalaporanpenjualan(Request $request)

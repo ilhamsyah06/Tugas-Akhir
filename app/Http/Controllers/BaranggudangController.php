@@ -117,6 +117,7 @@ class BaranggudangController extends Controller
             'user' => $barang->user->name,
             'kategori' => $barang->kategori->nama,
             'hargabeli' => $barang->harga_beli,
+            'stok' => $barang->stok,
             'hargajual' => $barang->harga_jual,
             'profit' => $barang->profit,
             'tanggal' => $barang->tanggal,

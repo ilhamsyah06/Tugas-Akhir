@@ -180,10 +180,13 @@ class ReturController extends Controller
                 $history->save();
             }
 
-                $t = $input['totalbayar'];
+                $t = $input['totalbayarretur'];
                 $j = $input['jumlahbayar'];
                 $upadtekembalianreturbaru = $t - $j;
 
+                
+
+                //proses update total jumlah bayar dan kembalian
                 $dataubahtotalbayar = [
                         'total_bayar' => $input['totalbayar'],
                         'jumlah_bayar' => $input['jumlahbayar'],
@@ -195,7 +198,7 @@ class ReturController extends Controller
                         ->where('id', $penjualan->id)
                         ->update($dataubahtotalbayar);
 
-
+                //proses update uangkasir
                 $tanggal = date('Y-m-d');
                 $uangkasir = DB::table('uang_modal_kasir')
                         ->select('uang_akhir')

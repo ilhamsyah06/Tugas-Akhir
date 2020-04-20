@@ -59,6 +59,27 @@
 
     <div class="col-sm-6 form-horizontal">
         <div class="form-group">
+            <label for="hargajualterakhir" class="control-label col-sm-4">Hrg Jual Trakhir :</label>
+            <div class="col-sm-8">
+                <input type="text" name="hargajualterakhir" id="hargajualterakhir" value="" class="form-control inputanangka" placeholder="" readonly/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-sm-6 form-horizontal">
+        <div class="form-group">
+            <label for="stokgudang" class="control-label col-sm-4">Stok Gudang : </label>
+            <div class="col-sm-8">
+                <input type="text" name="stokgudang" id="stokgudang" value="" class="form-control inputanangka" placeholder="StokGudang" readonly/>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6 form-horizontal">
+        <div class="form-group">
             <label for="profitubahgudang" class="control-label col-sm-4">Profit : </label>
             <div class="col-sm-8">
                 <input type="text" name="profitubahgudang" id="profitubahgudang" value="" class="form-control inputanangka" placeholder="Keuntungan..." readonly/>

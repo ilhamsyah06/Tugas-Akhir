@@ -207,7 +207,6 @@ if($stokhabis != 0){
 
         $("#levelubahgudang").select2();
         $('#levelgudang').select2();
-
     });
 
     $(document).ready(function () {
@@ -246,6 +245,7 @@ if($stokhabis != 0){
             $('#namaubahgudang').val(res.nama);
             $('#levelubahgudang').val('' + res.jenisbarang).trigger('change');
             $('#hargabeliubahgudang').val(number_format(intVal(res.hargabeli), 0, ',', '.'));
+            $('#stokgudang').val(number_format(intVal(res.stok), 0, ',', '.'));
             $('#hargajualubahgudang').val(number_format(intVal(res.hargajual), 0, ',', '.'));
             $('#profitubahgudang').val(number_format(intVal(res.profit), 0, ',', '.'));
             $('#tanggalubahgudang').val(res.tanggal);

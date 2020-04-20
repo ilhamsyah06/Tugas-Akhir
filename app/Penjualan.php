@@ -25,7 +25,7 @@ class Penjualan extends Model
 
         $t = 0;
         foreach ($details as $key => $value) {
-            $t += ($value->qty * $value->harga) - ($value->qty * $value->harga_beli);
+            $t += ($value->qty * $value->harga) - ($value->qty * $value->harga_beli);//profit
         }
 
         return $t;

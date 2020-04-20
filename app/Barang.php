@@ -22,6 +22,11 @@ class Barang extends Model
         return $this->hasMany('App\Sementara');
     }
 
+    public function historiharga()
+    {
+        return $this->hasMany('App\Historiharga');
+    }
+
     public function pembeliandetail(){
         return $this->hasMany('App\Detailpembelian');
     }

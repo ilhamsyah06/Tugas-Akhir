@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 //--- Model ---//
 use App\Barang;
 use App\Penjualan;
+use App\Detailpenjualan;
 use Carbon\Carbon;
 use App\Gaji;
 use Auth;
@@ -151,6 +152,7 @@ class SearchController extends Controller
 	public function getkembalian() {
 
 		$tanggal = date('Y-m-d H:i:s');
+		$tglsekarang = date('Y-m-d');
 	//	$penjualan = DB::table('penjualan')
 		//->select('kembalian')
 	//	->where('tgl_penjualan', $tanggal)
@@ -161,6 +163,8 @@ class SearchController extends Controller
 
 		//$uangkasir = DB::table('uang_modal_kasir')->select('uang_akhir')->where('tanggal', $tanggal)->first();
 		//$hasilakhir = $uangkasir->uang_akhir;
+
+		$penjualan = Detailpenjualan::whereDate('created_at', '=', Carbon::today()->toDateString())->get();
 
 		$sekarang = Carbon::now()->addMonth(1)->format('m');    
 		$gaji = Gaji::where('user_id', 1)->where('tgl_gajian', '>=', Carbon::now()->startOfMonth())->get();
@@ -178,7 +182,7 @@ class SearchController extends Controller
   ->orderBy('bulan','asc')
   ->get();
 
-		return response()->json($orders); 
+		return response()->json($penjualan); 
 
 	}
 	

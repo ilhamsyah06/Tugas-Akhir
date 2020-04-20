@@ -212,8 +212,8 @@ class BarangController extends Controller
 
     public function apiBarang()
     {
-        $status = 'toko';
         $barang = Barang::where('status', 'toko')->get();
+        $baranggudang = Barang::where('status', 'gudang')->get();
         $cacah = 0;
         $data = [];
 
