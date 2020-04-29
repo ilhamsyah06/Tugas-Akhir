@@ -32,7 +32,6 @@ $tanggal = date('Y-m-d');
            <div class="col-xs-12">
               <div class="panel panel-default">
                   <div class="panel panel-heading">
-                      
                       <h3 class="panel-title"><i class="fa fa-list"></i> Cetak Transaksi Penjualan Barang</h3>
                   </div>
 
@@ -40,8 +39,8 @@ $tanggal = date('Y-m-d');
                       <div class="row">
                           <div class="col-sm-8 form-horizontal form-left">
                               <div class="form-group">
-                                  {!! Form::label('start', 'Periode :', ['class' => 'control-label col-sm-1']) !!}
-                                  <div class="col-sm-11 controls">
+                                  {!! Form::label('start', 'Periode :', ['class' => 'control-label col-sm-2']) !!}
+                                  <div class="col-sm-10 controls">
                                       <div class="input-daterange input-group">
                                           {!! Form::text('start', null, ['class'=>'form-control', 'id' => 'start', 'placeholder'=> 'DD/MM/YYYY']) !!}
                                           <span class="input-group-addon">s/d</span>
@@ -205,10 +204,6 @@ $tanggal = date('Y-m-d');
         reloadTable();
     });
 
-    $('#member').on('change', function (e) {
-        reloadTable();
-    });
-
     $('#formcetak').on('submit', function (e) {
         if ( ! table.data().count() ) {
             alert( 'Tidak ada data yang akan dicetak !!' );
@@ -217,7 +212,6 @@ $tanggal = date('Y-m-d');
 
         var start = $('#start').val();
         var end = $('#end').val();
-        var member = $('#member').val();
 
         var form = this;
 
@@ -233,13 +227,6 @@ $tanggal = date('Y-m-d');
                 .attr('type', 'hidden')
                 .attr('name', 'end')
                 .val(end)
-        );
-
-        $(form).append(
-            $('<input>')
-                .attr('type', 'hidden')
-                .attr('name', 'member')
-                .val(member)
         );
 
         $(form).append(
@@ -260,8 +247,7 @@ $tanggal = date('Y-m-d');
 
         var start = $('#start').val();
         var end = $('#end').val();
-        var member = $('#member').val();
-
+        
         var form = this;
 
         $(form).append(
@@ -276,13 +262,6 @@ $tanggal = date('Y-m-d');
                 .attr('type', 'hidden')
                 .attr('name', 'end')
                 .val(end)
-        );
-
-        $(form).append(
-            $('<input>')
-                .attr('type', 'hidden')
-                .attr('name', 'member')
-                .val(member)
         );
 
         $(form).append(

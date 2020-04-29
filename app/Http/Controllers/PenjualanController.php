@@ -16,6 +16,7 @@ use App\Penjualan;
 use App\History;
 use App\Detailpenjualan;
 use App\Uang_modal_kasir;
+use App\Retur;
 
 
 
@@ -194,10 +195,10 @@ class PenjualanController extends Controller
                 $penjualandetail->total = $value->jumlah * $value->harga;
                 $penjualandetail->save();
 
-                $stok_sebelumnya = $barang->stok;
+                $stok_sebelumnya = $barang->stok_toko;
 
                 $dataubah = [
-                    'stok' => $barang->stok - $value->jumlah,
+                    'stok_toko' => $barang->stok_toko - $value->jumlah,
                     'updated_at' => date('Y/m/d H:i:s')
                 ];
 
@@ -251,11 +252,18 @@ class PenjualanController extends Controller
     public function show($id)
     {
         $penjualan = Penjualan::find($id);
+        $retur = DB::table('retur')->where('penjualan_id', $id)->first();
+        if ($retur != null) {
+            $total_bayar_retur = DB::table('retur_detail')->where('retur_id', $retur->id)->sum('total');
+        } else {
+            $total_bayar_retur = null;
+        }
+        
         if ($penjualan == null) {
             return redirect('/penjualan');
         }
-
-        return view('master.penjualan.tampil_detail', compact('penjualan'));
+        $countbarang = DB::table('detail_penjualan')->where('penjualan_id', $penjualan->id)->count();
+        return view('master.penjualan.tampil_detail', compact('penjualan','countbarang','retur','total_bayar_retur'));
     }
 
     public function getdetailpenjualan(Request $request)
@@ -273,6 +281,33 @@ class PenjualanController extends Controller
 
         if ($penjualan != null) {
             foreach ($penjualan->penjualandetail as $i => $d) {
+                $barang = $d->barang;
+                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga];
+                $cacah++;
+
+            }
+
+        }
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+    public function getdetailretur(Request $request){
+        if (!$request->ajax()) {
+            return null;
+        }
+
+        $kode = $request->all()['idpenjualan'];
+        // dd($kode);
+        $retur = Retur::where('penjualan_id', $kode)->first();
+        
+        $cacah = 0;
+        $data = [];
+
+        if ($retur != null) {
+            foreach ($retur->detailretur as $i => $d) {
                 $barang = $d->barang;
                 $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga];
                 $cacah++;
@@ -416,13 +451,11 @@ class PenjualanController extends Controller
     protected function simpanTransaksiUpdate($input, $sementara, $penjualan, $uangmodal) {
         DB::beginTransaction();
     try {
-
-
             foreach ($penjualan->penjualandetail as $key => $value) {
                 $barang = $value->barang;
 
                 $dataubah = [
-                    'stok' => $barang->stok + $value->qty
+                    'stok_toko' => $barang->stok_toko + $value->qty
                 ];
 
                 DB::table('barang')
@@ -464,7 +497,7 @@ class PenjualanController extends Controller
                 $stok_sebelumnya = $barang->stok;
 
                 $dataubah = [
-                    'stok' => $barang->stok - $value->jumlah,
+                    'stok_toko' => $barang->stok_toko - $value->jumlah,
                     'updated_at' => date('Y/m/d H:i:s')
                 ];
 
@@ -593,7 +626,7 @@ class PenjualanController extends Controller
 
     public function barangpenjualan()
     {
-        $barang = Barang::where('status','toko')->get();
+        $barang = Barang::all();
         $cacah = 0;
         $data = [];
 
@@ -602,8 +635,8 @@ class PenjualanController extends Controller
                 $d->kode, 
                 $d->nama_barang, 
                 $d->kategori->nama,
-                $d->harga_beli,
-                $d->stok,
+                $d->harga_jual,
+                $d->stok_toko,
                 $d->id
             ];
 

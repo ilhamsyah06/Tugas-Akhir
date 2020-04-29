@@ -112,8 +112,7 @@
                 <div class="panel-footer">
                     <div class="row">
                         <div class="col-md-12">
-                            <button class="btn btn-info" data-toggle="modal" data-target="#modalBantu"><i
-                                    class="fa fa-exclamation"></i> Bantuan</button>
+                            <button class="btn btn-info" data-toggle="modal" data-target="#modalBantu"><i class="fa fa-exclamation"></i> Bantuan</button>
                             <a href="{{ url('listpenjualan') }}" class="btn btn-danger"><i class="fa fa-list-alt"></i>
                                 List Penjualan</a>
                             <div class="btn-group pull-right row">
@@ -565,16 +564,14 @@
                 }).catch(function (timeout) {});
             },
             success: function () {
-                $('#modalBayar').modal('toggle');
                 return swal({
                     type: 'success',
-                    title: 'Sukses Penjualan Disimpan !',
+                    title: 'Sukses Retur Disimpan !',
                     timer: 700
                 }).catch(function (timeout) {
-                    notif.src = "/tingtong.mp3";
-                    notif.play();
-                });
+                    window.location.replace("/retur");
 
+                });
             }
         });
     });

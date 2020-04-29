@@ -14,7 +14,7 @@
                 @include('master.pembelian.form-tambah')
             </div>
             <div class="panel-footer">
-                <a href="/pembelian" class="btn btn-warning btn-flat" id="batal"><i class="fa fa-close"></i> Batal</a>
+                <a href="/listpembelian" class="btn btn-warning btn-flat" id="batal"><i class="fa fa-close"></i> Batal</a>
                 <a href="#" class="btn btn-primary btn-flat pull-right" id="tambahbaris"><i
                         class="fa fa-plus-square"></i> Tambah Baris</a>
             </div>

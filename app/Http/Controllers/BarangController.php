@@ -11,6 +11,7 @@ use Auth;
 // model
 use App\Barang;
 use App\Utility;
+use App\Historiharga;
 
 class BarangController extends Controller
 {
@@ -43,7 +44,68 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $input = $request->all();
+
+            if (!isset($input['_token'])) {
+                return response()->json([
+                    'data' => $input->toArray()
+                ]);
+            } else {
+                $userCari = Barang::where('kode', $input['kode'])->first();
+                    if ($userCari != null) {
+                            return response()->json([
+                                'data' => ['Kode Barang Sudah Digunakan Data Barang Lain !!!']
+                            ], 422);
+                    }
+                $hasil = $this->simpanTransaksiCreatetoko($input);
+                if ($hasil == '') {
+                    return response()->json([
+                        'data' => 'Sukses Menyimpan'
+                    ]);
+                } else {
+                    return response()->json([
+                        'data' => ['Gagal menyimpan data barang! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
+                    ], 422);
+                }
+
+            }
+        }
+    }
+
+    protected function simpanTransaksiCreatetoko($input) {
+        
+        DB::beginTransaction();
+
+        try {
+            $barang = new Barang();
+            $barang->kode = $input['kode'];
+            $barang->nama_barang = $input['nama'] ;
+            $barang->user_id = Auth::user()->id ;
+            $barang->kategori_id = $input['jenis'] ;
+            $barang->harga_beli = $input['hargabeli'];
+            $barang->harga_jual = $input['hargajual'];
+            $barang->profit = $input['profit'];
+            $barang->tanggal = $input['tanggal'];
+            $barang->stok_toko = '0' ;
+            $barang->stok_gudang = '0';
+            $barang->save();
+
+            $historiharga = new Historiharga;
+            $historiharga->barang_id = $barang->id;
+            $historiharga->harga_terakhir = $input['hargajual'];
+            $historiharga->harga_naik = $input['hargajual'];
+        } catch (ValidationException $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        } catch (Exception $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        }
+
+        DB::commit();
+
+        return '';
     }
 
     /**
@@ -64,9 +126,9 @@ class BarangController extends Controller
             'hargabeli' => $barang->harga_beli,
             'hargajual' => $barang->harga_jual,
             'profit' => $barang->profit,
-            'stok' => $barang->stok,
+            'stoktoko' => $barang->stok_toko,
+            'stokgudang' => $barang->stok_gudang,
             'tanggal' => $barang->tanggal,
-            'status' => $barang->status
         ]);
     }
 
@@ -79,15 +141,23 @@ class BarangController extends Controller
     public function edit($id)
     {
         $barang = Barang::find($id);
+        $hargaterakhir = Historiharga::where('barang_id', $id)->first();
+        if($hargaterakhir != null){
+            $data = $hargaterakhir->harga_terakhir;
+        }else{
+            $data = null;
+        }
 
         return response()->json([
             'id' => $barang->id,
             'kode' => $barang->kode,
             'nama' => $barang->nama_barang,
             'jenisbarang' => $barang->kategori_id,
-            'stok' => $barang->stok,
+            'stoktoko' => $barang->stok_toko,
+            'stokgudang' => $barang->stok_gudang,
             'hargabeli' => $barang->harga_beli,
-            'hargajual'=> $barang->harga_jual,
+            'hargajual' => $barang->harga_jual,
+            'hargaterakhir' => $data,
             'profit' => $barang->profit,
             'tanggal' => $barang->tanggal
         ]);
@@ -111,7 +181,8 @@ class BarangController extends Controller
                 ]);
             } else {
                 $barang = Barang::find($id);
-                $barangCari = Barang::where('kode', $input['kode'])->where('status','toko')->first();
+                $barangCari = Barang::where('kode', $input['kode'])->first();
+                $historihargacari = Historiharga::where('barang_id', $id)->first();
                 if ($barangCari != null) {
                    if ($barang->id != $barangCari->id) {
                         return response()->json([
@@ -120,7 +191,7 @@ class BarangController extends Controller
                     }
                 }
                 if ($barang != null) {
-                        $hasil = $this->simpanTransaksiUpdate($input, $barang);
+                        $hasil = $this->simpanTransaksiUpdate($input, $barang, $historihargacari);
                         if ($hasil == '') {
                             return response()->json([
                                 'data' => 'Sukses Mengubah Data'
@@ -139,23 +210,65 @@ class BarangController extends Controller
         }
     }
 
-    protected function simpanTransaksiUpdate($input, $barang) {
+    protected function simpanTransaksiUpdate($input, $barang, $historihargacari) {
         DB::beginTransaction();
         try {
-            $dataubah = [
-                'kode' => $input['kode'],
-                'nama_barang' => $input['nama'],
-                'user_id' => Auth::user()->id,
-                'kategori_id' => $input['jenis'],
-                'harga_beli' => $input['hargabeli'],
-                'harga_jual' => $input['hargajual'],
-                'profit' => $input['profit'],
-                'stok' => $input['stok'],
-                'status' => 'toko',
-                'updated_at' => date('Y/m/d H:i:s')
-            ];
+            if ($historihargacari != null) {
+                if ($historihargacari->harga_naik == $input['hargajual']) {
+                    $dataubah = [
+                        'kode' => $input['kode'],
+                        'nama_barang' => $input['nama'],
+                        'user_id' => Auth::user()->id,
+                        'kategori_id' => $input['jenis'],
+                        'harga_beli' => $input['hargabeli'],
+                        'harga_jual' => $input['hargajual'],
+                        'profit' => $input['profit'],
+                        'stok_toko' => $input['stoktoko'],
+                        'updated_at' => date('Y/m/d H:i:s')
+                    ];
+                    DB::table('barang')->where('id', $barang->id)->update($dataubah); 
+                }else{
+                    $dataubahhistoriharga = [
+                        'harga_terakhir' => $input['hargaterakhir'],
+                        'harga_naik' => $input['hargajual'],
+                        'updated_at' => date('Y/m/d H:i:s')
+                    ];
+                    $dataubah = [
+                        'kode' => $input['kode'],
+                        'nama_barang' => $input['nama'],
+                        'user_id' => Auth::user()->id,
+                        'kategori_id' => $input['jenis'],
+                        'harga_beli' => $input['hargabeli'],
+                        'harga_jual' => $input['hargajual'],
+                        'profit' => $input['profit'],
+                        'stok_toko' => $input['stoktoko'],
+                        'updated_at' => date('Y/m/d H:i:s')
+                    ];
+                    DB::table('histori_harga')->where('barang_id', $historihargacari->barang_id)->update($dataubahhistoriharga);
+                    DB::table('barang')->where('id', $barang->id)->update($dataubah); 
+                }
+            } else {
+                $historiharga = new Historiharga();
+                $historiharga->barang_id = $barang->id;
+                $historiharga->harga_terakhir = $input['hargaterakhir'];
+                $historiharga->harga_naik = $input['hargajual'];
+                $historiharga->save();
 
-            DB::table('barang')->where('id', $barang->id)->update($dataubah);
+                $dataubah = [
+                    'kode' => $input['kode'],
+                    'nama_barang' => $input['nama'],
+                    'user_id' => Auth::user()->id,
+                    'kategori_id' => $input['jenis'],
+                    'harga_beli' => $input['hargabeli'],
+                    'harga_jual' => $input['hargajual'],
+                    'profit' => $input['profit'],
+                    'stok_toko' => $input['stoktoko'],
+                    'updated_at' => date('Y/m/d H:i:s')
+                ];
+    
+                DB::table('barang')->where('id', $barang->id)->update($dataubah); 
+            }
+           
         } catch (ValidationException $ex) {
             DB::rollback();
             return $ex->getMessage();
@@ -212,8 +325,7 @@ class BarangController extends Controller
 
     public function apiBarang()
     {
-        $barang = Barang::where('status', 'toko')->get();
-        $baranggudang = Barang::where('status', 'gudang')->get();
+        $barang = Barang::all();
         $cacah = 0;
         $data = [];
 
@@ -223,7 +335,8 @@ class BarangController extends Controller
         		$d->kode, 
         		$d->nama_barang,
         		$d->kategori->nama, 
-                $d->stok,
+                $d->stok_toko,
+                $d->stok_gudang,
                 $d->harga_jual,
                 $d->profit,
         		$d->id
@@ -256,7 +369,35 @@ class BarangController extends Controller
         }
     }
 
-    public function barangtoko(Request $request)
+    public function barangtokohabis()
+    {
+        $barang = DB::table('barang')
+        ->join('kategori', 'barang.kategori_id', '=', 'kategori.id')
+        ->where('stok_toko', 0 )->get();
+        $cacah = 0;
+        $data = [];
+
+        foreach ($barang as $i => $d) {
+        	$data[$cacah] = [
+        		$d->kode, 
+        		$d->nama_barang,
+        		$d->nama, 
+                $d->stok_toko,
+                $d->stok_gudang,
+                $d->harga_jual,
+                $d->profit,
+        		$d->id
+        	];
+
+        	$cacah++;    
+        }
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
+    public function kirimstoktoko(Request $request)
     {
         if ($request->ajax()) {
             $input = $request->all();
@@ -266,13 +407,9 @@ class BarangController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
-                $userCari = Barang::where('kode', $input['kode'])->where('status','toko')->first();
-                    if ($userCari != null) {
-                            return response()->json([
-                                'data' => ['Kode Barang Sudah Digunakan Data Barang Lain !!!']
-                            ], 422);
-                    }
-                $hasil = $this->simpanTransaksiCreatetoko($input);
+                $barangcari = Barang::where('id', $input['idbarang'])->first();
+
+                $hasil = $this->simpanTransaksiKirimStok($input, $barangcari);
                 if ($hasil == '') {
                     return response()->json([
                         'data' => 'Sukses Menyimpan'
@@ -287,24 +424,24 @@ class BarangController extends Controller
         }
     }
 
-    protected function simpanTransaksiCreatetoko($input) {
+    protected function simpanTransaksiKirimStok($input, $barangcari) {
         
         DB::beginTransaction();
 
         try {
 
-            $barang = new Barang();
-            $barang->kode = $input['kode'];
-            $barang->nama_barang = $input['nama'] ;
-            $barang->user_id = Auth::user()->id ;
-            $barang->kategori_id = $input['jenis'] ;
-            $barang->harga_beli = $input['hargabeli'];
-            $barang->harga_jual = $input['hargajual'];
-            $barang->profit = $input['profit'];
-            $barang->stok = $input['stok'];
-            $barang->tanggal = $input['tanggal'];
-            $barang->status = 'toko' ;
-            $barang->save();
+            $stokgudang = $barangcari->stok_gudang;
+            $stoktoko = $barangcari->stok_toko;
+            $stokgudangbaru = $stokgudang - $input['stokkirim'];
+            $stoktokobaru = $stoktoko + $input['stokkirim'];
+            
+            $dataubah = [
+                'stok_gudang' => $stokgudangbaru,
+                'stok_toko' => $stoktokobaru,
+                'updated_at' => date('Y/m/d H:i:s')
+            ];
+
+            DB::table('barang')->where('id', $barangcari->id)->update($dataubah); 
 
         } catch (ValidationException $ex) {
             DB::rollback();
@@ -318,5 +455,6 @@ class BarangController extends Controller
 
         return '';
     }
+
 
 }

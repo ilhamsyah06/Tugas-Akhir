@@ -18,15 +18,15 @@ class CreateBarangTable extends Migration
             $table->string('kode');
             $table->string('nama_barang');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('restrict')->onDelete('restrict');
             $table->integer('kategori_id')->unsigned();
-            $table->foreign('kategori_id')->references('id')->on('kategori')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kategori_id')->references('id')->on('kategori')->onUpdate('restrict')->onDelete('restrict');
             $table->bigInteger('harga_beli');
             $table->bigInteger('harga_jual');
             $table->bigInteger('profit');
-            $table->bigInteger('stok');
+            $table->bigInteger('stok_toko');
+            $table->bigInteger('stok_gudang');
             $table->date('tanggal');
-            $table->enum('status', ['toko', 'gudang']);
             $table->timestamps();
         });
     }

@@ -20,6 +20,10 @@ class Penjualan extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function retur() {
+        return $this->hasMany('App\Retur');
+    }
+
     public function keuntungan() {
         $details = $this->penjualandetail;
 

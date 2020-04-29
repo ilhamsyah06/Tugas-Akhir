@@ -60,7 +60,7 @@
         <div class="form-group">
             <label for="level" class="control-label col-sm-4">Jenis Barang : </label>
             <div class="col-sm-8">
-                    <select name="level" class="form-control select2" id="level" style="width: 100%;">
+                    <select name="level" class="form-control select2" data-allow-clear=true id="level" style="width: 100%;">
                         <option value=" "></option>
                     </select>
             </div>
@@ -78,14 +78,7 @@
 </div>
 
 <div class="row">
-    <div class="col-sm-6 form-horizontal">
-        <div class="form-group">
-            <label for="stok" class="control-label col-sm-4">Stok : </label>
-            <div class="col-sm-8">
-            <input type="text" name="stok" id="stok" class="form-control inputanangka" />
-            </div>
-        </div>
-    </div>
+
     <div class="col-sm-6 form-horizontal">
         <div class="form-group">
             <label for="tanggal" class="control-label col-sm-4">Tanggal Input: </label>

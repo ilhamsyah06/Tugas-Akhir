@@ -102,17 +102,17 @@ class SementaraController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
-            	$barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'gudang')->first();
+            	$barang = Barang::where('kode', '=', $input['barang'], 'and')->first();
             	$sementara = Sementara::where(['kode'=> $input['kode'], 'barang_id'=>$barang->id])->first();
 
             	if ($sementara != null) {
             		return response()->json([
-                                'data' => ['Gagal! Barang dengan kode '.$input['barang'].' sudah ada di detail pembelian!']
+                                'data' => ['Gagal! Barang Dengan Kode '.$input['barang'].' Sudah Ada Dalam Keranjang, Silahkan Update Qty-nya!']
                             ], 422);	
             	}
 
             	if ($barang != null) {
-            		$hasil = $this->simpanTransaksiCreate($input);
+            		$hasil = $this->simpanTransaksiCreate($input, $barang);
 	                if ($hasil == '') {
 	                        return response()->json([
 	                                'data' => 'Sukses Menambahkan Detail Pembelian'
@@ -131,15 +131,9 @@ class SementaraController extends Controller
         }
     }
 
-    protected function simpanTransaksiCreate($input) {
+    protected function simpanTransaksiCreate($input, $barang) {
         DB::beginTransaction();
-
-// "qty" => "2"
-// "kode" => "PE-00000001"
-// "barang" => "BA00001"
         try {
-           // dd(Auth::user());
-           $barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'gudang')->first();
 
             $sementara = new Sementara;
             $sementara->barang_id = $barang->id;
@@ -170,24 +164,24 @@ class SementaraController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
-                $barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'toko')->first();
+                $barang = Barang::where('kode', '=', $input['kodebarang'])->first();
                 $sementara = Sementara::where(['kode'=> $input['invoice'], 'barang_id'=>$barang->id])->first();
 
                 if ($sementara != null) {
                     return response()->json([
-                                'data' => ['Barang dengan kode '.$input['barang'].' sudah ada di keranjang, Silahkan Update Qty!']
+                                'data' => ['Barang dengan kode '.$input['kodebarang'].' sudah ada di keranjang, Silahkan Update Qty!']
                             ], 422);    
                 }
 
                 if ($barang != null) {
 
-                    if ($barang->stok < $input['qty']) {
+                    if ($barang->stok_toko < $input['qty']) {
                         return response()->json([
                                 'data' => ['Gagal! Stok barang tidak mencukupi !']
                             ], 422);      
                     }
 
-                    $hasil = $this->simpanTransaksiJualCreate($input);
+                    $hasil = $this->simpanTransaksiJualCreate($input, $barang);
                     if ($hasil == '') {
                             return response()->json([
                                     'data' => 'Sukses Menambahkan Detail Penjualan'
@@ -206,15 +200,9 @@ class SementaraController extends Controller
         }
     }
 
-    protected function simpanTransaksiJualCreate($input) {
+    protected function simpanTransaksiJualCreate($input, $barang) {
         DB::beginTransaction();
-
-// "qty" => "2"
-// "kode" => "PE-00000001"
-// "barang" => "BA00001"
         try {
-           // dd(Auth::user());
-           $barang = Barang::where('kode', '=', $input['barang'], 'and')->where('status', '=', 'toko')->first();
 
             $sementara = new Sementara;
             $sementara->barang_id = $barang->id;
@@ -264,7 +252,7 @@ class SementaraController extends Controller
             'barang' => $barang->kode,
             'nama' => $barang->nama_barang,
             'jumlah'=>$sementara->jumlah,
-            'stok'=>$barang->stok,
+            'stok'=>$barang->stok_toko,
             'harga' => $sementara->harga,
             'total' => $sementara->jumlah * $sementara->harga,
             'diskon' => $sementara->diskon,
@@ -317,22 +305,71 @@ class SementaraController extends Controller
         DB::beginTransaction();
 
         try {
-            $dataubah = [
-                'jumlah' => $input['qty'],
-                'harga' => $input['harga'],
-                'updated_at' => date('Y/m/d H:i:s')
-            ];
+                $dataubah = [
+                    'jumlah' => $input['qty'],
+                    'harga' => $input['harga'],
+                    'updated_at' => date('Y/m/d H:i:s')
+                ];
+                DB::table('sementara')->where('id', $sementara->id)->update($dataubah);
+        } catch (ValidationException $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        } catch (Exception $ex) {
+            DB::rollback();
+            return $ex->getMessage();;
+        }
 
-            if ($input['diskon'] != '0' ){
-                $dataubah['diskon'] = $input['diskon'];
-            }if ($input['diskon'] = ''){
-            DB::table('sementara')
-                ->where('id', $sementara->id)
-                ->update($dataubah);
+        DB::commit();
+
+        return '';
+    }
+
+    public function updatetoko(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $input = $request->all();
+
+            if (!isset($input['_token'])) {
+                return response()->json([
+                    'data' => $input->toArray()
+                ]);
+            } else {
+                $sementara = Sementara::find($id);
+
+                if ($sementara != null) {
+
+                    $hasil = $this->simpanTransaksiUpdateToko($input, $sementara);
+                    if ($hasil == '') {
+                        return response()->json([
+                                'data' => 'Sukses Mengubah Data'
+                            ]);
+                    } else {
+                            return response()->json([
+                                'data' => ['Gagal mengubah data! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
+                            ], 422);
+                    }
+                    
+                } else {
+                    return response()->json([
+                        'data' => ['Gagal mengubah data! Data tidak ditemukan di database']
+                    ], 422);
+                }
             }
-            DB::table('sementara')
-            ->where('id', $sementara->id)
-            ->update($dataubah);
+        }
+    }
+
+    protected function simpanTransaksiUpdateToko($input, $sementara) {
+        // dd($input);
+        DB::beginTransaction();
+
+        try {
+                $dataubah = [
+                    'jumlah' => $input['qty'],
+                    'harga' => $input['harga'],
+                    'diskon' => $input['diskon'],
+                    'updated_at' => date('Y/m/d H:i:s')
+                ];
+                DB::table('sementara')->where('id', $sementara->id)->update($dataubah);
         } catch (ValidationException $ex) {
             DB::rollback();
             return $ex->getMessage();;

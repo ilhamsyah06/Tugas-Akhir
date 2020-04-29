@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-sm-12 form-horizontal">
                             <div class="form-group">
-                                {!! Form::label('start', 'Periode', ['class' => 'control-label col-sm-1']) !!}
+                                {!! Form::label('start', 'Periode :', ['class' => 'control-label col-sm-1']) !!}
                                 <div class="col-sm-11 controls">
                                     <div class="input-daterange input-group">
                                         {!! Form::text('start', null, ['class'=>'form-control', 'id' => 'start',
@@ -59,8 +59,8 @@
                                 <th class="col-md-2" rowspan="2">Tanggal</th>
                                 <th class="col-md-2" rowspan="2">Data Barang</th>
                                 <th class="text-center" colspan="4">Stok</th>
-                                <th class="col-md-1" rowspan="2">Operator</th>
-                                <th class="col-md-4" rowspan="2">Keterangan</th>
+                                <th class="col-md-2" rowspan="2">Operator</th>
+                                <th class="col-md-3" rowspan="2">Keterangan</th>
                             </tr>
 
                             <tr>
@@ -180,10 +180,10 @@ $(document).ready(function() {
                 }
             },{
                 'targets':6,
-                'sClass': "col-md-1 text-center"
+                'sClass': "col-md-2 text-center"
             },{
                 'targets':7,
-                'sClass': "text-center col-md-4"
+                'sClass': "text-center col-md-3"
             }
         ]
     });

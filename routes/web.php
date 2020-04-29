@@ -50,7 +50,16 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::resource('barang','BarangController');
     Route::get('api/barang','BarangController@apiBarang')->name('api.barang');
     Route::get('barangautokode', 'BarangController@getAutoKode');
-    Route::post('barang/barangtoko','BarangController@barangtoko')->name('barangtoko');
+    Route::get('barangtokohabis','BarangController@barangtokohabis')->name('barangtokohabis');
+    Route::post('kirimstoktoko','BarangController@kirimstoktoko');
+
+    //Stok Opaname
+    Route::resource('stokopname', 'OpnameController',['except' => ['create', 'show', 'edit', 'update', 'destroy']]);
+
+    // Laporan Stok hilang
+    Route::get('laporanhilang', 'LaporanHilangController@index');
+    Route::get('datahilang', 'LaporanHilangController@datahilang');
+    Route::post('cetakhilang', 'LaporanHilangController@preview');
 
     //----// Route Barang Gudang 
     Route::resource('baranggudang','BaranggudangController');
@@ -81,6 +90,7 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::post('sementara', 'SementaraController@store');
     Route::get('sementara/{id}/edit', 'SementaraController@edit');
     Route::put('sementara/{id}', 'SementaraController@update');
+    Route::put('sementaratoko/{id}', 'SementaraController@updatetoko');
     Route::delete('sementara/{id}', 'SementaraController@destroy');
 
     //Route Mencari Barang Pembelian secara ajax
@@ -99,6 +109,7 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::get('listpenjualan','PenjualanController@listpenjualan');
     Route::get('datapenjualan','PenjualanController@datapenjualan');
     Route::get('getdetailpenjualan', 'PenjualanController@getdetailpenjualan');
+    Route::get('getdetailretur', 'PenjualanController@getdetailretur');
     Route::post('siapkankoreksipenjualan', 'PenjualanController@siapkanKoreksi');
     
     //Route dashboard menguntungkan 
@@ -121,16 +132,41 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::get('datalaporanpenjualan', 'LaporanpenjualanController@datalaporanpenjualan');
     Route::post('cetakpenjualan', 'LaporanpenjualanController@preview');
 
+    // keuangan rekap
+    Route::get('laporanlaba', 'LaporanlabaController@index');
+    Route::post('datalaba', 'LaporanlabaController@preview');
+    Route::get('getrekaplaba', 'LaporanlabaController@getRekapLaba');
+
+    //Route Laporan Retur
+    Route::get('laporanretur','LaporanreturController@index');
+    Route::get('datalaporanretur', 'LaporanreturController@datalaporanretur');
+    Route::post('cetakretur', 'LaporanreturController@preview');
+
+    //Route Laporan Barang
+    Route::get('laporanbarang', 'LaporanbarangController@index');
+    Route::get('datalaporanbarang', 'LaporanbarangController@datalaporanbarang');
+    Route::post('cetakbarang', 'LaporanbarangController@preview');
+
     //Route Laporan Pembelian
     Route::get('laporanpembelian','LaporanpembelianController@index')->name('laporanpembelian');
     Route::get('datalaporanpembelian','LaporanpembelianController@datalaporanpembelian');
     Route::post('cetakpembelian', 'LaporanpembelianController@preview');
+
+    //Route Laporan Uang Modal Kasir
+    Route::get('laporanmodalkasir','LaporanmodalkasirController@index');
+    Route::get('datamodalkasir','LaporanmodalkasirController@datamodalkasir');
+    Route::post('cetakmodalkasir', 'LaporanmodalkasirController@preview');
 
     //Route Laporan Histori
     Route::get('laporanhistory','LaporanhistoryController@index')->name('laporanhistory');
     Route::get('histories', 'LaporanHistoryController@datahistories');
     Route::get('get_select_barang', 'SearchController@getSelectBarang');
     Route::post('history', 'LaporanHistoryController@previewcetak');
+
+    // Laporan Stok opname
+    Route::get('laporanopname', 'LaporanopnameController@index');
+    Route::get('laporandataopname', 'LaporanopnameController@opnames');
+    Route::post('cetakopname', 'LaporanopnameController@preview');
 
     //Route Laporan Absen
     Route::get('laporanabsen','LaporanabsenController@index');
@@ -150,6 +186,8 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::get('tambahretur/{id}/returadd', 'ReturController@tambahretur');
     Route::post('siapkanretur', 'ReturController@siapkanretur');
     Route::get('getsementararetur','ReturController@getsementararetur');
+    Route::get('listretur','ReturController@listretur');
+    Route::get('dataretur','ReturController@dataretur');
     //-----------------------------------------------------------//
     Route::post('retursemua','ReturController@retursemua');// kirim semua jumlah barang ke keranjang retur
     Route::post('kembalisemua','ReturController@kembalisemua');// kirim semua jumlah barang ke keranjang penjualan

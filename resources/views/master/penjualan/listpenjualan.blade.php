@@ -33,7 +33,7 @@
                               <th class="col-md-2">No. Bukti</th>
                               <th class="col-md-2">Tgl.</th>
                               <th class="col-md-2">Total</th>
-                              <th class="col-md-1">Kasir/User</th>
+                              <th class="col-md-1">Operator</th>
                               <th class="col-md-3">Aksi</th>
                           </tr>
                           </thead>

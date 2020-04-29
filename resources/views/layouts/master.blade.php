@@ -39,6 +39,7 @@
   <script src="{{ asset('assets/bootstrap/js/ie-emulation-modes-warning.js') }}"></script>
   <link rel="stylesheet" href="{{ asset('assets/font-awesome/css/font-awesome.min.css')}}" />
   <link rel="stylesheet" href="{{ asset('css/loading.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/aturan_custom.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/bootstrap-datepicker-master/bootstrap-datepicker3.css') }}">
 
 <link rel="stylesheet" href="{{ asset('css/animate.css') }}">

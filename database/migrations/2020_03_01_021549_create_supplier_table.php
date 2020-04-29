@@ -20,7 +20,7 @@ class CreateSupplierTable extends Migration
             $table->string('email')->unique();
             $table->text('alamat');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('restrict')->onDelete('restrict');
             $table->timestamps();
         });
     }

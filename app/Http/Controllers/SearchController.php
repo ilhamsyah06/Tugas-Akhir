@@ -12,6 +12,7 @@ use App\Detailpenjualan;
 use Carbon\Carbon;
 use App\Gaji;
 use Auth;
+use App\SementaraRetur;
 
 class SearchController extends Controller
 {
@@ -29,7 +30,6 @@ class SearchController extends Controller
 			$barang = DB::table('barang')
                     ->select('kode', 'nama_barang', 'harga_beli', 'stok')
 					->where('kode', $keyword)
-					->where('status','gudang')
                     ->first();
 
 	        if ($barang !== null) {
@@ -64,31 +64,27 @@ class SearchController extends Controller
     	if ($kolom == 'kode') {
 			$barang = DB::table('barang')
 					->join('kategori', 'barang.kategori_id', '=', 'kategori.id')
-					->select('kode', 'nama_barang', 'harga_jual', 'stok','kategori.nama')
+					->select('kode', 'nama_barang', 'harga_jual', 'stok_toko','kategori.nama')
 					->where('kode', $keyword)
-					->where('status','toko')
                     ->first();
 
 	        if ($barang !== null) {
 	            return response()->json([
 	                'nama' => $barang->nama_barang,
 					'kode' => $barang->kode,
-					'stok' => $barang->stok,
 	                'harga_jual' => $barang->harga_jual,
-					'stok' => $barang->stok,
+					'stok' => $barang->stok_toko,
 					'kategori' => $barang->nama,
 	            ]);
 	        }	
     	} elseif ($kolom == 'id') {
     		$barang = Barang::find($keyword);
-
 	        if ($barang !== null) {
 	            return response()->json([
 	                'nama' => $barang->nama_barang,
 					'kode' => $barang->kode,
-					'stok' => $barang->stok,
 	                'harga_jual' => $barang->harga_jual,
-					'stok' => $barang->stok,
+					'stok' => $barang->stok_toko,
 					'kategori' => $barang->kategori->nama,
 	            ]);
 	        }	
@@ -102,7 +98,7 @@ class SearchController extends Controller
 
         $barangPenjualan = DB::table('barang')
                     ->join('detail_penjualan', 'detail_penjualan.barang_id', '=', 'barang.id')
-                    ->select(DB::raw('count(barang.id) as jumlahjual, barang.id'))
+                    ->select(DB::raw('sum(detail_penjualan.qty) as jumlahjual, barang.id'))
                     ->groupBy('barang.id')
                     ->orderBy('jumlahjual', 'desc')
                     ->get();
@@ -128,7 +124,7 @@ class SearchController extends Controller
 	
 	public function daftarhabis() {
 
-        $barang = Barang::where('stok', '<=', 0)->where('status','toko')->get();
+        $barang = Barang::where('stok_toko', '<=', 0)->get();
 
         $cacah = 0;
         $data = [];
@@ -182,7 +178,12 @@ class SearchController extends Controller
   ->orderBy('bulan','asc')
   ->get();
 
-		return response()->json($penjualan); 
+  $sementararetur = SementaraRetur::where('noretur', 'RE005')->get();
+
+
+  $succes = 'success';
+
+		return response()->json($sementararetur); 
 
 	}
 	
@@ -191,13 +192,13 @@ class SearchController extends Controller
             return null;
         }
 
-        $barang = Barang::select(['id', 'kode', 'nama_barang','status'])->get();
+        $barang = Barang::select(['id', 'kode', 'nama_barang'])->get();
 
         $data = [];
         $cacah = 0;
         foreach ($barang as $i => $d) {
                 $data[$cacah] = [
-                    $d->kode.'  |  '.$d->nama_barang. ' | '.$d->status, 
+                    $d->kode.'  |  '.$d->nama_barang, 
                     $d->id
                 ];
 

@@ -520,8 +520,11 @@
                 $.each(errors, function (index, value) {
                     pesan += value + "\n";
                 });
-
-                alert(pesan);
+                return swal({
+                    type: 'error',
+                    title: pesan,
+                    showConfirmButton: true
+                }).catch(function (timeout) {});
             },
             success: function () {
                 reloadTable();
@@ -599,8 +602,11 @@
                 $.each(errors, function (index, value) {
                     pesan += value + "\n";
                 });
-
-                alert(pesan);
+                return swal({
+                    type: 'error',
+                    title: pesan,
+                    showConfirmButton: true
+                }).catch(function (timeout) {});
             },
             success: function () {
                 reloadTable();
@@ -661,8 +667,11 @@
                 $.each(errors, function (index, value) {
                     pesan += value + "\n";
                 });
-
-                alert(pesan);
+                return swal({
+                    type: 'error',
+                    title: pesan,
+                    showConfirmButton: true
+                }).catch(function (timeout) {});
             },
             success: function () {
                 kodeOtomatis();

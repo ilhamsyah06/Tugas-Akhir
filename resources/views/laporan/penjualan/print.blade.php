@@ -205,9 +205,9 @@
     <thead>
     <tr>
         <th style="width: 5%" class="tg-3wr7"><strong>#</strong></th>
-        <th style="width:9%;" class="tg-3wr7"><strong>No. Bukti</strong></th>
+        <th style="width:9%;" class="tg-3wr7"><strong>No. Invoice</strong></th>
         <th class="tg-3wr7" style="width: 13%"><strong>Tanggal</strong></th>
-        <th class="tg-3wr7" style="width: 13%"><strong>Kasir/User</strong></th>
+        <th class="tg-3wr7" style="width: 13%"><strong>Operator</strong></th>
         <th style="width: 13%" class="tg-3wr7"><strong>Total</strong></th>
         <th style="width: 13%" class="tg-3wr7"><strong>Laba/Profit</strong></th>
     </tr>

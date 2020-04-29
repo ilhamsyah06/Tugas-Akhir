@@ -333,16 +333,16 @@
                 "sClass": "text-center col-md-3 td-aksi",
                 'render': function (data, type, full, meta) {
                     var kembali =
-                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="fa fa-edit fa-fw"></i> </button>';
+                        '<button title="Ubah Data" class="btn btn-success btn-flat btn-sm" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="fa fa-edit fa-fw"></i> </button>';
                     kembali +=
-                        '<button title="Hapus Item" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash fa-fw"></i> </button>';
+                        '<button title="Hapus Item" class="btn btn-danger btn-flat btn-sm" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash fa-fw"></i> </button>';
 
                     return kembali;
                 }
             }],
             'rowCallback': function (row, data, dataIndex) {
-                $(row).find('button[class="btn btn-warning btn-flat"]').prop('value', data[6]);
-                $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[6]);
+                $(row).find('button[class="btn btn-success btn-flat btn-sm"]').prop('value', data[6]);
+                $(row).find('button[class="btn btn-danger btn-flat btn-sm"]').prop('value', data[6]);
             },
             "footerCallback": function (row, data, start, end, display) {
                 var api = this.api(),
@@ -691,7 +691,7 @@
             },
             dataType: 'json',
             data: {
-                barang: barang,
+                kodebarang: barang,
                 invoice: invoice,
                 qty: qty,
                 harga: harga,
@@ -784,7 +784,7 @@
     $('#simpanubah').click(function () {
         var id = $('#idubah').val();
         var token = $('#token').val();
-        var route = "/sementara/" + id;
+        var route = "/sementaratoko/" + id;
 
         var qty = $('#qtyubah').val();
         var stok = $('#stokubah').val();

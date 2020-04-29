@@ -10,7 +10,7 @@ class Historiharga extends Model
 
     protected $fillable = ['harga_terakhir','harga_naik','barang_id'];
 
-    public function user() {
+    public function barang() {
         return $this->belongsTo('App\Barang');
     }
 }

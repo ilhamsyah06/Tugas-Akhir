@@ -13,6 +13,12 @@ use App\Utility;
 use App\Penjualan;
 use App\Sementara;
 use App\SementaraRetur;
+use App\Uang_modal_kasir;
+use App\Detailpenjualan;
+use App\DetailRetur;
+use App\Retur;
+use App\History;
+use Carbon\Carbon;
 
 class ReturController extends Controller
 {
@@ -28,9 +34,61 @@ class ReturController extends Controller
         return view('master.retur.index');
     }
 
+    public function listretur()
+    {
+        return view('master.retur.listretur');
+    }
+
+    public function dataretur(Request $request) {
+        if (!$request->ajax()) {
+            return response()->json([
+                'data' => []
+            ]);
+        }
+
+
+        $input = $request->all();
+
+        $start = $input['start'];
+        $end = $input['end'];
+
+        $data = [];
+        $cacah = 0;
+
+        if ($start == '' || $end == '') {
+            $retur = Retur::all();
+        } else {
+            $arr_tgl_dari = explode ("/", $start, 3);
+            $arr_tgl_sampai= explode ("/", $end, 3);
+
+            $from = $arr_tgl_dari[2].'/'.$arr_tgl_dari[1].'/'.$arr_tgl_dari[0].' 00:00:00';
+            $to = $arr_tgl_sampai[2].'/'.$arr_tgl_sampai[1].'/'.$arr_tgl_sampai[0]. ' 23:59:59';
+
+            $retur = Retur::whereBetween('tgl_retur',[$from, $to], 'and')->get();
+
+            // dd($from.', to : '.$to.', penjualan : '.$penjualan);
+        }     
+
+        foreach ($retur as $i => $d) {
+            $data[$cacah] = [
+                $d->no_retur, 
+                $d->created_at->format('d-m-Y H:i:s'), 
+                $d->penjualan->no_invoice,
+                $d->user->name,
+                $d->id
+            ];
+
+            $cacah++;    
+        }
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
+
     public function getAutoKode() {
         $barang = DB::table('retur')
-                ->where('no_retur', 'like', 'BE%')
+                ->where('no_retur', 'like', 'RE%')
                 ->select('no_retur')
                 ->orderBy('no_retur', 'desc')
                 ->first();
@@ -41,7 +99,7 @@ class ReturController extends Controller
             $kembali = str_replace('RE', '', $barang->no_retur);
             $kembali = (int)$kembali;
 
-            $kembali = Utility::sisipkanNol(++$kembali, 5);
+            $kembali = Utility::sisipkanNol(++$kembali, 3);
 
             return response()->json('RE'.$kembali); 
         }
@@ -76,7 +134,7 @@ class ReturController extends Controller
                 $tanggal = date('Y-m-d');
                 $uangmodal = Uang_modal_kasir::where('tanggal', $tanggal)->first();
                 $sementara = Sementara::where('kode', $input['invoice'])->get();
-                $sementararetur = SementaraRetur::where('noretur', $input['nomoretur']);
+                $sementararetur = SementaraRetur::where('noretur', $input['nomoretur'])->get();
                 $penjualan = Penjualan::where('no_invoice', $input['invoice'])->first();
                 if ($uangmodal === null) {
                     return response()->json([
@@ -109,26 +167,58 @@ class ReturController extends Controller
     protected function simpanTransaksiUpdate($input, $sementara, $sementararetur, $penjualan, $uangmodal) {
         DB::beginTransaction();
     try {
+            //memasukkan data di tabel retur
+            $retur = new Retur;
+            $retur->no_retur = $input['nomoretur'];
+            $retur->penjualan_id = $penjualan->id;
+            $retur->tgl_retur = $input['tglretur'];
+            $retur->user_id = Auth::user()->id;
+            $retur->save();
 
+            foreach ($sementararetur as $key => $value){
+                $returdetail = new DetailRetur;
+                $returdetail->retur_id = $retur->id;
+                $barang = $value->barang;
+                $returdetail->barang_id = $barang->id;
+                $returdetail->harga = $value->harga;
+                $returdetail->qty = $value->jumlah;
+                $returdetail->diskon_item = $value->diskon;
+                $returdetail->total = $value->jumlah * $value->harga;
+                $returdetail->save();
 
-            foreach ($penjualan->penjualandetail as $key => $value) {
-
-                $barang = $value->barang; //proses foregnkey
+                $stok_sebelumnya = $barang->stok_toko;
 
                 $dataubah = [
-                    'stok' => $barang->stok + $value->qty //dikembalikan seperti awal dulu stoknya
+                    'stok_toko' => $barang->stok_toko + $value->jumlah,
+                    'updated_at' => date('Y/m/d H:i:s')
                 ];
 
                 DB::table('barang')
                     ->where('id', $barang->id)
                     ->update($dataubah);
 
+                $history = new History;
+                $history->nama = 'retur';
+                $history->kode = $penjualan->no_invoice;
+                $history->tgl = Carbon::now();
+                $history->barang_id = $barang->id;
+                $history->stok = $stok_sebelumnya;
+                $history->masuk = $value->jumlah;
+                $history->keluar = 0;
+                $history->saldo = $stok_sebelumnya + $value->jumlah;
+                $history->user_id = $penjualan->user_id;
+                $history->keterangan = 'Retur Barang, No. Bukti : '.$input['nomoretur'];
+                $history->save();
+            }
+
+            foreach ($penjualan->penjualandetail as $key => $value) {
+
+                $barang = $value->barang; //proses foregnkey eloquent
+
                 $dataubahuangmodal = [
                         'uang_akhir' => $uangmodal->uang_akhir - $penjualan->total_bayar //dikembalikan / dikurangi lagi uang akhir lama
                 ];
-
                 $now = date('Y-m-d');
-
                 DB::table('uang_modal_kasir')
                     ->where('tanggal', $now)
                     ->update($dataubahuangmodal);
@@ -138,8 +228,9 @@ class ReturController extends Controller
                 $historylama = History::where(['barang_id' => $barang->id, 'kode' => $penjualan->no_invoice, 'nama' => 'penjualan'])->first();
 
                 if ($historylama != null) {
-                    $historylama->delete(); // mengahapus history lama
+                    $historylama->delete();
                 }
+
             }
 
             foreach ($sementara as $key => $value) {
@@ -155,42 +246,27 @@ class ReturController extends Controller
                 $penjualandetail->total = $value->jumlah * $value->harga;
                 $penjualandetail->save();
 
-                $stok_sebelumnya = $barang->stok;
+                $stok_sebelumnya = $barang->stok_toko;
 
-                $dataubah = [
-                    'stok' => $barang->stok - $value->jumlah,
-                    'updated_at' => date('Y/m/d H:i:s')
-                ];
+                    $history = new History;
+                    $history->nama = 'penjualan';
+                    $history->kode = $penjualan->no_invoice;
+                    $history->tgl = Carbon::now();
+                    $history->barang_id = $barang->id;
+                    $history->stok = $stok_sebelumnya;
+                    $history->masuk = 0;
+                    $history->keluar = $value->jumlah;
+                    $history->saldo = $stok_sebelumnya - $value->jumlah;
+                    $history->user_id = $penjualan->user_id;
+                    $history->keterangan = 'Penjualan Barang, No. Bukti : '.$penjualan->no_invoice;
+                    $history->save();
 
-                DB::table('barang')
-                    ->where('id', $barang->id)
-                    ->update($dataubah);
-
-                $history = new History;
-                $history->nama = 'penjualan';
-                $history->kode = $penjualan->no_invoice;
-                $history->tgl = Carbon::now();
-                $history->barang_id = $barang->id;
-                $history->stok = $stok_sebelumnya;
-                $history->masuk = 0;
-                $history->keluar = $value->jumlah;
-                $history->saldo = $stok_sebelumnya - $value->jumlah;
-                $history->user_id = $penjualan->user_id;
-                $history->keterangan = 'Penjualan Barang, No. Bukti : '.$penjualan->no_invoice;
-                $history->save();
             }
 
-                $t = $input['totalbayarretur'];
-                $j = $input['jumlahbayar'];
-                $upadtekembalianreturbaru = $t - $j;
-
-                
 
                 //proses update total jumlah bayar dan kembalian
                 $dataubahtotalbayar = [
                         'total_bayar' => $input['totalbayar'],
-                        'jumlah_bayar' => $input['jumlahbayar'],
-                        'kembalian' => $upadtekembalianreturbaru,
                         'updated_at' => date('Y/m/d H:i:s')
                     ];
 
@@ -215,6 +291,7 @@ class ReturController extends Controller
                        
 
             DB::table('sementara')->truncate();
+            DB::table('sementara_retur')->truncate();
         } catch (ValidationException $ex) {
             DB::rollback();
             return $ex->getMessage();;
@@ -226,6 +303,15 @@ class ReturController extends Controller
         DB::commit();
 
         return '';
+    }
+
+    public function show($id){
+        $retur = Retur::find($id);
+        if ($retur == null) {
+            return redirect('/retur');
+        }
+        $countbarang = DB::table('retur_detail')->where('retur_id', $retur->id)->count();
+        return view('master.retur.tampil_detail', compact('retur','countbarang'));
     }
     /**
      * Show the form for editing the specified resource.
@@ -245,12 +331,17 @@ class ReturController extends Controller
 
     public function tambahretur($id)
     {
+        $tglnow = date('Y-m-d');
         $retur = Penjualan::find($id);
+        $cekdatabarang = Detailpenjualan::where('penjualan_id', $id)->count();
         if ($retur == null) {
             return redirect('/retur');
+        }elseif($cekdatabarang < 2){
+            return redirect('/retur')->with(['warning' => 'Barang yang Dibeli Kurang Dari 2 Item.']);
+        }elseif($retur->tgl_penjualan->format('Y-m-d') != $tglnow){
+            return redirect('/retur')->with(['warning' => 'Tidak Dapat Retur, Data Penjualan Lebih Dari 1x24 Jam.']);
         }
-
-        return view('master.retur.tambah_retur', compact('retur'));
+            return view('master.retur.tambah_retur', compact('retur'));
 
     }
 
@@ -401,8 +492,14 @@ class ReturController extends Controller
             $input = $request->all();
 
             $sementara = Sementara::find($input['id']);
-
             $cekdataretur = SementaraRetur::where('barang_id', $sementara->barang_id)->first();
+
+            $cekdatabarang = SementaraRetur::count();
+            if ($cekdatabarang === 1) {
+             return response()->json([
+                    'data' => ['Barang Yang Diretur Tidak Boleh Melebihi 1 Item!']
+                ], 422);
+            }
 
             $hasil = $this->simpanTransaksiReturSemua($sementara, $input, $cekdataretur);
             if ($hasil == '') {
@@ -740,7 +837,14 @@ class ReturController extends Controller
                     $sementara = Sementara::find($input['id']);
 
                     $cekdataretur = SementaraRetur::where('barang_id', $sementara->barang_id)->first();
-        
+                    
+                    $cekdatabarang = SementaraRetur::count();
+                    if ($cekdatabarang === 1) {
+                     return response()->json([
+                            'data' => ['Barang Yang Diretur Tidak Boleh Melebihi 1 Item!']
+                        ], 422);
+                    }
+
                     $hasil = $this->simpanTransaksiReturSatu($sementara, $input, $cekdataretur);
                     if ($hasil == '') {
                         return response()->json([

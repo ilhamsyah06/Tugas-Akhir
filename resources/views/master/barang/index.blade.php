@@ -2,26 +2,18 @@
 
 @section('title','Barang')
 
-@php
-$stokhabis = DB::table('barang')->where('stok', 0 )->where('status','toko')->count('nama_barang');
-
-if($stokhabis != 0){
-    echo "<script> alert('Ada $stokhabis Stok Barang Yang Sudah Habis');</script>";
-}
-
-@endphp
 
 @section('content')
-<div class="container">
-@if (Auth::user()->level === 'kasir')
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4><i class="fa fa-list"></i> List Barang Toko
+                <h4><i class="fa fa-list"></i> Daftar Barang
                     <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalTambah"
-                        style="margin-top: -8px;"><i class="fa fa-plus"></i> Tambah
+                        style="margin-top: -8px; font-weight:bold;"><i class="fa fa-plus"></i> Tambah
                         Barang</a>
+                        <a class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalLihatStok"
+                        style="margin-top: -8px; margin-right: 10px; font-weight: bold;"><i class="fa fa-eye"></i> Barang Stok Habis</a>
                 </h4>
             </div>
             <div class="panel-body">
@@ -32,7 +24,8 @@ if($stokhabis != 0){
                             <th>Kode</th>
                             <th>Nama Barang</th>
                             <th>Kategori</th>
-                            <th>Stok</th>
+                            <th>Stok Toko</th>
+                            <th>Stok Gudang</th>
                             <th>Harga</th>
                             <th>Profit</th>
                             <th>Aksi</th>
@@ -44,39 +37,21 @@ if($stokhabis != 0){
         </div>
     </div>
 </div>
-@elseif(Auth::user()->level === 'gudang')
-<div class="row">
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h4><i class="fa fa-list"></i> List Barang Gudang
-                    <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalTambahg"
-                        style="margin-top: -8px;"><i class="fa fa-plus"></i> Tambah
-                        Barang</a>
-                </h4>
-            </div>
-            <div class="panel-body">
-                <table id="baranggudang" class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Kode</th>
-                            <th>Nama Barang</th>
-                            <th>Kategori</th>
-                            <th>Stok</th>
-                            <th>Harga</th>
-                            <th>Profit</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-@endif
-</div>
+
+@php
+$stokhabis = DB::table('barang')->where('stok_toko', 0 )->count('nama_barang');
+
+if($stokhabis != 0){
+    echo "<script>swal({
+                    type: 'error',
+                    title: 'Ada $stokhabis Stok Barang Yang Sedang Habis.',
+                    showConfirmButton: false,
+                    timer: 2000
+                }).catch(function (timeout) {});
+        </script>";
+}
+
+@endphp
 @include('master.barang.modal')
 @endsection
 
@@ -90,39 +65,39 @@ if($stokhabis != 0){
 <script>
     $(document).ready(function () {
 
-        $('#tbl-contact thead th').each(function () {
-            var title = $(this).text();
-            $(this).html(title+' <input type="text" class="col-search-input" placeholder="Search ' + title + '" />');
-        });
-
-        var t = $('#baranggudang').DataTable({
+        $('#barangstokhabis').DataTable({
             responsive: true,
             scrollX: true,
             'ajax': {
-                'url': '/api/baranggudang',
+                'url': '/barangtokohabis', //menampikan barang toko yang sedang habis stok nya
             },
 
             'columnDefs': [{
                 'targets': 0,
-                'sClass': "text-center col-sm-1"
-            }, {
-                'targets': 1,
                 'sClass': "text-center col-md-2",
                 render: function (data, type, row, meta) {
-                    return '<span style="font-size: 12px;"  class="label label-danger' +
-                        '">' + data + '</span>';
+                    return '<span style="font-size: 12px;"  class="label label-danger">' + data + '</span>';
+                }
+            }, {
+                'targets': 1,
+                'sClass': "col-md-2",
+                render: function(data, type, row, meta){
+                    return data.substr(0, 25);
                 }
             }, {
                 'targets': 2,
-                'sClass': "col-md-2"
-            }, {
-                'targets': 3,
-                'sClass': "col-md-2",
+                'sClass': "text-center col-md-1",
                 render: function (data, type, row, meta) {
-                    return '<span style="font-size: 12px;" class="label label-primary' +
-                        '">' + data + '</span>';
+                    return '<span style="font-size: 12px;" class="label label-primary">' + data + '</span>';
                 }
             }, {
+                'targets': 3,
+                'sClass': "text-right col-md-1",
+                'render': function (data, type, full, meta) {
+                    return number_format(intVal(data), 0, ',', '.');
+
+                }
+            },{
                 'targets': 4,
                 'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
@@ -144,317 +119,15 @@ if($stokhabis != 0){
                         '">'+'Rp.' + number_format(intVal(data), 0, ',', '.') + ',-' + '</span>';
 
                 }
-            }, {
-                'targets': 7,
-                'searchable': false,
-                "orderable": false,
-                "orderData": false,
-                "orderDataType": false,
-                "orderSequence": false,
-                "sClass": "text-center col-md-2 td-aksi",
-                'render': function (data, type, full, meta) {
-                    var button =
-                        '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="fa fa-eye"></i> </button>';
-                    button +=
-                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbahg" onclick="UbahClickg(this);"><i class="fa fa-pencil"></i> </button>';
-                    button +=
-                        '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash"></i> </button>';
-
-                    return button;
-
-                }
             }],
-            'rowCallback': function (row, data, dataIndex) {
-                $(row).find('button[class="btn btn-info btn-flat"]').prop('value', data[7]);
-                $(row).find('button[class="btn btn-warning btn-flat"]').prop('value', data[7]);
-                $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[7]);
-
-            }
-        });
-
-        t.on('order.dt search.dt', function () {
-            t.column(0, {
-                search: 'applied',
-                order: 'applied'
-            }).nodes().each(function (cell, i) {
-                cell.innerHTML = i + 1;
-            });
-        }).draw();
-
-        var routelevel = "/levelapi";
-        var inputTipeubah = $('#levelubahgudang');
-        var inputTipegudang = $('#levelgudang')
-
-        var listgudang = document.getElementById("levelgudang");
-        while (listgudang.hasChildNodes()) {
-            listgudang.removeChild(listgudang.firstChild);
-        }
-        inputTipegudang.append('<option value=" ">Pilih Jenis Barang</option>');
-
-        var listubah = document.getElementById("levelubahgudang");
-        while (listubah.hasChildNodes()) {
-            listubah.removeChild(listubah.firstChild);
-        }
-        inputTipeubah.append('<option value=" ">Pilih Jenis Barang</option>');
-
-        $.get(routelevel, function (res) {
-            // console.log(res);
-            $.each(res.data, function (index, value) {
-                inputTipeubah.append('<option value="' + value[1] + '">' + value[0] + '</option>');
-                inputTipegudang.append('<option value="' + value[1] + '">' + value[0] + '</option>');
-            });
-        });
-
-        $("#levelubahgudang").select2();
-        $('#levelgudang').select2();
-    });
-
-    $(document).ready(function () {
-        $("#hargabeliubahgudang,#hargajualubahgudang").keyup(function () {
-            var blug = intVal($("#hargabeliubahgudang").val());
-            var jlug = intVal($("#hargajualubahgudang").val());
-            var totalug = jlug - blug;
-            $("#profitubahgudang").val(formatRibuan(totalug));
-        });
-    });
-
-    $(document).ready(function () {
-        $("#harga_beligudang,#harga_jualgudang").keyup(function () {
-            var blug = intVal($("#harga_beligudang").val());
-            var jlug = intVal($("#harga_jualgudang").val());
-            var totalug = jlug - blug;
-            $("#profitgudang").val(formatRibuan(totalug));
-        });
-    });
-
-    function reloadTable() {
-        var table = $('#barang').dataTable();
-        var table1 = $('#baranggudang').dataTable();
-        table.cleanData;
-        table1.cleanData;
-        table.api().ajax.reload();
-        table1.api().ajax.reload();
-    }
-
-    function UbahClickg(btn) {
-        route = "/barang/" + btn.value + "/edit";
-
-        $.get(route, function (res) {
-            $('#idubahg').val(res.id);
-            $('#kodeubahgudang').val(res.kode);
-            $('#namaubahgudang').val(res.nama);
-            $('#levelubahgudang').val('' + res.jenisbarang).trigger('change');
-            $('#hargabeliubahgudang').val(number_format(intVal(res.hargabeli), 0, ',', '.'));
-            $('#stokgudang').val(number_format(intVal(res.stok), 0, ',', '.'));
-            $('#hargajualubahgudang').val(number_format(intVal(res.hargajual), 0, ',', '.'));
-            $('#profitubahgudang').val(number_format(intVal(res.profit), 0, ',', '.'));
-            $('#tanggalubahgudang').val(res.tanggal);
-
-            $('#kodeubahgudang').focus();
 
         });
-
-    }
-
-    $('#simpanubahg').click(function () {
-        var id = $('#idubahg').val();
-        var token = $('#token').val();
-        var route = "/baranggudang/" + id;
-
-        var kode = $('#kodeubahgudang').val();
-        if (jQuery.trim(kode) == '' || kode == undefined) {
-            alert('kode tidak boleh kosong !!');
-            $('#kodeubahgudang').focus();
-            return;
-        }
-
-        var hargabeli = $('#hargabeliubahgudang').val();
-        if (jQuery.trim(hargabeli) == '' || hargabeli == ' ' || intVal(hargabeli) < 0) {
-            alert('Harga beli tidak boleh kosong.');
-            $('#hargabeliubahgudang').focus();
-            return;
-        }
-        hargabeli = intVal(hargabeli);
-
-        var nama = $('#namaubahgudang').val();
-        if (jQuery.trim(nama) == '' || nama == undefined) {
-            alert('Nama barang tidak boleh kosong !!');
-            $('#namaubahgudang').focus();
-            return;
-        }
-
-        var hargajual = $('#hargajualubahgudang').val();
-        if (jQuery.trim(hargajual) == '' || hargajual == ' ' || intVal(hargajual) < 0) {
-            alert('Harga jual tidak boleh kosong.');
-            $('#hargajualubahgudang').focus();
-            return;
-        }
-        hargajual = intVal(hargajual);
-
-        var jenis = $('#levelubahgudang').val();
-        if (jQuery.trim(jenis) == 0 || jenis == undefined) {
-            alert('Harap Isikan Jenis Barang !!');
-            $('#levelubahgudang').focus();
-            return false;
-        }
-
-        var profit = intVal($('#profitubahgudang').val());
-
-        var stok = $('#stokubahgudang').val();
-        stok = intVal(stok);
-
-        var tanggal = $('#tanggalubahgudang').val();
-
-        $.ajax({
-            url: route,
-            headers: {
-                'X-CSRF-TOKEN': token
-            },
-            type: 'PUT',
-            dataType: 'json',
-            data: {
-                kode: kode,
-                hargabeli: hargabeli,
-                nama: nama,
-                hargajual: hargajual,
-                jenis: jenis,
-                profit: profit,
-                stok: stok,
-                tanggal: tanggal,
-                _token: token
-            },
-            error: function (res) {
-                var errors = res.responseJSON;
-                var pesan = '';
-                $.each(errors, function (index, value) {
-                    pesan += value + "\n";
-                });
-
-                return swal({
-                    type: 'error',
-                    title: pesan,
-                    showConfirmButton: true,
-                    timer: 2000
-                }).catch(function (timeout) {});
-
-            },
-            success: function () {
-                reloadTable();
-                $('#stokubahgudang').val(null);
-                $('#modalUbahg').modal('toggle');
-                return swal({
-                    type: 'success',
-                    title: 'Data berhasil diubah.',
-                    showConfirmButton: true,
-                    timer: 2000
-                }).catch(function (timeout) {});
-
-            }
-        });
-    });
-
-    $('#simpantambahg').click(function () {
-        var route = "/baranggudang";
-        var token = $('#token').val();
-
-        var kode = $('#kodegudang').val();
-        if (jQuery.trim(kode) == '' || kode == undefined) {
-            alert('kode tidak boleh kosong !!');
-            $('#kodegudang').focus();
-            return;
-        }
-
-        var nama = $('#namagudang').val();
-        if (jQuery.trim(nama) == '' || nama == undefined) {
-            alert('Nama tidak boleh kosong !!');
-            $('#namagudang').focus();
-            return;
-        }
-
-        var jenis = $('#levelgudang').val();
-        if (jQuery.trim(jenis) == 0 || jenis == undefined) {
-            alert('Harap Isikan Jenis Barang !!');
-            $('#levelgudang').focus();
-            return false;
-        }
-
-        var hargabeli = $('#harga_beligudang').val();
-        if (jQuery.trim(hargabeli) == '' || hargabeli == ' ' || intVal(hargabeli) < 0) {
-            alert('Harga beli tidak boleh kosong.');
-            $('#harga_beligudang').focus();
-            return;
-        }
-        hargabeli = intVal(hargabeli);
-
-        var hargajual = $('#harga_jualgudang').val();
-        if (jQuery.trim(hargajual) == '' || hargajual == ' ' || intVal(hargajual) < 0) {
-            alert('Harga jual tidak boleh kosong.');
-            $('#harga_jualgudang').focus();
-            return;
-        }
-        hargajual = intVal(hargajual);
-
-        var profit = intVal($('#profitgudang').val());
-        var tanggal = $('#tanggalgudang').val();
-
-        $.ajax({
-            url: route,
-            type: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': token
-            },
-            dataType: 'json',
-            data: {
-                kode: kode,
-                nama: nama,
-                jenis: jenis,
-                hargabeli: hargabeli,
-                hargajual: hargajual,
-                profit: profit,
-                tanggal: tanggal,
-                _token: token
-            },
-            error: function (res) {
-                var errors = res.responseJSON;
-                var pesan = '';
-                $.each(errors, function (index, value) {
-                    pesan += value + "\n";
-                });
-                return swal({
-                    type: 'error',
-                    title: pesan,
-                    showConfirmButton: true,
-                    timer: 2000
-                }).catch(function (timeout) {});
-            },
-            success: function () {
-                reloadTable();
-                $('#kodegudang').val('');
-                $('#namagudang').val('');
-                $('#levelgudang').val(0);
-                $('#stokgudang').val('');
-                $('#harga_beligudang').val('');
-                $('#harga_jualgudang').val('');
-                $('#profitgudang').val('');
-                return swal({
-                    type: 'success',
-                    title: 'Data berhasil disimpan.',
-                    showConfirmButton: true,
-                    timer: 2000
-                }).catch(function (timeout) {});
-            }
-        });
-    });
-</script>
-
-<script>
-    $(document).ready(function () {
 
         var t = $('#barang').DataTable({
             responsive: true,
             scrollX: true,
             'ajax': {
-                'url': '/api/barang',
+                'url': '/api/barang', //menampikan barang toko
             },
 
             'columnDefs': [{
@@ -464,18 +137,19 @@ if($stokhabis != 0){
                 'targets': 1,
                 'sClass': "text-center col-md-2",
                 render: function (data, type, row, meta) {
-                    return '<span style="font-size: 12px;"  class="label label-danger' +
-                        '">' + data + '</span>';
+                    return '<span style="font-size: 12px;"  class="label label-danger">' + data + '</span>';
                 }
             }, {
                 'targets': 2,
-                'sClass': "col-md-2"
+                'sClass': "col-md-2",
+                render: function(data, type, row, meta){
+                    return data.substr(0, 25);
+                }
             }, {
                 'targets': 3,
-                'sClass': "col-md-2",
+                'sClass': "text-center col-md-1",
                 render: function (data, type, row, meta) {
-                    return '<span style="font-size: 12px;" class="label label-primary' +
-                        '">' + data + '</span>';
+                    return '<span style="font-size: 12px;" class="label label-primary">' + data + '</span>';
                 }
             }, {
                 'targets': 4,
@@ -484,15 +158,22 @@ if($stokhabis != 0){
                     return number_format(intVal(data), 0, ',', '.');
 
                 }
-            }, {
+            },{
                 'targets': 5,
+                'sClass': "text-right col-md-1",
+                'render': function (data, type, full, meta) {
+                    return number_format(intVal(data), 0, ',', '.');
+
+                }
+            }, {
+                'targets': 6,
                 'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return 'Rp.' + number_format(intVal(data), 0, ',', '.') + ',-';
 
                 }
             },{
-                'targets': 6,
+                'targets': 7,
                 'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return '<span style="font-size: 12px;"  class="label label-success' +
@@ -500,7 +181,7 @@ if($stokhabis != 0){
 
                 }
             }, {
-                'targets': 7,
+                'targets': 8,
                 'searchable': false,
                 "orderable": false,
                 "orderData": false,
@@ -509,20 +190,23 @@ if($stokhabis != 0){
                 "sClass": "text-center col-md-2 td-aksi",
                 'render': function (data, type, full, meta) {
                     var button =
-                        '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="fa fa-eye"></i> </button>';
+                        '<button title="Lihat Data" class="btn btn-info btn-flat btn-sm" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="fa fa-eye"></i> </button>';
                     button +=
-                        '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="fa fa-pencil"></i> </button>';
+                        '<button title="Ubah Data" class="btn btn-warning btn-flat btn-sm" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="fa fa-pencil"></i> </button>';
                     button +=
-                        '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash"></i> </button>';
+                        '<button title="Hapus Data" class="btn btn-danger btn-flat btn-sm" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash"></i> </button>';
+                        button +=
+                        '<button title="Hapus Data" class="btn btn-success btn-flat btn-sm" data-toggle="modal" data-target="#modalKirim" onclick="KirimClick(this);"><i class="fa fa-send"></i> </button>';
 
                     return button;
 
                 }
             }],
             'rowCallback': function (row, data, dataIndex) {
-                $(row).find('button[class="btn btn-info btn-flat"]').prop('value', data[7]);
-                $(row).find('button[class="btn btn-warning btn-flat"]').prop('value', data[7]);
-                $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[7]);
+                $(row).find('button[class="btn btn-info btn-flat btn-sm"]').prop('value', data[8]);
+                $(row).find('button[class="btn btn-warning btn-flat btn-sm"]').prop('value', data[8]);
+                $(row).find('button[class="btn btn-danger btn-flat btn-sm"]').prop('value', data[8]);
+                $(row).find('button[class="btn btn-success btn-flat btn-sm"]').prop('value', data[8]);
 
             }
         });
@@ -585,6 +269,13 @@ if($stokhabis != 0){
 
     });
 
+    function reloadTable() {
+        var table = $('#barang').dataTable();
+        table.cleanData;
+        table.api().ajax.reload();
+    }
+
+
 
     $(document).ready(function () {
         $("#harga_beli,#harga_jual").keyup(function () {
@@ -610,14 +301,15 @@ if($stokhabis != 0){
         route = "/barang/" + btn.value;
 
         $.get(route, function (res) {
-            $('#hargabelilihatg').val(number_format(intVal(res.hargabeli), 0, ',', '.'));
-            $('#hargajuallihatg').val(number_format(intVal(res.hargajual), 0, ',', '.'));
-            $('#profitlihatg').val(number_format(intVal(res.profit), 0, ',', '.'));
-            $('#kodelihatg').val(res.kode);
-            $('#namalihatg').val(res.nama);
-            $('#levellihatg').val(res.kategori);
+            $('#hargabelilihat').val(number_format(intVal(res.hargabeli), 0, ',', '.'));
+            $('#hargajuallihat').val(number_format(intVal(res.hargajual), 0, ',', '.'));
+            $('#profitlihat').val(number_format(intVal(res.profit), 0, ',', '.'));
+            $('#kodelihat').val(res.kode);
+            $('#namalihat').val(res.nama);
+            $('#levellihat').val(res.kategori);
             $('#tanggallihat').val(res.tanggal);
-            $('#stoklihat').val(number_format(intVal(res.stok), 0, ',', '.'));
+            $('#stoktoko').val(number_format(intVal(res.stoktoko), 0, ',', '.'));
+            $('#stokgudang').val(number_format(intVal(res.stokgudang), 0, ',', '.'));
             $('#statuslihat').val(res.status);
             $('#userinputlihat').val(res.user);
 
@@ -633,16 +325,8 @@ if($stokhabis != 0){
         });
     });
 
-    $('#autokodegudang').click(function () {
-        route = "/barangautokode";
-
-        $.get(route, function (res) {
-            $('#kodegudang').val(res);
-        });
-    });
-
     $('#simpantambah').click(function () {
-        var route = "/barang/barangtoko";
+        var route = "/barang";
         var token = $('#token').val();
 
         var kode = $('#kode').val();
@@ -665,14 +349,6 @@ if($stokhabis != 0){
             $('#level').focus();
             return false;
         }
-
-        var stok = $('#stok').val();
-        if (jQuery.trim(stok) == '' || stok == ' ' || intVal(stok) < 0) {
-            alert('Stok tidak boleh kosong.');
-            $('#stok').focus();
-            return;
-        }
-        stok = intVal(stok);
 
         var hargabeli = $('#harga_beli').val();
         if (jQuery.trim(hargabeli) == '' || hargabeli == ' ' || intVal(hargabeli) < 0) {
@@ -704,7 +380,6 @@ if($stokhabis != 0){
                 kode: kode,
                 nama: nama,
                 jenis: jenis,
-                stok: stok,
                 hargabeli: hargabeli,
                 hargajual: hargajual,
                 profit: profit,
@@ -728,7 +403,7 @@ if($stokhabis != 0){
                 reloadTable();
                 $('#kode').val('');
                 $('#nama').val('');
-                $('#level').selectedIndex = "0";
+                $('#level').val(' ').trigger('change');
                 $('#stok').val('');
                 $('#harga_beli').val('');
                 $('#harga_jual').val('');
@@ -743,6 +418,8 @@ if($stokhabis != 0){
         });
     });
 
+
+
     function UbahClick(btn) {
         route = "/barang/" + btn.value + "/edit";
 
@@ -754,8 +431,11 @@ if($stokhabis != 0){
             $('#levelubahtoko').val('' + res.jenisbarang).trigger('change');
             $('#hargabeliubahtoko').val(number_format(intVal(res.hargabeli), 0, ',', '.'));
             $('#hargajualubahtoko').val(number_format(intVal(res.hargajual), 0, ',', '.'));
+            $('#hargaterakhir').val(number_format(intVal(res.hargajual), 0, ',', '.'));
+            $('#hargaterakhirtampil').val(number_format(intVal(res.hargaterakhir), 0, ',', '.'));
             $('#profitubahtoko').val(number_format(intVal(res.profit), 0, ',', '.'));
-            $('#stokubahtoko').val(number_format(intVal(res.stok), 0, ',', '.'));
+            $('#stokubahtoko').val(number_format(intVal(res.stoktoko), 0, ',', '.'));
+            $('#stokubahgudang').val(number_format(intVal(res.stokgudang), 0, ',', '.'));
             $('#tanggalubahtoko').val(res.tanggal);
 
             $('#barcodeubah').focus();
@@ -763,6 +443,81 @@ if($stokhabis != 0){
         });
 
     }
+
+    function KirimClick(btn) {
+        route = "/barang/" + btn.value + "/edit";
+
+        $.get(route, function (res) {
+            $('#idkirim').val(res.id);
+            $('#stokgudangkirim').val(number_format(intVal(res.stokgudang), 0, ',', '.'));
+            $('#kirimstok').val(null);
+            $('#kirimstok').focus();
+
+        });
+
+    }
+
+    $('#simpankirim').click(function () {
+        var route = "/kirimstoktoko";
+        var id = $('#idkirim').val();
+        var token = $('#token').val();
+        var stokgudang = $('#stokgudangkirim').val();
+        var qty = $('#kirimstok').val();
+
+        stokgudang = intVal(stokgudang);
+        qty = intVal(qty);
+
+        if (stokgudang < qty) {
+            return swal({
+                type: 'error',
+                title: 'Stok Barang Tidak Mencukupi Untuk Dikirim!',
+                showConfirmButton: false,
+                timer: 2000
+            }).catch(function (timeout) {
+                $('#kirimstok').focus();
+            });
+
+            return;
+        }
+
+        $.ajax({
+            url: route,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': token
+            },
+            dataType: 'json',
+            data: {
+                idbarang: id,
+                stokkirim: qty,
+                _token: token
+            },
+            error: function (res) {
+                var errors = res.responseJSON;
+                var pesan = '';
+                $.each(errors, function (index, value) {
+                    pesan += value + "\n";
+                });
+                return swal({
+                    type: 'error',
+                    title: pesan,
+                    showConfirmButton: true,
+                    timer: 2000
+                }).catch(function (timeout) {});
+            },
+            success: function () {
+                reloadTable();
+                $('#kirimstok').val('');
+                $('#modalKirim').modal('toggle');
+                return swal({
+                    type: 'success',
+                    title: 'Data Stok Berhasil Dikirim.',
+                    showConfirmButton: true,
+                    timer: 2000
+                }).catch(function (timeout) {});
+            }
+        });
+    });
 
     $('#simpanubah').click(function () {
         var id = $('#idubah').val();
@@ -808,13 +563,11 @@ if($stokhabis != 0){
 
         var profit = intVal($('#profitubahtoko').val());
 
-        var stok = $('#stokubahtoko').val();
-        if (jQuery.trim(stok) == '' || stok == ' ' || intVal(stok) < 0) {
-            alert('Stok tidak boleh kosong.');
-            $('#stokubahtoko').focus();
-            return;
-        }
-        stok = intVal(stok);
+        var stoktoko = $('#stokubahtoko').val();
+        stoktoko = intVal(stoktoko);
+
+        var hargaterakhir = $('#hargaterakhir').val();
+        hargaterakhir = intVal(hargaterakhir);
 
         var tanggal = $('#tanggalubahtoko').val();
 
@@ -830,9 +583,10 @@ if($stokhabis != 0){
                 hargabeli: hargabeli,
                 nama: nama,
                 hargajual: hargajual,
+                hargaterakhir: hargaterakhir,
                 jenis: jenis,
                 profit: profit,
-                stok: stok,
+                stoktoko: stoktoko,
                 tanggal: tanggal,
                 _token: token
             },

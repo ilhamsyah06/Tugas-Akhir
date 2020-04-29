@@ -3,6 +3,13 @@
 @section('title','Retur Barang')
 
 @section('content')
+@if ($message = Session::get('warning'))
+<div class="alert alert-danger alert-block">
+  <button type="button" class="close" data-dismiss="alert">×</button> 
+  <strong><i class="fa fa-warning"></i> {{ $message }}</strong>
+</div>
+@endif
+
 <div class="row">
     <div class="col-md-4">
         <div class="panel panel-default">
@@ -37,6 +44,12 @@
             </div>
         </div>
     </div>
+        <div class="col-sm-6 col-md-6">
+            <div class="alert-message alert-message-warning">
+                <h4><i class="fa fa-warning"></i> Syarat Melakukan Retur Barang</h4>
+                <p>1. Barang Yang Dibeli Harus Lebih Dari 1.<br>2. Retur Bisa Dilakukan Dalam 1X24 JAM.<br>3. Hanya Dapat Meretur 1 Barang Saja.</p>
+            </div>
+        </div>
 </div>
 @include('master.retur.modal')
 @endsection

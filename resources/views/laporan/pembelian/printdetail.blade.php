@@ -193,7 +193,7 @@
             <td style="text-align: right;" class="page-number"></td>
         </tr>
     </table>
-</div>S
+</div>
 
 <table id="dataTableBuilder" class="table table-striped table-bordered table-hover display select tg"
        cellspacing="0" width="100%" border="1" style="margin-top: 10px;">

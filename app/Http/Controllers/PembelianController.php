@@ -217,11 +217,11 @@ class PembelianController extends Controller
                 $pembeliandetail->total = $value->jumlah * $value->harga;
                 $pembeliandetail->save();
 
-                $barang = $pembeliandetail->barang;
-                $stok_sebelumnya = $barang->stok;
+                $barang = $pembeliandetail->barang;//proses foregnkey eloquent
+                $stok_sebelumnya = $barang->stok_gudang;
                 
                 $dataubah = [
-                    'stok' => $barang->stok + $value->jumlah,
+                    'stok_gudang' => $barang->stok_gudang + $value->jumlah,
                     'updated_at' => date('Y/m/d H:i:s')
                 ];
 
@@ -377,7 +377,7 @@ class PembelianController extends Controller
             foreach ($pembeliandetail as $key => $value) {
                 $barang = $value->barang;//proses mulai method foregn key
                 $dataubah = [
-                    'stok' => $barang->stok - $value->qty
+                    'stok_gudang' => $barang->stok_gudang - $value->qty
                 ];
                 DB::table('barang')
                     ->where('id', $barang->id)
@@ -404,10 +404,10 @@ class PembelianController extends Controller
 
                 $barang = $pembeliandetail->barang; //proses call function method foreign key
 
-                $stok_sebelumnya = $barang->stok;
+                $stok_sebelumnya = $barang->stok_gudang;
                 
                 $dataubah = [
-                    'stok' => $barang->stok + $value->jumlah,
+                    'stok_gudang' => $barang->stok_gudang + $value->jumlah,
                     'updated_at' => date('Y/m/d H:i:s')
                 ];
 
@@ -542,7 +542,7 @@ class PembelianController extends Controller
     }
 
     public function barangpembelian() {
-        $barang = Barang::where('status','gudang')->get();
+        $barang = Barang::all();
         $cacah = 0;
         $data = [];
 
@@ -552,7 +552,7 @@ class PembelianController extends Controller
                 $d->nama_barang, 
                 $d->kategori->nama,
                 $d->harga_beli,
-                $d->stok,
+                $d->stok_gudang,
                 $d->id
             ];
 

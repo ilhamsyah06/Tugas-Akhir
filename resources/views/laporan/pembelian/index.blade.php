@@ -13,10 +13,10 @@
 
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-9 form-horizontal form-left">
+                        <div class="col-sm-8 form-horizontal form-left">
                             <div class="form-group">
-                                {!! Form::label('start', 'Periode', ['class' => 'control-label col-sm-1']) !!}
-                                <div class="col-sm-11 controls">
+                                {!! Form::label('start', 'Periode :', ['class' => 'control-label col-sm-2']) !!}
+                                <div class="col-sm-10 controls">
                                     <div class="input-daterange input-group">
                                         {!! Form::text('start', null, ['class'=>'form-control', 'id' => 'start',
                                         'placeholder'=> 'DD/MM/YYYY']) !!}
@@ -27,31 +27,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2 form-horizontal">
-                            <div class="form-group">
-                                {!! Form::open(['url' => '/cetakpembelian', 'method'=>'POST', 'id'=>'formcetak'])
-                                !!}
-                                <button type="submit" class="btn btn-primary btn-flat btn-block"><i class="fa fa-print"></i>
-                                    Preview Laporan
-                                </button>
-                                {!! Form::close() !!}
-                            </div>
+                        <div class="col-sm-4 form-horizontal">
+                            {!! Form::open(['url' => '/cetakpembelian', 'method'=>'POST', 'id'=>'formcetak', 'class'=>'pull-left', 'style'=>"margin-right:5px;"]) !!}
+                                        <button type="submit" class="btn btn-primary btn-flat"><i class="fa fa-print"></i>
+                                            Preview Laporan
+                                        </button>
+                                        {!! Form::close() !!}
+
+                            {!! Form::open(['url' => '/cetakpembelian', 'method'=>'POST', 'id'=>'formcetakdetail', 'class'=>'pull-left', 'style'=>"margin-right:5px;"]) !!}
+                                        <button type="submit" class="btn btn-success btn-flat"><i class="fa fa-print"></i>
+                                            Preview Laporan Detail
+                                        </button>
+                                        {!! Form::close() !!}
+                        
                         </div>
                     </div>
-                    <div class="row">
-                    <div class="col-sm-11">
-                        <div class="col-sm-12 form-horizontal">
-                            <div class="form-group">
-                                {!! Form::open(['url' => '/cetakpembelian', 'method'=>'POST',
-                                'id'=>'formcetakdetail']) !!}
-                                <button type="submit" class="btn btn-success btn-flat pull-right"><i class="fa fa-print"></i>
-                                    Preview Laporan Detail
-                                </button>
-                                {!! Form::close() !!}
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                     <table width="100%" class="table table-striped table-bordered table-hover" id="dataTableBuilder">
                         <thead>

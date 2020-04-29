@@ -209,11 +209,13 @@
     <thead>
     <tr>
         <th style="width: 5%" class="tg-3wr7"><strong>#</strong></th>
-        <th style="width:9%;" class="tg-3wr7"><strong>No. Bukti</strong></th>
+        <th style="width:9%;" class="tg-3wr7"><strong>No. Invoice</strong></th>
         <th class="tg-3wr7" style="width: 13%"><strong>Tanggal</strong></th>
-        <th class="tg-3wr7"><strong>Kasir/User</strong></th>
+        <th class="tg-3wr7"><strong>Operator</strong></th>
         <th style="text-align: center;" class="tg-3wr7"><strong>Total</strong></th>
-        <th colspan="3" style="width: 9%; text-align: center;" class="tg-3wr7-detail"><strong>Total Laba/Profit</strong></th>
+        <th style="text-align: center;" class="tg-3wr7"><strong>Jumlah Bayar</strong></th>
+        <th style="text-align: center;" class="tg-3wr7"><strong>Kembalian</strong></th>
+        <th colspan="2" style="width: 9%; text-align: center;" class="tg-3wr7-detail"><strong>Total Laba/Profit</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -222,11 +224,11 @@
             <td style="width: 5%; text-align: center;" class="tg-rv4w">{{ $i+1 }}</td>
             <td style="width:9%; text-align: center;" class="tg-rv4w">{{ $value->no_invoice }}</td>
             <td style="width:13%; text-align: center;" class="tg-rv4w">{{ $value->created_at->format('d/m/Y H:i:s') }}</td>
-            <td style="width: 15%; text-align: center;" class="tg-rv4w">{{ $value->user->name }}</td>
+            <td style="width: 9%; text-align: center;" class="tg-rv4w">{{ $value->user->name }}</td>
             <td style="width: 9%; text-align: right;" class="tg-rv4w">{{ number_format($value->total_bayar, 0, ',', '.') }}</td>
-            <td colspan="3" style="width: 9%; text-align: right;" class="tg-3wr7-detail">{{ number_format($value->keuntungan(), 0, ',', '.') }}</td>
-
-            
+            <td style="width: 9%; text-align: right;" class="tg-rv4w">{{ number_format($value->jumlah_bayar, 0, ',', '.') }}</td>
+            <td style="width: 9%; text-align: right;" class="tg-rv4w">{{ number_format($value->kembalian, 0, ',', '.') }}</td>
+            <td colspan="2" style="width: 9%; text-align: right;" class="tg-3wr7-detail">{{ number_format($value->keuntungan(), 0, ',', '.') }}</td>
         </tr>
 
         <tr>
@@ -235,6 +237,7 @@
             <th style="text-align: center;" colspan="2" class="tg-3wr7-detail"><strong>Barang</strong></th>
             <th style="text-align: center; width: 10%; " class="tg-3wr7-detail"><strong>Harga Beli</strong></th>
             <th style="text-align: center; width: 10%;" class="tg-3wr7-detail"><strong>Harga Jual</strong></th>
+            <th style="text-align: center; width: 10%;" class="tg-3wr7-detail"><strong>Diskon Item</strong></th>
             <th style="text-align: center;" class="tg-3wr7-detail"><strong>Sub Total</strong></th>
             <th style="text-align: center;" class="tg-3wr7-detail"><strong>Keutungan</strong></th>
         </tr>
@@ -246,6 +249,7 @@
                 <td colspan="2" class="tg-rv4w-detail">{{ $detail->barang->kode.' - '.$detail->barang->nama_barang }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga_beli, 0, ',', '.') }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga, 0, ',', '.') }}</td>
+                <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->diskon_item, 0, ',', '.') }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga * $detail->qty, 0, ',', '.') }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->barang->profit, 0, ',', '.') }}</td>
             </tr>
@@ -256,7 +260,7 @@
     </tbody>
     <tfoot>
     <tr>
-        <th colspan="6" class="tg-3wr7">Total Transaksi</th>
+        <th colspan="7" class="tg-3wr7">Total Transaksi</th>
         <th style="width: 9%; text-align: right;" class="tg-3wr7">{{ number_format($total, 0, ',', '.') }}</th>
         <th style="width: 9%; text-align: right;" class="tg-3wr7">{{ number_format($keuntungan, 0, ',', '.') }}</th>
     </tr>

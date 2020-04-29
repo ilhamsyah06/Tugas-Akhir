@@ -12,8 +12,8 @@
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-refresh"></i> Retur<span class="caret"></span></a>
     <ul class="dropdown-menu">
-    <li class="{{ Request::path() === 'retur' ? 'active' : '' }}" ><a href="{{ url('retur') }}">Retur</a></li>
-      <li><a href="#">List Retur</a></li>
+    <li class="{{ Request::path() === 'retur' ? 'active' : '' }}" ><a href="{{ url('retur') }}"><i class="fa fa-refresh"></i> Retur</a></li>
+      <li class="{{ Request::path() === 'listretur' ? 'active' : '' }}"><a href="{{ url('listretur') }}"><i class="fa fa-list"></i> List Retur</a></li>
     </ul>
   </li>
   <li class="dropdown">
@@ -21,6 +21,7 @@
       aria-expanded="false"><i class="fa fa-database"></i> Master <span class="caret"></span></a>
     <ul class="dropdown-menu">
       <li class="{{ Request::path() === 'barang' ? 'active' : '' }}"><a href="{{ url('barang') }}"><i class="fa fa-database"></i> Barang</a></li>
+      <li class="{{ Request::path() === 'stokopname' ? 'active' : '' }}"><a href="{{ url('stokopname')}}"><i class="fa fa-list-alt"></i> Stok Opname</a></li>
     </ul>
   </li>
   <li class="{{ Request::path() === 'modalkasir' ? 'active' : '' }}"><a href="{{ url('modalkasir') }}"><i class="fa fa-money"></i> Uang Kasir</a></li>
@@ -40,6 +41,7 @@
     <ul class="dropdown-menu">
       <li class="{{ Request::path() === 'barang' ? 'active' : '' }}"><a href="{{ url('barang') }}"><i class="fa fa-database"></i> Barang</a></li>
       <li class="{{ Request::path() === 'kategori' ? 'active' : '' }}"><a href="{{ url('kategori')}}"><i class="fa fa-list-alt"></i> Kategori Barang</a></li>
+      <li class="{{ Request::path() === 'stokopname' ? 'active' : '' }}"><a href="{{ url('stokopname')}}"><i class="fa fa-list-alt"></i> Stok Opname</a></li>
     </ul>
   </li>
   <li class="{{ Request::path() === 'supplier' ? 'active' : '' }}"><a href="{{ url('supplier') }}"><i class="fa fa-users"></i> Supplier</a></li>
@@ -62,18 +64,22 @@
   </li>
   <li class="{{ Request::path() === 'user' ? 'active' : '' }}"><a href="{{ url('user')}}"><i class="fa fa-user-circle"></i> User</a></li>
   <li class="{{ Request::path() === 'supplier' ? 'active' : '' }}"><a href="{{ url('supplier') }}"><i class="fa fa-users"></i> Supplier</a></li>
-  <li class="{{ Request::path() === 'laporanhistory' ? 'active' : '' }}"><a href="{{ url('laporanhistory') }}"><i class="fa fa-history"></i> Histori</a></li>
+  <li class="{{ Request::path() === 'laporanhistory' ? 'active' : '' }}"><a href="{{ url('laporanhistory') }}"><i class="fa fa-history"></i> Histori Stok</a></li>
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-file"></i> Laporan <span class="caret"></span></a>
     <ul class="dropdown-menu">
+      <li class="{{ Request::path() === 'laporanbarang' ? 'active' : '' }}"><a href="{{ url('laporanbarang')}}"><i class="fa fa-cubes"></i> Cetak Barang</a></li>
+      <li class="{{ Request::path() === 'laporanlaba' ? 'active' : '' }}"><a href="{{ url('laporanlaba')}}"><i class="fa fa-file-text-o"></i> Laporan Rugi Laba</a></li>
+      <li class="{{ Request::path() === 'laporanopname' ? 'active' : '' }}"><a href="{{ url('laporanopname')}}"><i class="fa fa-list-alt"></i> Laporan Stok Opname</a></li>
+      <li class="{{ Request::path() === 'laporanhilang' ? 'active' : '' }}"><a href="{{ url('laporanhilang')}}"><i class="fa fa-list-alt"></i> Laporan Barang Hilang</a></li>
       <li class="{{ Request::path() === 'laporanpenjualan' ? 'active' : '' }}"><a href="{{ url('laporanpenjualan')}}"><i class="fa fa-file-text-o"></i> Laporan Penjualan</a></li>
       <li class="{{ Request::path() === 'chartpenjualan' ? 'active' : '' }}"><a href="{{ url('chartpenjualan')}}"><i class="fa fa-bar-chart"></i> Laporan Grafik Penjualan</a></li>
       <li class="{{ Request::path() === 'laporanpembelian' ? 'active' : '' }}"><a href="{{ url('laporanpembelian')}}"><i class="fa fa-file-text-o"></i> Laporan Pembelian</a></li>
       <li class="{{ Request::path() === 'chartpembelian' ? 'active' : '' }}"><a href="{{ url('chartpembelian')}}"><i class="fa fa-bar-chart"></i> Laporan Grafik Pembelian</a></li>
-      <li><a href="#"><i class="fa fa-file-text-o"></i> Laporan Retur</a></li>
+      <li class="{{ Request::path() === 'laporanretur' ? 'active' : '' }}"><a href="{{ url('laporanretur') }}"><i class="fa fa-file-text-o"></i> Laporan Retur</a></li>
       <!--<li class="{{ Request::path() === 'laporanabsen' ? 'active' : '' }}"><a href="{{ url('laporanabsen') }}"><i class="fa fa-file-text-o"></i> Laporan Absen</a></li>-->
-      <li><a href=""><i class="fa fa-file-text-o"></i> Laporan Uang Modal Kasir</a></li>
+      <li class="{{ Request::path() === 'laporanmodalkasir' ? 'active' : '' }}"><a href="{{ url('laporanmodalkasir') }}"><i class="fa fa-file-text-o"></i> Laporan Uang Modal Kasir</a></li>
     </ul>
   </li>
   @endif

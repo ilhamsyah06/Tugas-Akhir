@@ -18,11 +18,18 @@
   <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <style>
+body{
+  background-image: url("img/pos.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+    </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="{{ route('login') }}"><b>POS</b>ANDIKA</a>
+    <a style="color:#fff;"href="{{ route('login') }}"><b>LOGIN</b> POSANDIKA</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -59,7 +66,7 @@
         </div>
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
+            <div class="icheck-danger">
               <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
               <label for="remember">
                 Remember Me
@@ -68,7 +75,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+            <button type="submit" class="btn btn-danger btn-block">Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -88,4 +95,3 @@
 
 </body>
 </html>
-

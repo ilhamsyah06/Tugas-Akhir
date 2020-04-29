@@ -22,6 +22,10 @@ class Barang extends Model
         return $this->hasMany('App\Sementara');
     }
 
+    public function sementararetur(){
+        return $this->hasMany('App\SementaraRetur');
+    }
+
     public function historiharga()
     {
         return $this->hasMany('App\Historiharga');
@@ -33,6 +37,14 @@ class Barang extends Model
 
     public function history() {
     	return $this->hasMany('App\History');
+    }
+
+    public function opname() {
+    	return $this->hasMany('App\Opname');
+    }
+
+    public function hilang() {
+    	return $this->hasMany('App\Hilang');
     }
 
 }

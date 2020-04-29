@@ -52,7 +52,7 @@
                             <th class="col-md-3">Nama</th>
                             <th class="col-md-2">Jenis</th>
                             <th class="col-md-2">Harga Beli</th>
-                            <th class="col-md-1">Stok</th>
+                            <th class="col-md-1">Stok Gudang</th>
                             <th class="col-md-2">Pilih</th>
                         </tr>
                     </thead>
