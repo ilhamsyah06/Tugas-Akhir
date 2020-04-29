@@ -192,7 +192,7 @@ class PenjualanController extends Controller
                 $penjualandetail->harga_beli = $barang->harga_beli;
                 $penjualandetail->qty = $value->jumlah;
                 $penjualandetail->diskon_item = $value->diskon;
-                $penjualandetail->total = $value->jumlah * $value->harga;
+                $penjualandetail->total = $value->jumlah * $value->harga - $value->diskon;
                 $penjualandetail->save();
 
                 $stok_sebelumnya = $barang->stok_toko;
@@ -282,7 +282,7 @@ class PenjualanController extends Controller
         if ($penjualan != null) {
             foreach ($penjualan->penjualandetail as $i => $d) {
                 $barang = $d->barang;
-                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga];
+                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga - $d->diskon_item];
                 $cacah++;
 
             }
@@ -309,7 +309,7 @@ class PenjualanController extends Controller
         if ($retur != null) {
             foreach ($retur->detailretur as $i => $d) {
                 $barang = $d->barang;
-                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga];
+                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga - $d->diskon_item];
                 $cacah++;
 
             }

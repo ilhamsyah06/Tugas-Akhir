@@ -183,7 +183,7 @@ class ReturController extends Controller
                 $returdetail->harga = $value->harga;
                 $returdetail->qty = $value->jumlah;
                 $returdetail->diskon_item = $value->diskon;
-                $returdetail->total = $value->jumlah * $value->harga;
+                $returdetail->total = $value->jumlah * $value->harga - $value->diskon;
                 $returdetail->save();
 
                 $stok_sebelumnya = $barang->stok_toko;

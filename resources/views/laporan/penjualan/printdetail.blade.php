@@ -233,8 +233,8 @@
 
         <tr>
             <th style="text-align: center;" class="tg-3wr7-detail"></th>
-            <th style="text-align: center;" class="tg-3wr7-detail"><strong>QTY</strong></th>
             <th style="text-align: center;" colspan="2" class="tg-3wr7-detail"><strong>Barang</strong></th>
+            <th style="text-align: center;" class="tg-3wr7-detail"><strong>QTY</strong></th>
             <th style="text-align: center; width: 10%; " class="tg-3wr7-detail"><strong>Harga Beli</strong></th>
             <th style="text-align: center; width: 10%;" class="tg-3wr7-detail"><strong>Harga Jual</strong></th>
             <th style="text-align: center; width: 10%;" class="tg-3wr7-detail"><strong>Diskon Item</strong></th>
@@ -245,13 +245,13 @@
         @foreach($value->penjualandetail as $detail)
             <tr>
                 <td style="text-align: center;" class="tg-rv4w-detail"></td>
-                <td style="text-align: center;" class="tg-rv4w-detail">{{ $detail->qty }}</td>
                 <td colspan="2" class="tg-rv4w-detail">{{ $detail->barang->kode.' - '.$detail->barang->nama_barang }}</td>
+                <td style="text-align: center;" class="tg-rv4w-detail">{{ $detail->qty }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga_beli, 0, ',', '.') }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga, 0, ',', '.') }}</td>
                 <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->diskon_item, 0, ',', '.') }}</td>
-                <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga * $detail->qty, 0, ',', '.') }}</td>
-                <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->barang->profit, 0, ',', '.') }}</td>
+                <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->harga * $detail->qty - $detail->diskon_item, 0, ',', '.') }}</td>
+                <td style="text-align: right;" class="tg-rv4w-detail">{{ number_format($detail->barang->profit - $detail->diskon_item, 0, ',', '.') }}</td>
             </tr>
         @endforeach
 
