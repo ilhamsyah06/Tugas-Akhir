@@ -223,8 +223,7 @@
                             $('#nama').val('Tidak ditemukan');
                         } else {
                             $('#barangasli').val(res.kode);
-                            $('#harga_beli').val(number_format(res.harga_beli, 0, ',',
-                                '.'));
+                            $('#harga_beli').val(number_format(res.harga_beli, 0, ',','.'));
                             $('#nama').val(res.nama);
                         }
                     });

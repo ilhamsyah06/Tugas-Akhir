@@ -28,7 +28,7 @@ class SearchController extends Controller
 
     	if ($kolom == 'kode') {
 			$barang = DB::table('barang')
-                    ->select('kode', 'nama_barang', 'harga_beli', 'stok')
+                    ->select('kode', 'nama_barang', 'harga_beli', 'stok_gudang')
 					->where('kode', $keyword)
                     ->first();
 
@@ -37,7 +37,7 @@ class SearchController extends Controller
 	                'nama' => $barang->nama_barang,
 	                'kode' => $barang->kode,
 					'harga_beli' => $barang->harga_beli,
-					'stok' => $barang->stok,
+					'stok' => $barang->stok_gudang,
 	            ]);
 	        }	
     	} elseif ($kolom == 'id') {
@@ -48,7 +48,7 @@ class SearchController extends Controller
 	                'nama' => $barang->nama_barang,
 	                'kode' => $barang->kode,
 					'harga_beli' => $barang->harga_beli,
-					'stok' => $barang->stok,
+					'stok' => $barang->stok_gudang,
 	            ]);
 	        }	
     	}

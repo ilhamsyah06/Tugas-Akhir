@@ -41,7 +41,6 @@
     <ul class="dropdown-menu">
       <li class="{{ Request::path() === 'barang' ? 'active' : '' }}"><a href="{{ url('barang') }}"><i class="fa fa-database"></i> Barang</a></li>
       <li class="{{ Request::path() === 'kategori' ? 'active' : '' }}"><a href="{{ url('kategori')}}"><i class="fa fa-list-alt"></i> Kategori Barang</a></li>
-      <li class="{{ Request::path() === 'stokopname' ? 'active' : '' }}"><a href="{{ url('stokopname')}}"><i class="fa fa-list-alt"></i> Stok Opname</a></li>
     </ul>
   </li>
   <li class="{{ Request::path() === 'supplier' ? 'active' : '' }}"><a href="{{ url('supplier') }}"><i class="fa fa-users"></i> Supplier</a></li>
