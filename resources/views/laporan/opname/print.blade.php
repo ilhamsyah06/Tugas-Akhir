@@ -177,8 +177,8 @@
         <th style="width: 10%;" class="tg-3wr7"><strong>Stok Komputer</strong></th>
         <th style="width: 10%;" class="tg-3wr7"><strong>Stok Nyata</strong></th>
         <th style="width: 10%;" class="tg-3wr7"><strong>Selisih</strong></th>
-        <th class="tg-3wr7"><strong>Keterangan</strong></th>
         <th style="width: 10%;" class="tg-3wr7"><strong>Operator</strong></th>
+        <th class="tg-3wr7"><strong>Keterangan</strong></th>
     </tr>
     </thead>
     <tbody>
@@ -190,8 +190,8 @@
             <td style="width: 10%; text-align: right;" class="tg-rv4w">{{ number_format($value->stok, 0, ',', '.') }}</td>
             <td style="width: 10%; text-align: right;" class="tg-rv4w">{{ number_format($value->stok_nyata,0,',', '.') }}</td>
             <td style="width: 10%; text-align: right;" class="tg-rv4w">{{ number_format($value->selisih,0,',', '.') }}</td>
-            <td class="tg-rv4w">{{ $value->keterangan }}</td>
             <td style="width: 10%; text-align: center;" class="tg-rv4w">{{ $value->user->name }}</td>
+            <td class="tg-rv4w">{{ $value->keterangan }}</td>
         </tr>
 
         <tr>
