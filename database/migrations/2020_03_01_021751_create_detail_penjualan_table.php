@@ -19,6 +19,7 @@ class CreateDetailPenjualanTable extends Migration
             $table->foreign('penjualan_id')->references('id')->on('penjualan')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('barang_id')->unsigned();
             $table->foreign('barang_id')->references('id')->on('barang')->onUpdate('restrict')->onDelete('restrict');
+            $table->integer('harga_beli');
             $table->integer('harga');
             $table->integer('qty');
             $table->integer('diskon_item');
