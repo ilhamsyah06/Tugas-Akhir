@@ -111,21 +111,13 @@ class OpnameController extends Controller
         	$history->stok = $stok_sebelumnya;
 
         	if ($selisih < 0) {
-        		$hilang = new Hilang;
-        		$hilang->id = $opname->id;
-        		$hilang->barang_id = $barang->id;
-        		$hilang->jumlah = $selisih * -1;
-
-        		$hilang->save();
-                
         		$history->masuk = 0;
         		$history->keluar = $selisih * -1;
         	} else {
         		$history->masuk = $selisih;
         		$history->keluar = 0;        		
         	}
-        	
-
+        
         	$history->saldo = $input['stok_nyata'];
         	$history->user_id = $opname->user_id;
         	$history->keterangan = 'Stok Opname, No. Bukti : '.$opname->kode;

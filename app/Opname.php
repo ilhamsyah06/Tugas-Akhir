@@ -17,7 +17,7 @@ class Opname extends Model
     }
 
     public function hilang() {
-        return $this->belongsTo('App\Hilang');
+        return $this->belongsTo("App\Hilang",'opname_id');
     }
 
     public function user() {

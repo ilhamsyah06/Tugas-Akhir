@@ -61,14 +61,15 @@
     <li class="{{ Request::path() === 'listpembelian' ? 'active' : '' }}"><a href="{{ url('listpembelian') }}"><i class="fa fa-list-ul"></i> List Pembelian</a></li>
     </ul>
   </li>
+  <li class="{{ Request::path() === 'modalkasir' ? 'active' : '' }}"><a href="{{ url('modalkasir') }}"><i class="fa fa-money"></i> Uang Kasir</a></li>
   <li class="{{ Request::path() === 'user' ? 'active' : '' }}"><a href="{{ url('user')}}"><i class="fa fa-user-circle"></i> User</a></li>
   <li class="{{ Request::path() === 'supplier' ? 'active' : '' }}"><a href="{{ url('supplier') }}"><i class="fa fa-users"></i> Supplier</a></li>
-  <li class="{{ Request::path() === 'laporanhistory' ? 'active' : '' }}"><a href="{{ url('laporanhistory') }}"><i class="fa fa-history"></i> Histori Stok</a></li>
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-file"></i> Laporan <span class="caret"></span></a>
     <ul class="dropdown-menu">
-      <li class="{{ Request::path() === 'laporanbarang' ? 'active' : '' }}"><a href="{{ url('laporanbarang')}}"><i class="fa fa-cubes"></i> Cetak Barang</a></li>
+      <li class="{{ Request::path() === 'laporanhistory' ? 'active' : '' }}"><a href="{{ url('laporanhistory') }}"><i class="fa fa-history"></i> Laporan Histori Stok</a></li>
+      <li class="{{ Request::path() === 'laporanbarang' ? 'active' : '' }}"><a href="{{ url('laporanbarang')}}"><i class="fa fa-cubes"></i> Laporan Cetak Barang</a></li>
       <li class="{{ Request::path() === 'laporanlaba' ? 'active' : '' }}"><a href="{{ url('laporanlaba')}}"><i class="fa fa-file-text-o"></i> Laporan Rugi Laba</a></li>
       <li class="{{ Request::path() === 'laporanopname' ? 'active' : '' }}"><a href="{{ url('laporanopname')}}"><i class="fa fa-list-alt"></i> Laporan Stok Opname</a></li>
       <li class="{{ Request::path() === 'laporanhilang' ? 'active' : '' }}"><a href="{{ url('laporanhilang')}}"><i class="fa fa-list-alt"></i> Laporan Barang Hilang</a></li>

@@ -113,8 +113,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <button class="btn btn-info" data-toggle="modal" data-target="#modalBantu"><i class="fa fa-exclamation"></i> Bantuan</button>
-                            <a href="{{ url('listpenjualan') }}" class="btn btn-danger"><i class="fa fa-list-alt"></i>
-                                List Penjualan</a>
+                            <a href="{{ url('listretur') }}" class="btn btn-danger"><i class="fa fa-list-alt"></i>
+                                List Retur</a>
                             <div class="btn-group pull-right row">
                                 <div class="col-md-3"><a class="btn btn-default" type="button" href="{{ url('retur') }}"><i class="fa fa-close"></i> Batalkan</a></div>
                                 <div class="col-md-1"></div>

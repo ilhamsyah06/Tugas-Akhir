@@ -168,6 +168,13 @@ class SearchController extends Controller
 		$users = DB::table('gaji')
         ->whereMonth('created_at', $tanggal)
 		->get();
+
+		$barangPenjualan = DB::table('barang')
+					->join('detail_penjualan', 'detail_penjualan.barang_id', '=', 'barang.id')
+                    ->select(DB::raw('sum(detail_penjualan.qty) as jumlahjual, sum(detail_penjualan.total) as totalharga, barang.id'))
+                    ->groupBy('barang.id')
+                    ->orderBy('jumlahjual', 'desc')
+                    ->get();
 		
 		$orders = Penjualan::select(
 			DB::raw('sum(total_bayar) as total'),
@@ -178,12 +185,10 @@ class SearchController extends Controller
   ->orderBy('bulan','asc')
   ->get();
 
-  $sementararetur = SementaraRetur::where('noretur', 'RE005')->get();
+  $hilang = DB::table('hilang')->select('opname_id')->get();
 
 
-  $succes = 'success';
-
-		return response()->json($sementararetur); 
+		return response()->json($hilang); 
 
 	}
 	
@@ -209,6 +214,38 @@ class SearchController extends Controller
         return response()->json([
             'data' => $data
         ]);
-    }
+	}
+	
+	public function terlaris()
+	{
+		       $barangPenjualan = DB::table('barang')
+                    ->join('detail_penjualan', 'detail_penjualan.barang_id', '=', 'barang.id')
+                    ->select(DB::raw('sum(detail_penjualan.qty) as jumlahjual, sum(detail_penjualan.total) as totaljual, barang.id'))
+                    ->groupBy('barang.id')
+                    ->orderBy('jumlahjual', 'desc')
+                    ->get();
+
+        $cacah = 0;
+        $data = [];
+
+        foreach ($barangPenjualan as $i => $d) {
+			$barang = Barang::find($d->id);
+            $data[$cacah] = [
+                $barang->kode, 
+				$barang->nama_barang,
+				$barang->kategori->nama,
+				$d->jumlahjual,
+				$barang->harga_beli, 
+				$barang->harga_jual, 
+				$d->totaljual,
+            ];
+
+            $cacah++;    
+        }
+
+        return response()->json([
+            'data' => $data
+        ]);
+	}
 
 }

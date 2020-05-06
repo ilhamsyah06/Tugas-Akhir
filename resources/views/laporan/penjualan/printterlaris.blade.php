@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Laporan Stok Hilang</title>
+    <title>Laporan Barang Terlaris Penjualan Barang</title>
 </head>
 
 <body>
@@ -15,7 +15,13 @@
     .tg th{font-family:Arial;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color:#f0f0f0;}
     .tg .tg-3wr7{font-weight:bold;font-size:12px;font-family:"Arial", Helvetica, sans-serif !important;;text-align:center}
     .tg .tg-ti5e{font-size:10px;font-family:"Arial", Helvetica, sans-serif !important;;text-align:center}
-    .tg .tg-rv4w{font-size:11px;font-family:"Arial", Helvetica, sans-serif !important;}
+    .tg .tg-rv4w{font-size:10px;font-family:"Arial", Helvetica, sans-serif !important;}
+
+    .tg .tg-3wr7-detail{font-weight:bold;font-size:10px;font-family:"Arial", Helvetica, sans-serif !important;;text-align:center}
+    .tg .tg-rv4w-detail{font-size:9px;font-family:"Arial", Helvetica, sans-serif !important;}
+    .tg td.tg-rv4w-detail{font-family:Arial;font-size:9px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color: #fafafa;}
+    .tg th.tg-3wr7-detail{font-family:Arial;font-size:10px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#ccc;color:#333;background-color: #b7b7b7;}
+
 
     body {
         font-family: sans-serif;
@@ -36,14 +42,6 @@
         font-weight: bold;
         font-size: 12pt;
     }
-    #title .title-header-alamat {
-        text-align: center;
-        margin-top: 0px;
-        font-weight: normal;
-        font-size: 11pt;
-        font-style: italic;
-    }
-
     #title .title-header-2 {
         text-align: center;
         margin-top: 0px;
@@ -64,6 +62,14 @@
         font-style: italic;
     }
 
+    #title .title-header-alamat {
+        text-align: center;
+        margin-top: 0px;
+        font-weight: normal;
+        font-size: 11pt;
+        font-style: italic;
+    }
+
     #header .judul_laporan {
         text-align: center;
         margin-top: 0px;
@@ -74,8 +80,17 @@
         text-align: center;
         margin-top: 0px;
         font-weight: bold;
-        font-size: 12px;
+        font-size: 14px;
     }
+
+    /*#header,*/
+    /*#footer {*/
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*color: #aaa;*/
+    /*font-size: 0.9em;*/
+    /*}*/
 
     #footer {
         position: fixed;
@@ -84,6 +99,11 @@
         color: #aaa;
         font-size: 0.9em;
     }
+
+    /*#header {*/
+    /*top: 0;*/
+    /*border-bottom: 0.1pt solid #aaa;*/
+    /*}*/
 
     #footer {
         bottom: 0;
@@ -125,9 +145,26 @@
         top: 12px;
     }
 
+    .center {
+        text-align: center;
+    }
+    .left {
+        text-align: left;
+    }
+
+    .kepada {
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+
+    .pengesah .nama {
+        font-weight: bold;
+    }
+
 </style>
 
 <div id="title">
+
     <table width="100%" cellpadding="0">
         <tr>
             <td class="title-header-3">TOKO ANDIKA</td>
@@ -150,10 +187,7 @@
 <div id="header">
     <table width="100%" style="margin-top: 10px">
         <tr>
-            <td class="judul_laporan">LAPORAN DAFTAR STOK HILANG</td>
-        </tr>
-        <tr>
-            <td class="subjudul_laporan">{{ $periode }}</td>
+            <td class="judul_laporan">LAPORAN BARANG TERLARIS PENJUALAN BARANG</td>
         </tr>
     </table>
 </div>
@@ -171,35 +205,30 @@
        cellspacing="0" width="100%" border="1" style="margin-top: 10px;">
     <thead>
     <tr>
-        <th style="width: 4%;" class="tg-3wr7"><strong>#</strong></th>
-        <th style="width:8%;" class="tg-3wr7"><strong>Tanggal</strong></th>
-        <th style="width:15%;"><strong class="tg-3wr7">Data Barang</strong></th>
-        <th style="width:15%;" class="tg-3wr7"><strong>No. Bukti</strong></th>
-        <th style="width: 15%;" class="tg-3wr7"><strong>Operator</strong></th>
-        <th style="width: 8%;" class="tg-3wr7"><strong>Jumlah</strong></th>
+        <th style="width: 5%" class="tg-3wr7"><strong>#</strong></th>
+        <th style="width:9%;" class="tg-3wr7"><strong>Kode</strong></th>
+        <th class="tg-3wr7" style="width: 13%"><strong>Nama</strong></th>
+        <th class="tg-3wr7"><strong>Kategori</strong></th>
+        <th class="tg-3wr7"><strong>Terjual</strong></th>
+        <th class="tg-3wr7"><strong>Total</strong></th>
+
     </tr>
     </thead>
     <tbody>
-    @foreach($hilang as $i => $value)
+    @foreach($sum as $i => $value)
         <tr>
-            <td style="width: 4%; text-align: center;" class="tg-rv4w">{{ $i+1 }}</td>
-            <td style="width:8%; text-align: center;" class="tg-rv4w">{{ $value->opname->tgl->format('d/m/Y') }}</td>
-            <td class="tg-rv4w" style="width:15%;">{{ $value->barang->kode.'  -  '.$value->barang->nama_barang }}</td>
-            <td style="width:15%; text-align: center;" class="tg-rv4w">{{ $value->opname->kode }}</td>
-            <td style="width: 15%; text-align: center;" class="tg-rv4w">{{ $value->opname->user->name }}</td>
-            <td style="width: 8%; text-align: right;" class="tg-rv4w">{{ number_format($value->jumlah, 0, ',', '.') }}</td>
+            <td style="width: 5%; text-align: center;" class="tg-rv4w">{{ $i+1 }}</td>
+            <td style="width:9%; text-align: center;" class="tg-rv4w"></td>
+            <td style="width:13%; text-align: center;" class="tg-rv4w"></td>
+            <td style="width: 9%; text-align: center;" class="tg-rv4w"></td>
+            <td style="width: 9%; text-align: center;" class="tg-rv4w">{{ $value->jumlahjual }}</td>
+            <td style="width: 9%; text-align: center;" class="tg-rv4w">{{ $value->totalharga }}</td>
         </tr>
     @endforeach
-
     </tbody>
-
-    <tfoot>
-        <tr>
-            <th colspan="5" style="text-align: center;" class="tg-3wr7"><strong>Total Stok Hilang</strong></th>
-            <th style="width: 8%;text-align: right;" class="tg-3wr7"><strong>{{$total}}</strong></th>
-        </tr>
-    </tfoot>
 </table>
+
+
 
 </body>
 </html>

@@ -34,4 +34,6 @@ class Penjualan extends Model
 
         return $t;
     }
+
+
 }

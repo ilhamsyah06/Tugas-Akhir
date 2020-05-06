@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\App;
 use Exception;
 use App\Penjualan;
 use App\User;
+use App\Barang;
 use DB;
 use Carbon\Carbon;
 use App\Detailpenjualan;
@@ -149,5 +150,30 @@ class LaporanpenjualanController extends Controller
             }
         }
     
+}
+
+public function previewterlaris(Request $request)
+{
+    $penjualan = Detailpenjualan::whereBetween('tgl_penjualan',[$from, $to], 'and')->get();
+
+         $barangPenjualan = DB::table('barang')
+                    ->join('detail_penjualan', 'detail_penjualan.barang_id', '=', 'barang.id')
+                    ->select(DB::raw('sum(detail_penjualan.qty) as jumlahjual, barang.id'))
+                    ->groupBy('barang.id')
+                    ->orderBy('jumlahjual', 'desc')
+                    ->get();
+
+        foreach ($barangPenjualan as $i => $d) {
+            $barang = Barang::find($d->id);
+  
+        }
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadView('laporan.penjualan.printterlaris', 
+        [
+            'sum' -> $barangPenjualan,
+        ]
+    );
+    $pdf->setPaper('a4', 'landscape')->setWarnings(false);
+    return $pdf->stream();
 }
 }

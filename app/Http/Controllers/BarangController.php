@@ -68,7 +68,6 @@ class BarangController extends Controller
                         'data' => ['Gagal menyimpan data barang! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
                     ], 422);
                 }
-
             }
         }
     }
@@ -90,11 +89,6 @@ class BarangController extends Controller
             $barang->stok_toko = '0' ;
             $barang->stok_gudang = '0';
             $barang->save();
-
-            $historiharga = new Historiharga;
-            $historiharga->barang_id = $barang->id;
-            $historiharga->harga_terakhir = $input['hargajual'];
-            $historiharga->harga_naik = $input['hargajual'];
         } catch (ValidationException $ex) {
             DB::rollback();
             return $ex->getMessage();;

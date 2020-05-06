@@ -29,6 +29,7 @@
 
 <div class="row">
     <br>
+    @if (Auth::user()->level === 'kasir')
     <div class="col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -53,6 +54,7 @@
             </div>
         </div>
     </div>
+    @endif
     <div class="col-md-8">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -84,6 +86,12 @@
 @section('footer')
 <script>
     $(document).ready(function () {
+    var route = "/cekhakakses";
+    var bolehUbah;
+    $.get(route, function (res) {
+        bolehUbah = res;
+    });
+
         var t = $('#uangmodal').DataTable({
             "pagingType": "full_numbers",
             "responsive": true,
@@ -131,19 +139,22 @@
                 'render': function (data, type, full, meta) {
                     var button =
                         '<button title="Lihat Data" class="btn btn-info btn-flat" data-toggle="modal" data-target="#modalLihat" onclick="LihatClick(this);"><i class="glyphicon glyphicon-eye-open"></i> </button>';
+                        if (bolehUbah == 'admin') {
                     button +=
                         '<button title="Ubah Data" class="btn btn-warning btn-flat" data-toggle="modal" data-target="#modalUbah" onclick="UbahClick(this);"><i class="fa fa-pencil-square-o fa-fw"></i> </button>';
                     button +=
                         '<button title="Hapus Data" class="btn btn-danger btn-flat" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="glyphicon glyphicon-trash"></i> </button>';
-
+                        }
                     return button;
 
                 }
             }],
             'rowCallback': function (row, data, dataIndex) {
                 $(row).find('button[class="btn btn-info btn-flat"]').prop('value', data[4]);
+                if (bolehUbah == 'admin') {
                 $(row).find('button[class="btn btn-warning btn-flat"]').prop('value', data[4]);
                 $(row).find('button[class="btn btn-danger btn-flat"]').prop('value', data[4]);
+                }
 
             }
         });

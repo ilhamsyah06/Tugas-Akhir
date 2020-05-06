@@ -56,11 +56,6 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     //Stok Opaname
     Route::resource('stokopname', 'OpnameController',['except' => ['create', 'show', 'edit', 'update', 'destroy']]);
 
-    // Laporan Stok hilang
-    Route::get('laporanhilang', 'LaporanHilangController@index');
-    Route::get('datahilang', 'LaporanHilangController@datahilang');
-    Route::post('cetakhilang', 'LaporanHilangController@preview');
-
     //----// Route Barang Gudang 
     Route::resource('baranggudang','BaranggudangController');
     Route::get('api/baranggudang','BaranggudangController@apiBarangGudang')->name('api.baranggudang');
@@ -114,6 +109,7 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     
     //Route dashboard menguntungkan 
     Route::get('menguntungkan', 'SearchController@menguntungkan')->name('menguntungkan');
+    Route::get('terlaris', 'SearchController@terlaris');
     Route::get('daftarhabis', 'SearchController@daftarhabis')->name('daftarhabis');
     Route::get('getkembalian', 'SearchController@getkembalian');//belum difungsikan
 
@@ -131,6 +127,7 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::get('laporanpenjualan','LaporanpenjualanController@index')->name('laporanpenjualan');
     Route::get('datalaporanpenjualan', 'LaporanpenjualanController@datalaporanpenjualan');
     Route::post('cetakpenjualan', 'LaporanpenjualanController@preview');
+    Route::post('cetakterlaris', 'LaporanpenjualanController@previewterlaris');
 
     // keuangan rekap
     Route::get('laporanlaba', 'LaporanlabaController@index');

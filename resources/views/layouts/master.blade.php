@@ -49,6 +49,7 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     {!! Charts::assets() !!}
+
   <!--modal merah danger-->
   <style>
     @font-face{
@@ -170,7 +171,6 @@
 
   <script src="{{ asset('js/dashboard/dashboard.js') }}"></script>
 
-    <script src="{{ asset('js/jquery.pos.js') }}"></script>
 
     <script src="{{ asset('assets/Datejs-master/build/date.js') }}"></script>
 
