@@ -183,7 +183,7 @@ class ReturController extends Controller
                 $returdetail->harga = $value->harga;
                 $returdetail->qty = $value->jumlah;
                 $returdetail->diskon_item = $value->diskon;
-                $returdetail->total = $value->jumlah * $value->harga - $value->diskon;
+                $returdetail->total = ($value->jumlah * $value->harga) - ($value->diskon * $value->jumlah);
                 $returdetail->save();
 
                 $stok_sebelumnya = $barang->stok_toko;
@@ -243,7 +243,7 @@ class ReturController extends Controller
                 $penjualandetail->harga_beli = $barang->harga_beli;
                 $penjualandetail->qty = $value->jumlah;
                 $penjualandetail->diskon_item = $value->diskon;
-                $penjualandetail->total = $value->jumlah * $value->harga;
+                $penjualandetail->total = ($value->jumlah * $value->harga) - ($value->diskon * $value->jumlah);
                 $penjualandetail->save();
 
                 $stok_sebelumnya = $barang->stok_toko;
@@ -362,7 +362,7 @@ class ReturController extends Controller
 
         foreach ($sementaras as $d) {
         	$barang = $d->barang;
-            $data[$cacah] = [$barang->kode, $barang->nama_barang, $d->jumlah, $d->diskon, $d->harga, $d->jumlah * $d->harga - $d->diskon, $d->id];
+            $data[$cacah] = [$barang->kode, $barang->nama_barang, $d->jumlah, $d->diskon, $d->harga, ($d->jumlah * $d->harga) - ($d->diskon * $d->jumlah), $d->id];
             $cacah++;
 
         }

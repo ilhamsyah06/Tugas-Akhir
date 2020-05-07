@@ -282,7 +282,7 @@ class PenjualanController extends Controller
         if ($penjualan != null) {
             foreach ($penjualan->penjualandetail as $i => $d) {
                 $barang = $d->barang;
-                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga - $d->diskon_item];
+                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, ($d->qty * $d->harga) - ($d->diskon_item * $d->qty)];
                 $cacah++;
 
             }
@@ -309,7 +309,7 @@ class PenjualanController extends Controller
         if ($retur != null) {
             foreach ($retur->detailretur as $i => $d) {
                 $barang = $d->barang;
-                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, $d->qty * $d->harga - $d->diskon_item];
+                $data[$cacah] = [$barang->kode, $barang->nama_barang, $barang->kategori->nama, $d->diskon_item , $d->harga, $d->qty, ($d->qty * $d->harga) - ($d->diskon_item * $d->qty)];
                 $cacah++;
 
             }
