@@ -594,7 +594,7 @@
             var total = intVal(qty) * intVal(harga);
             $('#subtotal').val(number_format(total, 0, ',', '.'));
         }
-
+//-----------------------------------//
         var qty1 = $('#qtyubah').val();
         var harga1 = $('#harga_jualubah').val();
         $('#totalubah').val(null);
@@ -611,7 +611,7 @@
 
         if (diskon != undefined && jQuery.trim(diskon) != '' && intVal(diskon) > 0 && total != undefined && jQuery.trim(
                 total) != '' && intVal(total) > 0) {
-            var total2 = intVal(total) - intVal(diskon);
+            var total2 = intVal(total) - intVal(diskon) * intVal(qty1);
             $('#totalubah').val(number_format(total2, 0, ',', '.'));
         }
     }
