@@ -594,7 +594,7 @@
             var total = intVal(qty) * intVal(harga);
             $('#subtotal').val(number_format(total, 0, ',', '.'));
         }
-//-----------------------------------//
+        //-----------------------------------//
         var qty1 = $('#qtyubah').val();
         var harga1 = $('#harga_jualubah').val();
         $('#totalubah').val(null);

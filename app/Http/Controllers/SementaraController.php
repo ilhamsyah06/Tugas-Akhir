@@ -57,7 +57,7 @@ class SementaraController extends Controller
 
         foreach ($sementaras as $d) {
         	$barang = $d->barang;
-            $data[$cacah] = [$barang->kode, $barang->nama_barang, $d->jumlah, $d->diskon, $d->harga, $d->jumlah * $d->harga - $d->diskon * $d->jumlah, $d->id];
+            $data[$cacah] = [$barang->kode, $barang->nama_barang, $d->jumlah, $d->diskon, $d->harga, ($d->jumlah * $d->harga) - ($d->diskon * $d->jumlah), $d->id];
             $cacah++;
 
         }

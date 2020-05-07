@@ -192,7 +192,7 @@ class PenjualanController extends Controller
                 $penjualandetail->harga_beli = $barang->harga_beli;
                 $penjualandetail->qty = $value->jumlah;
                 $penjualandetail->diskon_item = $value->diskon;
-                $penjualandetail->total = $value->jumlah * $value->harga - $value->diskon;
+                $penjualandetail->total = ($value->jumlah * $value->harga) - ($value->diskon * $value->jumlah);
                 $penjualandetail->save();
 
                 $stok_sebelumnya = $barang->stok_toko;
