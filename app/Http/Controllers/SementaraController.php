@@ -172,7 +172,6 @@ class SementaraController extends Controller
                                 'data' => ['Barang dengan kode '.$input['kodebarang'].' sudah ada di keranjang, Silahkan Update Qty!']
                             ], 422);    
                 }
-
                 if ($barang != null) {
 
                     if ($barang->stok_toko < $input['qty']) {
@@ -405,11 +404,9 @@ class SementaraController extends Controller
         }
     }
 
-
-    //method
     protected function simpanTransaksiDelete($sementara)
     {
-//        dd($input);
+
         DB::beginTransaction();
 
         try {

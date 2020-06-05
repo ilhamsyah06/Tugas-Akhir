@@ -141,7 +141,6 @@ class ReturController extends Controller
                         'data' => ['Silahkan Isi Uang Modal Kasir Agar Bisa Melakukan Transaksi!']
                     ], 422);
                 }
-
                 if ($sementara != null && $penjualan != null && $sementararetur != null) {
                     $hasil = $this->simpanTransaksiUpdate($input, $sementara, $sementararetur, $penjualan, $uangmodal);
                     if ($hasil == '') {
@@ -339,7 +338,7 @@ class ReturController extends Controller
         }elseif($cekdatabarang < 2){
             return redirect('/retur')->with(['warning' => 'Barang yang Dibeli Kurang Dari 2 Item.']);
         }elseif($retur->tgl_penjualan->format('Y-m-d') != $tglnow){
-            return redirect('/retur')->with(['warning' => 'Tidak Dapat Retur, Data Penjualan Lebih Dari 1x24 Jam.']);
+            return redirect('/retur')->with(['warning' => 'Tidak Dapat Retur, Data Penjualan Lebih Dari Waktu Yang Ditentukan.']);
         }
             return view('master.retur.tambah_retur', compact('retur'));
 

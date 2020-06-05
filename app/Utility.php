@@ -133,8 +133,7 @@ class Utility extends Model
         $diskon = Detailpenjualan::where('penjualan_id', $penjualan->id)->sum('diskon_item');
         $jumlah = Detailpenjualan::where('penjualan_id', $penjualan->id)->count();
 
-        // $connector = new FilePrintConnector("/dev/usb/lp0");
-        // $connector = new FilePrintConnector("com1");
+                                        //SET NAMA PRINTER YANG SUDAH TERINSTAL
         $connector = new WindowsPrintConnector("POS-58");
         
         

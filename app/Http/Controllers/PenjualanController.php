@@ -45,7 +45,6 @@ class PenjualanController extends Controller
             ]);
         }
 
-
         $input = $request->all();
 
         $start = $input['start'];
@@ -124,9 +123,6 @@ class PenjualanController extends Controller
     public function store(Request $request) {
         if ($request->ajax()) {
             $input = $request->all();
-
-            // dd($input);
-
             if (!isset($input['_token'])) {
                 return response()->json([
                     'data' => $input->toArray()
@@ -141,7 +137,6 @@ class PenjualanController extends Controller
                             'data' => ['Silahkan Isi Uang Modal Kasir Agar Bisa Melakukan Transaksi!']
                         ], 422);
                 }
-
                 if ($sementara != null) {
 
                     $hasil = $this->simpanTransaksiCreate($input, $sementara, $uangkasir);
@@ -155,7 +150,7 @@ class PenjualanController extends Controller
                                 'data' => ['Gagal menyimpan! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
                             ], 422);
                     }
-                    
+
                 } else {
                     return response()->json([
                         'data' => ['Gagal menyimpan! Data transaksi tidak ditemukan di database']
@@ -592,15 +587,6 @@ class PenjualanController extends Controller
 
             foreach ($penjualan->penjualandetail as $key => $value) {
                 $barang = $value->barang;
-
-                $dataubah = [
-                    'stok' => $barang->stok + $value->qty,
-                    'updated_at' => date('Y/m/d H:i:s')
-                ];
-
-                DB::table('barang')
-                    ->where('id', $barang->id)
-                    ->update($dataubah);
 
                 $historylama = History::where(['barang_id' => $barang->id, 'kode' => $penjualan->no_invoice, 'nama' => 'penjualan'])->first();
 

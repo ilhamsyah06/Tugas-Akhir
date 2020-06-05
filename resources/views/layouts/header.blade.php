@@ -16,14 +16,8 @@
       <li class="{{ Request::path() === 'listretur' ? 'active' : '' }}"><a href="{{ url('listretur') }}"><i class="fa fa-list"></i> List Retur</a></li>
     </ul>
   </li>
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-      aria-expanded="false"><i class="fa fa-database"></i> Master <span class="caret"></span></a>
-    <ul class="dropdown-menu">
-      <li class="{{ Request::path() === 'barang' ? 'active' : '' }}"><a href="{{ url('barang') }}"><i class="fa fa-database"></i> Barang</a></li>
-      <li class="{{ Request::path() === 'stokopname' ? 'active' : '' }}"><a href="{{ url('stokopname')}}"><i class="fa fa-list-alt"></i> Stok Opname</a></li>
-    </ul>
-  </li>
+  <li class="{{ Request::path() === 'stokopname' ? 'active' : '' }}"><a href="{{ url('stokopname')}}"><i class="fa fa-list-alt"></i> Stok Opname</a></li>
+
   <li class="{{ Request::path() === 'modalkasir' ? 'active' : '' }}"><a href="{{ url('modalkasir') }}"><i class="fa fa-money"></i> Uang Kasir</a></li>
   @endif
   @if(Auth::user()->level === 'gudang')

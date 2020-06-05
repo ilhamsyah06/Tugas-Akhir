@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
+use App\Uang_modal_kasir;
 
 use App\Absen;
 use Auth;
@@ -13,12 +14,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $id =  Auth::user()->id;
         $tanggal = date('Y-m-d');
-        $now = Carbon::now()->format('Y-m-d');
-        $uangawal = DB::table('uang_modal_kasir')->where('tanggal', $now)->limit(1)->get();
-        $count = Absen::where('tgl_absen','=',$now)->where('user_id',$id)->count();
-        return view('home',['uangawal' => $uangawal,'count' => $count]);
+        $uangawal = Uang_modal_kasir::where('tanggal', $tanggal);
+        return view('home',compact('uangawal'));
     }
 
     public function template()

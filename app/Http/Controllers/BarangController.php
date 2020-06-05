@@ -71,11 +71,8 @@ class BarangController extends Controller
             }
         }
     }
-
     protected function simpanTransaksiCreatetoko($input) {
-        
         DB::beginTransaction();
-
         try {
             $barang = new Barang();
             $barang->kode = $input['kode'];

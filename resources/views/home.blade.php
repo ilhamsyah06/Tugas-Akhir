@@ -22,24 +22,11 @@
   $totalreturkeseluruhan = DB::table('retur')->count();
 @endphp
 
-<!---@if ($count === 1 ) 
-
-@else  
- <script>
- swal({
-      type: 'info',
-      title: 'Silahkan Absen Untuk Hari Ini !',
-      text: 'Silahkan Pergi Ke Menu Detail Profil Untuk Absen.',
-      timer: 3000
-  }).catch(function(timeout) { });
- </script>
-@endif-->
-
   @if (Auth::user()->level === 'admin')
   <div class="col-md-3">
     <div class="card-counter primary animated flipInX">
       <i class="fa fa-money"></i>
-    <span class="count-numbers">Rp.<span>{{ number_format($total_bayar) }}</span>,-</span>
+      <span class="count-numbers">Rp.<span>{{ number_format($total_bayar) }}</span>,-</span>
       <span class="count-name">Pendapatan Jual Hari Ini</span>
     </div>
   </div>
@@ -47,7 +34,7 @@
   <div class="col-md-3">
     <div class="card-counter success animated flipInX">
       <i class="fa fa-money"></i>
-    <span class="count-numbers">Rp.<span>{{ number_format($total_bayar_keseluruhan) }}</span>,-</span>
+      <span class="count-numbers">Rp.<span>{{ number_format($total_bayar_keseluruhan) }}</span>,-</span>
       <span class="count-name">Pendapatan Jual Keseluruhan</span>
     </div>
   </div>

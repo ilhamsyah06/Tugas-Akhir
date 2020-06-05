@@ -94,8 +94,6 @@ class SearchController extends Controller
 	}
 	
 	public function menguntungkan() {
-
-
         $barangPenjualan = DB::table('barang')
                     ->join('detail_penjualan', 'detail_penjualan.barang_id', '=', 'barang.id')
                     ->select(DB::raw('sum(detail_penjualan.qty) as jumlahjual, barang.id'))
@@ -123,9 +121,7 @@ class SearchController extends Controller
 	}
 	
 	public function daftarhabis() {
-
         $barang = Barang::where('stok_toko', '<=', 0)->get();
-
         $cacah = 0;
         $data = [];
 
@@ -138,7 +134,6 @@ class SearchController extends Controller
 
             $cacah++;    
         }
-
         return response()->json([
             'data' => $data
         ]);

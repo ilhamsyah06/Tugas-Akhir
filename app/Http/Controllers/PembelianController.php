@@ -467,8 +467,6 @@ class PembelianController extends Controller
     {
         $pembelian = Pembelian::find($id);
 
-        // dd($pembelian);
-
         $hasil = $this->simpanTransaksiDelete($pembelian);
         if ($hasil == '') {
             return response()->json([
@@ -491,15 +489,6 @@ class PembelianController extends Controller
 
             foreach ($pembeliandetail as $key => $value) {
                 $barang = $value->barang;
-
-                $dataubah = [
-                    'stok' => $barang->stok - $value->qty,
-                    'updated_at' => date('Y/m/d H:i:s')
-                ];
-
-                DB::table('barang')
-                    ->where('id', $barang->id)
-                    ->update($dataubah);
 
                 $historylama = History::where(['barang_id' => $barang->id, 'kode' => $pembelian->kode, 'nama' => 'pembelian'])->first();
 
