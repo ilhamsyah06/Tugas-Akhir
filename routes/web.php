@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::get('getpenjualanautocode', 'PenjualanController@getpenjualanautocode');
     Route::get('barangpenjualan', 'PenjualanController@barangpenjualan');
     Route::post('sementarajual', 'SementaraController@storeJual');
+    Route::get('sementarakoreksi/{id}/edit', 'SementaraController@editkoreksi');
     Route::get('totalbarang', 'PenjualanController@totalbarang');
     Route::get('strukjual/{kode}', 'PenjualanController@strukjual');
     //---------------------------------------------------------------//
@@ -106,6 +107,11 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::get('getdetailpenjualan', 'PenjualanController@getdetailpenjualan');
     Route::get('getdetailretur', 'PenjualanController@getdetailretur');
     Route::post('siapkankoreksipenjualan', 'PenjualanController@siapkanKoreksi');
+
+    //Routeprint
+    Route::post('printbarcode', function(){
+        return view('master.barang.page-cetak-barcode');
+    });
     
     //Route dashboard menguntungkan 
     Route::get('menguntungkan', 'SearchController@menguntungkan')->name('menguntungkan');

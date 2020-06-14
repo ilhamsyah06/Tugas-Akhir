@@ -19,7 +19,7 @@ class KategoriUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama'  => 'required|min:5|max:100',
+            'nama'  => 'required|min:3|max:100',
         ];
     }
 

@@ -24,10 +24,10 @@ class UserSimpanRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required|min:5|max:50',
-            'email' => 'required|unique:users',
+            'nama' => 'required|regex:/^[a-zA-Z ]+$/u|max:50',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:5|max:50',
-            'alamat' => 'required|min:7|max:150',
+            'alamat' => 'required|max:150',
             'nomor' => 'required|numeric'
 
         ];
@@ -37,18 +37,18 @@ class UserSimpanRequest extends FormRequest
     {
         return [
             'nama.required' => 'Nama tidak boleh kosong.',
-            'nama.min' => 'Nama user minimal :min karakter.',
             'nama.max' => 'Nama user maksimal :max karakter.',
+            'nama.regex' => 'Nama Tidak Boleh Terdapat Angka.',
 
             'email.required' => 'Email tidak boleh kosong.',
-            'email.unique' => 'Email tersebut sudah ada dalam database, silahkan ganti email lain.',
+            'email.unique' => 'Email tersebut sudah ada dalam database, silahkan ganti nama email lain.',
+            'email.email' => 'Format Email Pastikan Benar.',
 
             'password.required' => 'Password tidak boleh kosong.',
             'password.min' => 'Password minimal :min karakter.',
             'password.max' => 'Password maksimal :max karakter.',
 
             'alamat.required' => 'Alamat tidak boleh kosong.',
-            'alamat.min' => 'Alamat minimal :min karakter.',
             'alamat.max' => 'Alamat maksimal :max karakter.',
             
             'nomor.required' => 'Nomor tidak boleh kosong.',

@@ -2,7 +2,6 @@
 
 @section('title','Barang')
 
-
 @section('content')
 <div class="row">
     <div class="col-md-12">
@@ -63,6 +62,15 @@ if($stokhabis != 0){
 <script src="{{ asset('assets/select2/select2.full.min.js') }}"></script>
 
 <script>
+       function printpage() {
+        //Get the print button and put it into a variable
+        var printButton = document.getElementById("printpagebutton");
+        //Set the print button visibility to 'hidden' 
+        printButton.style.visibility = 'hidden';
+        //Print the page content
+        window.print()
+        printButton.style.visibility = 'visible';
+    }
     $(document).ready(function () {
 
         $('#barangstokhabis').DataTable({
@@ -366,6 +374,15 @@ if($stokhabis != 0){
         }
         hargajual = intVal(hargajual);
 
+        if (hargabeli > hargajual){
+            return swal({
+                    type: 'error',
+                    title: 'Harga Beli Tidak Boleh Melebihi Harga Jual.',
+                    showConfirmButton: true,
+                    timer: 2000
+                }).catch(function (timeout) {});
+        }
+
         var profit = intVal($('#profit').val());
         var tanggal = $('#tanggal').val();
 
@@ -450,6 +467,7 @@ if($stokhabis != 0){
         $.get(route, function (res) {
             $('#idkirim').val(res.id);
             $('#stokgudangkirim').val(number_format(intVal(res.stokgudang), 0, ',', '.'));
+            $('#kodebarang').val(res.kode);
             $('#kirimstok').val(null);
             $('#kirimstok').focus();
 
@@ -480,6 +498,20 @@ if($stokhabis != 0){
             return;
         }
 
+        var stokkirim = $('#kirimstok').val();
+        if (jQuery.trim(stokkirim) == '' || stokkirim == ' ' || intVal(stokkirim) < 0) {
+            return swal({
+                type: 'error',
+                title: 'Jumlah Kirim Stok Toko tidak boleh kosong.',
+                showConfirmButton: false,
+                timer: 2000
+            }).catch(function (timeout) {
+                $('#kirimstok').focus();
+            });
+            return;
+        }
+        stokkirim = intVal(stokkirim);
+
         $.ajax({
             url: route,
             type: 'POST',
@@ -507,14 +539,20 @@ if($stokhabis != 0){
             },
             success: function () {
                 reloadTable();
-                $('#kirimstok').val('');
                 $('#modalKirim').modal('toggle');
+                var qty = $('#kirimstok').val();
+                var kode = $('#kodebarang').val();
+                $('#kodeprint').val(kode);
+                $('#qtyprint').val(qty);
                 return swal({
                     type: 'success',
                     title: 'Data Stok Berhasil Dikirim.',
                     showConfirmButton: true,
                     timer: 2000
-                }).catch(function (timeout) {});
+                }).catch(function (timeout) {
+                    $('#modalprintbarcode').modal('toggle');
+                });
+                
             }
         });
     });
@@ -559,6 +597,15 @@ if($stokhabis != 0){
             alert('Harap Isikan Jenis Barang !!');
             $('#levelubahtoko').focus();
             return false;
+        }
+
+        if (hargabeli > hargajual){
+            return swal({
+                    type: 'error',
+                    title: 'Harga Beli Tidak Boleh Melebihi Harga Jual.',
+                    showConfirmButton: true,
+                    timer: 2000
+                }).catch(function (timeout) {});
         }
 
         var profit = intVal($('#profitubahtoko').val());

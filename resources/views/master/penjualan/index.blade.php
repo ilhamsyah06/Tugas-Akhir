@@ -363,6 +363,14 @@
                             // console.log(a);
                             return intVal(a) + intVal(b);
                         });
+
+                        totalbarang = api
+                        .column(2)
+                        .data()
+                        .reduce(function (a, b) {
+                            // console.log(a);
+                            return intVal(a) + intVal(b);
+                        });
                     // Update footer ditampilkan
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''
@@ -372,8 +380,7 @@
                     $('#diskonview').val(formatRibuan(diskon));
                     $('#totalbayar').val(total);
                     loadTotalBayar();
-                    var rows = table.rows().count();
-                    $('#totalbarang').val(rows + ' Barang');
+                    $('#totalbarang').val(totalbarang + ' Barang');
                 } else {
                     $(api.column(1).footer()).html(
                         //'Rp '+ numberfo pageTotal +' dari total Rp '+ total +''

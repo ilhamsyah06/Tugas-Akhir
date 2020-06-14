@@ -592,7 +592,6 @@
 
         $.ajax({
             url: route,
-            url: route,
             headers: {'X-CSRF-TOKEN': token},
             type: 'PUT',
             dataType: 'json',

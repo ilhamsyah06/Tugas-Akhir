@@ -368,6 +368,7 @@ class PembelianController extends Controller
             $dataubahtotalbayar = [
                 'total_bayar' => $input['total']
             ];
+            
             DB::table('pembelian')
                 ->where('id', $pembelian->id)
                 ->update($dataubahtotalbayar);
@@ -377,7 +378,7 @@ class PembelianController extends Controller
             foreach ($pembeliandetail as $key => $value) {
                 $barang = $value->barang;//proses mulai method foregn key
                 $dataubah = [
-                    'stok_gudang' => $barang->stok_gudang - $value->qty
+                    'stok_gudang' => $barang->stok_gudang - $value->qty // 10 - 15
                 ];
                 DB::table('barang')
                     ->where('id', $barang->id)
@@ -389,7 +390,7 @@ class PembelianController extends Controller
                     $historylama->delete();
                 }
 
-                //mengembalikan stok value di barang dan menghapus history pembelian
+                //mengembalikan stok value di barang dan menghapus history pembelian -5
             }
 
             foreach ($sementara as $key => $value) {
@@ -404,10 +405,10 @@ class PembelianController extends Controller
 
                 $barang = $pembeliandetail->barang; //proses call function method foreign key
 
-                $stok_sebelumnya = $barang->stok_gudang;
+                $stok_sebelumnya = $barang->stok_gudang; //stok gudang -5
                 
                 $dataubah = [
-                    'stok_gudang' => $barang->stok_gudang + $value->jumlah,
+                    'stok_gudang' => $barang->stok_gudang + $value->jumlah, //-5 + 15
                     'updated_at' => date('Y/m/d H:i:s')
                 ];
 
@@ -421,7 +422,7 @@ class PembelianController extends Controller
                 $history->kode = $pembelian->kode;
                 $history->tgl = $pembelian->tgl_pembelian;
                 $history->barang_id = $barang->id;
-                $history->stok = $stok_sebelumnya;
+                $history->stok = $stok_sebelumnya; //-5
                 $history->masuk = $value->jumlah;
                 $history->keluar = 0;
                 $history->saldo = $stok_sebelumnya + $value->jumlah;

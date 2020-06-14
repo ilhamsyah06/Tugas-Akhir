@@ -403,7 +403,7 @@ class BarangController extends Controller
                 $hasil = $this->simpanTransaksiKirimStok($input, $barangcari);
                 if ($hasil == '') {
                     return response()->json([
-                        'data' => 'Sukses Menyimpan'
+                        'data' => 'Sukses Menyimpan',
                     ]);
                 } else {
                     return response()->json([

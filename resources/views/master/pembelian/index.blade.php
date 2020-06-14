@@ -427,7 +427,6 @@
 
     function PilihClickSupplier(btn) {
         route = "/supplier/" + btn.value + "/edit";
-
         $.get(route, function (res) {
             $('#namasupplier').val(res.nama_supplier);
             $('#idsupplier').val(res.id)

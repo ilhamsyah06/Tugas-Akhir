@@ -24,9 +24,9 @@ class SupplierSimpanRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama' => 'required|min:5|max:50',
-            'email' => 'required|unique:supplier',
-            'alamat' => 'required|min:7|max:150',
+            'nama' => 'required|regex:/^[a-zA-Z ]+$/u|max:50',
+            'email' => 'required|email|unique:supplier',
+            'alamat' => 'required|max:150',
             'nomor' => 'required|numeric'
 
         ];
@@ -36,14 +36,14 @@ class SupplierSimpanRequest extends FormRequest
     {
         return [
             'nama.required' => 'Nama Tidak Boleh Kosong.',
-            'nama.min' => 'Nama Supplier Minimal :min Karakter.',
+            'nama.regex' => 'Nama Supplier Tidak Boleh Terdapat Angka.',
             'nama.max' => 'Nama Supplier Maksimal :max Karakter.',
 
             'email.required' => 'Email Tidak Boleh Kosong.',
+            'email.email' => 'Format Email Harus Benar.',
             'email.unique' => 'Email Tersebut Sudah Ada Dalam Database, Silahkan Ganti Email Lain.',
 
             'alamat.required' => 'Alamat Tidak Boleh Kosong.',
-            'alamat.min' => 'Alamat Minimal :min Karakter.',
             'alamat.max' => 'Alamat Maximal :max Karakter.',
 
             'nomor.required' => 'Nomor Tidak Boleh Kosong.',

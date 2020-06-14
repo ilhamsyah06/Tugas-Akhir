@@ -170,20 +170,18 @@ class SearchController extends Controller
                     ->groupBy('barang.id')
                     ->orderBy('jumlahjual', 'desc')
                     ->get();
-		
+
+
 		$orders = Penjualan::select(
 			DB::raw('sum(total_bayar) as total'),
-			DB::raw('MONTH(tgl_penjualan) as bulan'),
-            DB::raw("DATE_FORMAT(tgl_penjualan,'%M %Y') as bulanstring")
+			DB::raw('tgl_penjualan')
   )
-  ->groupBy('bulanstring','bulan')
-  ->orderBy('bulan','asc')
+  ->groupBy('tgl_penjualan')
   ->get();
 
-  $hilang = DB::table('hilang')->select('opname_id')->get();
 
 
-		return response()->json($hilang); 
+		return response()->json($orders); 
 
 	}
 	

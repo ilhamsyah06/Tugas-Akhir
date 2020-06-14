@@ -39,11 +39,15 @@ class ChartpenjualanController extends Controller
                   ->groupByMonth(date('Y'), true);
                   
                   $events = [];
-                  $data = Penjualan::all();
-                  if($data->count()) {
+                  $data = Penjualan::select(
+                    DB::raw('sum(total_bayar) as total'),
+                    DB::raw('tgl_penjualan')
+          )
+          ->groupBy('tgl_penjualan')
+          ->get();                  if($data->count()) {
                       foreach ($data as $key => $value) {
                           $events[] = Calendar::event(
-                              $value->no_invoice,
+                              'Rp.'.number_format($value->total),
                               true,
                               new \DateTime($value->tgl_penjualan),
                               new \DateTime($value->tgl_penjualan.' +1 day')

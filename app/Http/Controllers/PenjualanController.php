@@ -257,7 +257,7 @@ class PenjualanController extends Controller
         if ($penjualan == null) {
             return redirect('/penjualan');
         }
-        $countbarang = DB::table('detail_penjualan')->where('penjualan_id', $penjualan->id)->count();
+      $countbarang = DB::table('detail_penjualan')->where('penjualan_id', $penjualan->id)->sum('qty');
         return view('master.penjualan.tampil_detail', compact('penjualan','countbarang','retur','total_bayar_retur'));
     }
 
@@ -450,7 +450,7 @@ class PenjualanController extends Controller
                 $barang = $value->barang;
 
                 $dataubah = [
-                    'stok_toko' => $barang->stok_toko + $value->qty
+                    'stok_toko' => $barang->stok_toko + $value->qty // 3 + 2 = 5
                 ];
 
                 DB::table('barang')
@@ -474,6 +474,7 @@ class PenjualanController extends Controller
                 if ($historylama != null) {
                     $historylama->delete();
                 }
+
             }
 
             foreach ($sementara as $key => $value) {
@@ -489,10 +490,10 @@ class PenjualanController extends Controller
                 $penjualandetail->total = $value->jumlah * $value->harga;
                 $penjualandetail->save();
 
-                $stok_sebelumnya = $barang->stok;
+                $stok_sebelumnya = $barang->stok_toko; // 5 
 
                 $dataubah = [
-                    'stok_toko' => $barang->stok_toko - $value->jumlah,
+                    'stok_toko' => $barang->stok_toko - $value->jumlah, //5 - 2 = 3
                     'updated_at' => date('Y/m/d H:i:s')
                 ];
 
@@ -505,10 +506,10 @@ class PenjualanController extends Controller
                 $history->kode = $penjualan->no_invoice;
                 $history->tgl = Carbon::now();
                 $history->barang_id = $barang->id;
-                $history->stok = $stok_sebelumnya;
+                $history->stok = $stok_sebelumnya; // 5 
                 $history->masuk = 0;
-                $history->keluar = $value->jumlah;
-                $history->saldo = $stok_sebelumnya - $value->jumlah;
+                $history->keluar = $value->jumlah; // 2
+                $history->saldo = $stok_sebelumnya - $value->jumlah; //5 - 2 = 3
                 $history->user_id = $penjualan->user_id;
                 $history->keterangan = 'Penjualan Barang, No. Bukti : '.$penjualan->no_invoice;
                 $history->save();
@@ -633,6 +634,7 @@ class PenjualanController extends Controller
             'data' => $data
         ]);
     }
+    
     public function totalbarang()
     {
         $barang = Sementara::all()->count();

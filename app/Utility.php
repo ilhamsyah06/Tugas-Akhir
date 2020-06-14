@@ -131,7 +131,7 @@ class Utility extends Model
     public static function printStruk($kode) {
         $penjualan = Penjualan::where('no_invoice', $kode)->first();
         $diskon = Detailpenjualan::where('penjualan_id', $penjualan->id)->sum('diskon_item');
-        $jumlah = Detailpenjualan::where('penjualan_id', $penjualan->id)->count();
+        $jumlah = Detailpenjualan::where('penjualan_id', $penjualan->id)->sum('qty');
 
                                         //SET NAMA PRINTER YANG SUDAH TERINSTAL
         $connector = new WindowsPrintConnector("POS-58");

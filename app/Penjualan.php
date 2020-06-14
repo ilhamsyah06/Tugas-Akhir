@@ -35,5 +35,16 @@ class Penjualan extends Model
         return $t;
     }
 
+    public function totalpenjualan() {
+        $details = $this->penjualandetail;
+
+        $t = 0;
+        foreach ($details as $key => $value) {
+            $t += ($value->qty * $value->harga) - ($value->diskon_item);//profit
+        }
+
+        return $t;
+    }
+
 
 }

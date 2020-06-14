@@ -24,10 +24,10 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:50',
-            'email' => 'required',
+            'name' => 'required|regex:/^[a-zA-Z ]+$/u|max:50',
+            'email' => 'required|email',
             'password' => 'max:50',
-            'alamat' => 'required|min:7|max:150',
+            'alamat' => 'required|max:150',
             'nomorhp' => 'required|min:13|numeric'
 
         ];
@@ -37,16 +37,16 @@ class UserUpdateRequest extends FormRequest
     {
         return [
             'name.required' => 'Nama tidak boleh kosong.',
-            'name.min' => 'Nama user minimal :min karakter.',
+            'name.regex' => 'Nama Tidak Boleh Terdapat Angka.',
             'name.max' => 'Nama user maksimal :max karakter.',
 
             'email.required' => 'Email tidak boleh kosong.',
+            'email.email' => 'Pastikan Format Email Benar.',
 
             'password.required' => 'Password tidak boleh kosong.',
             'password.max' => 'Password maksimal :max karakter.',
 
             'alamat.required' => 'Alamat tidak boleh kosong.',
-            'alamat.min' => 'Alamat minimal :min karakter.',
             'alamat.max' => 'Alamat maksimal :max karakter.',
             
             'nomorhp.required' => 'Nomor tidak boleh kosong.',

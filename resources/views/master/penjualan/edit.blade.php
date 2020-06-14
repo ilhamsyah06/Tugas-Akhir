@@ -617,7 +617,7 @@
             },
             dataType: 'json',
             data: {
-                barang: barang,
+                kodebarang: barang,
                 invoice: invoice,
                 qty: qty,
                 harga: harga,
@@ -692,7 +692,7 @@
     });
 
     function UbahClick(btn) {
-        route = "/sementara/" + btn.value + "/edit";
+        route = "/sementarakoreksi/" + btn.value + "/edit";
 
         $.get(route, function (res) {
             $('#idubah').val(res.id);

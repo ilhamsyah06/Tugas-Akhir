@@ -11,6 +11,8 @@ use Auth;
 //--model--//
 use App\Barang;
 use App\Sementara;
+use App\Detailpenjualan;
+use App\Penjualan;
 
 class SementaraController extends Controller
 {
@@ -256,6 +258,41 @@ class SementaraController extends Controller
             'total' => $sementara->jumlah * $sementara->harga,
             'diskon' => $sementara->diskon,
         ]);
+    }
+
+    public function editkoreksi($id)
+    {
+        $sementara = Sementara::find($id);
+        $barang = $sementara->barang;
+        $penjualan = Penjualan::where('no_invoice', $sementara->kode)->first();
+
+        $penjualandetail = Detailpenjualan::where(['penjualan_id'=>$penjualan->id, 'barang_id'=>$barang->id])->first();
+
+            if ($penjualandetail != null) {
+                return response()->json([
+            'id' => $sementara->id,
+            'barang' => $barang->kode,
+            'nama' => $barang->nama_barang,
+            'jumlah'=>$sementara->jumlah,
+            'stok'=>$barang->stok_toko + $penjualandetail->qty,
+            'harga' => $sementara->harga,
+            'total' => $sementara->jumlah * $sementara->harga,
+            'diskon' => $sementara->diskon,
+        ]);
+            } else {
+                return response()->json([
+            'id' => $sementara->id,
+            'barang' => $barang->kode,
+            'nama' => $barang->nama_barang,
+            'jumlah'=>$sementara->jumlah,
+            'stok'=>$barang->stok_toko,
+            'harga' => $sementara->harga,
+            'total' => $sementara->jumlah * $sementara->harga,
+            'diskon' => $sementara->diskon,
+        ]);
+            }
+
+        
     }
 
     /**

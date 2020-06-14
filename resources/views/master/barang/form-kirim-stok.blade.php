@@ -1,6 +1,7 @@
 <div class="form-group">
     <label for="stokgudangkirim" class="control-label">Stok Gudang : </label>
     <input type="hidden" id="idkirim">
+    <input type="hidden" id="kodebarang">
     <input type="text" nama="stokgudangkirim" id="stokgudangkirim" value="" class="form-control" required readonly/>
 </div>
 <div class="form-group">

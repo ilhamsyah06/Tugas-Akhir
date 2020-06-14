@@ -24,9 +24,9 @@ class SupplierUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:5|max:50',
-            'email' => 'required',
-            'alamat' => 'required|min:7|max:150',
+            'name' => 'required|regex:/^[a-zA-Z ]+$/u|min:5|max:50',
+            'email' => 'required|email',
+            'alamat' => 'required|max:150',
             'nomorhp' => 'required|numeric'
 
         ];
@@ -37,12 +37,13 @@ class SupplierUpdateRequest extends FormRequest
         return [
             'name.required' => 'Nama Tidak Boleh Kosong.',
             'name.min' => 'Nama Supplier Minimal :min Karakter.',
+            'name.regex' => 'Nama Supplier Tidak Boleh Terdapat Angka.',
             'name.max' => 'Nama Supplier Maksimal :max Karakter.',
 
             'email.required' => 'Email Tidak Boleh Kosong.',
+            'email.email' => 'Format Email Harus Benar.',
 
             'alamat.required' => 'Alamat Tidak Boleh Kosong.',
-            'alamat.min' => 'Alamat Minimal :min Karakter.',
             'alamat.max' => 'Alamat Maximal :max Karakter.',
 
             'nomorhp.required' => 'Nomor Tidak Boleh Kosong.',

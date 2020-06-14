@@ -99,3 +99,29 @@
     </div>
     <!-- /.modal-dialog -->
 </div>
+
+<div class="modal fade" id="modalprintbarcode" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cube"></i> Print Barcode</h4>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url('printbarcode')}}" method="post">
+                    {{ csrf_field() }}
+                <input type="hidden" id="kodeprint" name="kode">
+                <input type="hidden" id="qtyprint" name="qty">
+                <h3>Apakah Ingin Mencetak Barcode ?</h3>
+                <button type="submit" class="btn btn-default btn-lg" ><i class="fa fa-barcode"></i> Print Barcode</button>
+            </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-close"></i> Tidak</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
