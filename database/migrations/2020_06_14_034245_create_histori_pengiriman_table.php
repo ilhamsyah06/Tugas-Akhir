@@ -18,6 +18,7 @@ class CreateHistoriPengirimanTable extends Migration
             $table->integer('barang_id')->unsigned();
             $table->foreign('barang_id')->references('id')->on('barang')->onUpdate('restrict')->onDelete('restrict');
             $table->integer('stok_dikirim');
+            $table->date('tgl_pengiriman');
             $table->timestamps();
         });
     }

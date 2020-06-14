@@ -12,6 +12,7 @@ use Auth;
 use App\Barang;
 use App\Utility;
 use App\Historiharga;
+use App\Historipengiriman;
 
 class BarangController extends Controller
 {
@@ -398,7 +399,15 @@ class BarangController extends Controller
                     'data' => $input->toArray()
                 ]);
             } else {
+                $now = date('Y-m-d');
                 $barangcari = Barang::where('id', $input['idbarang'])->first();
+                $historicari = Historipengiriman::where('barang_id', $input['idbarang'])->where('tgl_pengiriman', $now)->first();
+                
+                if($historicari != null) {
+                         return response()->json([
+                             'data' => ['Barang Sudah Dikirim Hari Ini, Pastikan Pihak Toko Sudah Meng-konfirmasi Data.']
+                         ], 422);
+                 }
 
                 $hasil = $this->simpanTransaksiKirimStok($input, $barangcari);
                 if ($hasil == '') {
@@ -424,11 +433,17 @@ class BarangController extends Controller
             $stokgudang = $barangcari->stok_gudang;
             $stoktoko = $barangcari->stok_toko;
             $stokgudangbaru = $stokgudang - $input['stokkirim'];
-            $stoktokobaru = $stoktoko + $input['stokkirim'];
+            //$stoktokobaru = $stoktoko + $input['stokkirim'];
             
+            $barang = new Historipengiriman();
+            $barang->barang_id = $barangcari->id;
+            $barang->stok_dikirim = $input['stokkirim'];
+            $barang->tgl_pengiriman = date('Y-m-d');
+            $barang->save();
+
             $dataubah = [
                 'stok_gudang' => $stokgudangbaru,
-                'stok_toko' => $stoktokobaru,
+              //'stok_toko' => $stoktokobaru,
                 'updated_at' => date('Y/m/d H:i:s')
             ];
 

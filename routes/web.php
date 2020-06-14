@@ -112,6 +112,11 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::post('printbarcode', function(){
         return view('master.barang.page-cetak-barcode');
     });
+
+    //RoutePengrimanStok
+    Route::get('datalaporanpengiriman', 'HistoripengirimanController@datalaporanpengiriman');
+    Route::post('cetakpengiriman', 'HistoripengirimanController@preview');
+    Route::delete('simpandatastok/{id}', 'HistoripengirimanController@simpandatastok');
     
     //Route dashboard menguntungkan 
     Route::get('menguntungkan', 'SearchController@menguntungkan')->name('menguntungkan');

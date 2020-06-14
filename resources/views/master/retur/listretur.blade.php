@@ -31,10 +31,10 @@
                           <thead>
                           <tr>
                               <th class="col-md-2">No. Bukti</th>
-                              <th class="col-md-2">Tgl.</th>
+                              <th class="col-md-2">Tanggal</th>
                               <th class="col-md-2">No. Invoice</th>
                               <th class="col-md-1">Operator</th>
-                              <th class="col-md-3">Aksi</th>
+                              <th class="col-md-2">Aksi</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -105,7 +105,7 @@
                 "orderData": false,
                 "orderDataType": false,
                 "orderSequence": false,
-                "sClass": "text-center col-md-3 td-aksi",
+                "sClass": "text-center col-md-2 td-aksi",
                 'render': function (data, type, full, meta) {
                     var kembali = '';
                     kembali += '<a title="Lihat Transaksi" class="btn btn-info btn-flat" href="/retur/'+data+'"><i class="fa fa-eye fa-fw"></i> </a>';

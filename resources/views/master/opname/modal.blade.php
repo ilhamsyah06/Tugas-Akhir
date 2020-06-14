@@ -32,3 +32,25 @@
     <!-- /.modal-dialog -->
 </div>
 <!-- /.modal -->
+
+<div class="modal fade" id="modalyakin" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header modal-header-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Simpan Stok !</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="idkirim">
+                <p style="font-weight: bold;">Apakah Anda Yakin Akan Menyimpan Data Stok Ini?<br/>Sebelum Meng-konfirmasi, Pastikan Mencetak Data Laporan Pengiriman Terlebih Dahulu. (Agar Mempermudah Dalam Merekap Data Pengiriman)<br/>
+                {{--<p>One fine body&hellip;</p>--}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Batal</button>
+                {{--<button type="button" class="btn btn-outline">Save changes</button>--}}
+                {!! link_to('#', $title='Saya Yakin Menyimpan Data Stok Toko', $attributes=['id'=>'yakinkirim', 'class'=>'btn btn-danger']) !!}
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

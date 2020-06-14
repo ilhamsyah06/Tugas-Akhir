@@ -547,8 +547,8 @@ if($stokhabis != 0){
                 return swal({
                     type: 'success',
                     title: 'Data Stok Berhasil Dikirim.',
-                    showConfirmButton: true,
-                    timer: 2000
+                    showConfirmButton: false,
+                    timer: 1000
                 }).catch(function (timeout) {
                     $('#modalprintbarcode').modal('toggle');
                 });
