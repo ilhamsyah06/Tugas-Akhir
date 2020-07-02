@@ -61,7 +61,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cube"></i> Ubah Barang Toko</h4>
+                <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cube"></i> Ubah Barang</h4>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="idubah">
@@ -112,6 +112,7 @@
                     {{ csrf_field() }}
                 <input type="hidden" id="kodeprint" name="kode">
                 <input type="hidden" id="qtyprint" name="qty">
+                <input type="hidden" id="hargaprint" name="harga">
                 <h3>Apakah Ingin Mencetak Barcode ?</h3>
                 <button type="submit" class="btn btn-default btn-lg" ><i class="fa fa-barcode"></i> Print Barcode</button>
             </form>

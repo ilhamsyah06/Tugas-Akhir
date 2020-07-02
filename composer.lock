@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c24dac5130b2d8880a985e0c65cebe4e",
+    "content-hash": "8b205f0dfebef44255cb7c90c06e67e1",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -710,6 +710,54 @@
             "time": "2019-07-01T23:21:34+00:00"
         },
         {
+            "name": "haruncpi/laravel-log-reader",
+            "version": "v1.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/haruncpi/laravel-log-reader.git",
+                "reference": "64defaf834258fa46abb20a8a0e1a7e340b5028d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/haruncpi/laravel-log-reader/zipball/64defaf834258fa46abb20a8a0e1a7e340b5028d",
+                "reference": "64defaf834258fa46abb20a8a0e1a7e340b5028d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Haruncpi\\LaravelLogReader\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Haruncpi\\LaravelLogReader\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "cc-by-4.0"
+            ],
+            "authors": [
+                {
+                    "name": "MD.HARUN-UR-RASHID",
+                    "email": "harun.cox@gmail.com"
+                }
+            ],
+            "description": "A simple and beautiful laravel log reader",
+            "keywords": [
+                "laravel",
+                "log",
+                "reader"
+            ],
+            "time": "2020-02-08T11:23:30+00:00"
+        },
+        {
             "name": "intervention/image",
             "version": "2.5.1",
             "source": {
@@ -819,6 +867,7 @@
                     "email": "jakub.onderka@gmail.com"
                 }
             ],
+            "abandoned": "php-parallel-lint/php-console-color",
             "time": "2018-09-29T17:23:10+00:00"
         },
         {
@@ -865,6 +914,7 @@
                 }
             ],
             "description": "Highlight PHP code in terminal",
+            "abandoned": "php-parallel-lint/php-console-highlighter",
             "time": "2018-09-29T18:48:56+00:00"
         },
         {

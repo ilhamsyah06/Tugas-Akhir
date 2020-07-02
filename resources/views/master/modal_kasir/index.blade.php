@@ -2,6 +2,9 @@
 
 @section('title','Uang Modal Kasir')
 
+@php
+    $now = date('Y-m-d');
+@endphp
 @section('content')
 <div class="row">
     <div class="col-md-3">
@@ -43,7 +46,7 @@
 
                 <div class="form-group">
                     {!! Form::label('tanggal', 'Tanggal :') !!}
-                    {!! Form::date('tanggal', null, ['class' => 'form-control', 'required']) !!}
+                    {!! Form::date('tanggal', $now, ['class' => 'form-control', 'required']) !!}
                 </div>
 
                 <div class="form-group">
@@ -65,8 +68,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Uang Awal</th>
-                            <th>Uang Akhir</th>
+                            <th style="background-color:red; color:white;">Uang Awal</th>
+                            <th style="background-color:green; color:white;">Uang Akhir</th>
                             <th>Tanggal</th>
                             <th>Aksi</th>
                         </tr>
@@ -124,10 +127,7 @@
                 }
             }, {
                 'targets': 3,
-                'sClass': "text-center col-md-2",
-                render: function (data, type, row, meta) {
-                    return '<span style="font-size: 12px;" class="label label-primary' + '">' + data + '</span>';
-                }
+                'sClass': "text-center col-md-2"
             }, {
                 'targets': 4,
                 'searchable': false,
@@ -239,7 +239,9 @@
               title: 'Data berhasil disimpan.',
               showConfirmButton: true,
               timer: 2000
-          }).catch(function(timeout) { });
+          }).catch(function(timeout) { 
+              window.location.href = '/modalkasir';
+          });
 		}
 	});
 });
@@ -302,7 +304,9 @@ function UbahClick(btn) {
               title: 'Data berhasil disimpan.',
               showConfirmButton: true,
               timer: 2000
-          }).catch(function(timeout) { });
+          }).catch(function(timeout) {
+              window.location.href = '/modalkasir';
+           });
         }
     });
 });
@@ -318,7 +322,6 @@ function LihatClick(btn) {
         });
 
     }
-
 
 
 function HapusClick(btn) {
@@ -351,13 +354,12 @@ function HapusClick(btn) {
             },
             success: function () {
                 reloadTable();
-                swal({
-                    title: 'Sukses!!',
-                    text: 'Data Berhasil Dihapus',
+                return swal({
                     type: 'success',
-                    timer: '2000'
-                });
-                $('#modalHapus').modal('toggle');
+                    title: 'Data berhasil dihapus.',
+                    showConfirmButton: true,
+                    timer: 2000
+                }).catch(function(timeout) { });
             }
         });
     });

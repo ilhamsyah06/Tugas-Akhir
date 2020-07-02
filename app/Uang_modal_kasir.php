@@ -10,6 +10,8 @@ class Uang_modal_kasir extends Model
 
     protected $fillable = ['uang_awal','uang_akhir','tanggal','user_id'];
 
+    protected $dates = ['tanggal'];
+
     public function user() {
         return $this->belongsTo('App\User');
     }

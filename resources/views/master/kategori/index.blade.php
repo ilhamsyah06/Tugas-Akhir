@@ -49,6 +49,7 @@
 <script>
 $(document).ready(function() {
     $('#kategori').DataTable({
+        "pagingType": "full_numbers",
         responsive: true,
         'ajax': {
             'url': '/api/kategori',

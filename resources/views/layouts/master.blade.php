@@ -68,7 +68,7 @@
   body {
     font-family:Arial, Helvetica, sans-serif;
       font-weight: bold;
-      background-color: #f7f7f7;
+      background-color: #ffffff;
       margin-left: 20px;
       margin-right: 20px;
   }

@@ -17,7 +17,8 @@ class BarcodeController extends Controller
         $no = 1; 
         $qty = request('qty');
         $kode = request('kode');
-        return view('master.barcode.view', ['qty' => $qty, 'kode' => $kode , 'no' => $no]);
+        $harga = request('harga');
+        return view('master.barcode.view', ['harga' => $harga, 'qty' => $qty, 'kode' => $kode , 'no' => $no]);
     }
 
     public function caribarangbarcode()

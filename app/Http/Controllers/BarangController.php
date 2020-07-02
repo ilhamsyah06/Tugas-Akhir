@@ -77,14 +77,14 @@ class BarangController extends Controller
         try {
             $barang = new Barang();
             $barang->kode = $input['kode'];
-            $barang->nama_barang = $input['nama'] ;
-            $barang->user_id = Auth::user()->id ;
-            $barang->kategori_id = $input['jenis'] ;
+            $barang->nama_barang = $input['nama'];
+            $barang->user_id = Auth::user()->id;
+            $barang->kategori_id = $input['jenis'];
             $barang->harga_beli = $input['hargabeli'];
             $barang->harga_jual = $input['hargajual'];
             $barang->profit = $input['profit'];
             $barang->tanggal = $input['tanggal'];
-            $barang->stok_toko = '0' ;
+            $barang->stok_toko = '0';
             $barang->stok_gudang = '0';
             $barang->save();
         } catch (ValidationException $ex) {

@@ -58,6 +58,7 @@
   <li class="{{ Request::path() === 'modalkasir' ? 'active' : '' }}"><a href="{{ url('modalkasir') }}"><i class="fa fa-money"></i> Uang Kasir</a></li>
   <li class="{{ Request::path() === 'user' ? 'active' : '' }}"><a href="{{ url('user')}}"><i class="fa fa-user-circle"></i> User</a></li>
   <li class="{{ Request::path() === 'supplier' ? 'active' : '' }}"><a href="{{ url('supplier') }}"><i class="fa fa-users"></i> Supplier</a></li>
+  <li class="{{ Request::path() === 'manajemen' ? 'active' : '' }}"><a href="{{ url('manajemen') }}"><i class="fa fa-file-o"></i> Kelola Data</a></li>
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-file"></i> Laporan <span class="caret"></span></a>

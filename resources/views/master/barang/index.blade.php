@@ -74,6 +74,7 @@ if($stokhabis != 0){
     $(document).ready(function () {
 
         $('#barangstokhabis').DataTable({
+            "pagingType": "full_numbers",
             responsive: true,
             scrollX: true,
             'ajax': {
@@ -132,10 +133,11 @@ if($stokhabis != 0){
         });
 
         var t = $('#barang').DataTable({
+            "pagingType": "full_numbers",
             responsive: true,
             scrollX: true,
             'ajax': {
-                'url': '/api/barang', //menampikan barang toko
+                'url': '/api/barang',
             },
 
             'columnDefs': [{
@@ -204,7 +206,7 @@ if($stokhabis != 0){
                     button +=
                         '<button title="Hapus Data" class="btn btn-danger btn-flat btn-sm" data-toggle="modal" data-target="#modalHapus" onclick="HapusClick(this);"><i class="fa fa-trash"></i> </button>';
                         button +=
-                        '<button title="Hapus Data" class="btn btn-success btn-flat btn-sm" data-toggle="modal" data-target="#modalKirim" onclick="KirimClick(this);"><i class="fa fa-send"></i> </button>';
+                        '<button title="Kirim Data" class="btn btn-success btn-flat btn-sm" data-toggle="modal" data-target="#modalKirim" onclick="KirimClick(this);"><i class="fa fa-send"></i> </button>';
 
                     return button;
 
@@ -259,10 +261,8 @@ if($stokhabis != 0){
         $('.inputanangka').on('keypress', function (e) {
             var c = e.keyCode || e.charCode;
             switch (c) {
-                case 8:
-                case 9:
-                case 27:
-                case 13:
+                case 8: case 9:
+                case 27: case 13:
                     return;
                 case 65:
                     if (e.ctrlKey === true) return;
@@ -468,6 +468,7 @@ if($stokhabis != 0){
             $('#idkirim').val(res.id);
             $('#stokgudangkirim').val(number_format(intVal(res.stokgudang), 0, ',', '.'));
             $('#kodebarang').val(res.kode);
+            $('#harga').val(res.hargajual)
             $('#kirimstok').val(null);
             $('#kirimstok').focus();
 
@@ -542,8 +543,10 @@ if($stokhabis != 0){
                 $('#modalKirim').modal('toggle');
                 var qty = $('#kirimstok').val();
                 var kode = $('#kodebarang').val();
+                var harga = $('#harga').val();
                 $('#kodeprint').val(kode);
                 $('#qtyprint').val(qty);
+                $('#hargaprint').val(harga);
                 return swal({
                     type: 'success',
                     title: 'Data Stok Berhasil Dikirim.',

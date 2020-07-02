@@ -25,12 +25,11 @@
                             </span>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <label for="qty">Jumlah : </label>
                         <input type="number" class="form-control" name="qty" id="qty" required />
                     </div>
-
+                    <input type="hidden" id="harga" name="harga">
                     <div class="form-group">
                         <button type="submit" class="btn btn-primary"><i class="fa fa-barcode"></i> Tampilkan
                             Barcode</i></button>
@@ -102,6 +101,7 @@
 
         $.get(route, function (res) {
             $('#kode').val(res.kode);
+            $('#harga').val(res.hargajual);
             $('#modalCari').modal('toggle');
         });
     }

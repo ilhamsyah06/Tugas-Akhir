@@ -203,5 +203,11 @@ Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], functi
     Route::post('retursatu','ReturController@retursatu');//kirim satu ke keranjang retur
     Route::post('kembalisatu','ReturController@kembalisatu');//kirim satu ke keranjang penjualan
 
+    //Route Menajemen Data
+    Route::get('manajemen','ManajemenController@index')->name('manajemen');
+    Route::post('hapusdatapenjualan','ManajemenController@perbulanpenjualan');
+    Route::post('hapusdatapembelian','ManajemenController@perbulanpembelian');
+    Route::post('hapusdatahistory','ManajemenController@perbulanhistory');
+    Route::post('hapusdatamodalkasir','ManajemenController@perbulanmodalkasir');
 
 });

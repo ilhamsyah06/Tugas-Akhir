@@ -1,5 +1,5 @@
 <div class="form-group">
-    {!! Form::label('nominalubah', 'Nominal Awal :') !!}
+    {!! Form::label('nominalubah', 'Nominal:') !!}
     {!! Form::text('nominalubah', null, ['class' => 'form-control inputanangka', 'placeholder' => 'Masukan Uang Modal Kasir', 'required']) !!}
 </div>
 

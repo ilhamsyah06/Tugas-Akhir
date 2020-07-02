@@ -56,7 +56,7 @@ class UangmodalkasirController extends Controller
             } else {
                 $tanggalcari = Uang_modal_kasir::where('tanggal', $input['tanggal'])->first();
                 if ($tanggalcari != null) {
-                        return response()->json([
+                    return response()->json([
                             'data' => ['Tanggal ini sudah digunakan oleh data lainnya!']
                         ], 422);
                 }
@@ -114,7 +114,7 @@ class UangmodalkasirController extends Controller
         return response()->json([
             'uangawal' => $uangmodal->uang_awal,
             'uangakhir' => $uangmodal->uang_akhir,
-            'tanggal' => $uangmodal->tanggal,
+            'tanggal' => $uangmodal->tanggal->format('Y-m-d'),
             'userinput' => $uangmodal->user->name
         ]);
     }
@@ -132,7 +132,7 @@ class UangmodalkasirController extends Controller
         return response()->json([
             'id' => $uangmodal->id,
             'uang_awal' => $uangmodal->uang_awal,
-            'tanggal' => $uangmodal->tanggal,
+            'tanggal' =>  $uangmodal->tanggal->format('Y-m-d'),
             'user_id' => $uangmodal->user->name
         ]);
     }
@@ -185,9 +185,12 @@ class UangmodalkasirController extends Controller
     protected function simpanTransaksiUpdate($input, $uangmodal) {
         DB::beginTransaction();
         try {
+            $datalamauangakhir = $uangmodal->uang_akhir;
+            $databaruakhir = $datalamauangakhir - $uangmodal->uang_awal;
+            $uangakhirbaru = $databaruakhir + $input['nominal'];
             $dataubah = [
                 'uang_awal' => $input['nominal'],
-                'uang_akhir' => $input['nominal'],
+                'uang_akhir' => $uangakhirbaru,
                 'tanggal' => $input['tanggal'],
                 'updated_at' => date('Y/m/d H:i:s')
             ];
@@ -258,7 +261,7 @@ class UangmodalkasirController extends Controller
                 $d->id,
                 $d->uang_awal,
                 $d->uang_akhir,
-                $d->tanggal,
+                $d->tanggal->format('d-m-Y'),
                 $d->id
         	];
 
