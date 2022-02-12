@@ -8,6 +8,14 @@
     <li class="{{ Request::path() === 'listpenjualan' ? 'active' : '' }}"><a href="{{ url('listpenjualan') }}"><i class="fa fa-list-ul"></i> List Penjualan</a></li>
     </ul>
   </li>
+  <!--<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+      aria-expanded="false"><i class="fa fa-database"></i> Master <span class="caret"></span></a>
+    <ul class="dropdown-menu">
+      <li class="{{ Request::path() === 'barang' ? 'active' : '' }}"><a href="{{ url('barang') }}"><i class="fa fa-database"></i> Barang</a></li>
+      <li class="{{ Request::path() === 'kategori' ? 'active' : '' }}"><a href="{{ url('kategori')}}"><i class="fa fa-list-alt"></i> Kategori Barang</a></li>
+    </ul>
+  </li>-->
   <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
       aria-expanded="false"><i class="fa fa-refresh"></i> Retur<span class="caret"></span></a>

@@ -8,9 +8,15 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4><i class="fa fa-list"></i> Daftar Barang
+                    @if (Auth::user()->level == 'kasir')
+                    <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalTambahtoko"
+                    style="margin-top: -8px; font-weight:bold;"><i class="fa fa-plus"></i> Tambah
+                    Barang Toko</a>
+                    @else
                     <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalTambah"
-                        style="margin-top: -8px; font-weight:bold;"><i class="fa fa-plus"></i> Tambah
-                        Barang</a>
+                    style="margin-top: -8px; font-weight:bold;"><i class="fa fa-plus"></i> Tambah
+                    Barang</a>
+                    @endif
                         <a class="btn btn-warning pull-right" data-toggle="modal" data-target="#modalLihatStok"
                         style="margin-top: -8px; margin-right: 10px; font-weight: bold;"><i class="fa fa-eye"></i> Barang Stok Habis</a>
                 </h4>
@@ -38,7 +44,7 @@
 </div>
 
 @php
-$stokhabis = DB::table('barang')->where('stok_toko', 0 )->count('nama_barang');
+$stokhabis = DB::table('barang')->where('stok_gudang', 0 )->count();
 
 if($stokhabis != 0){
     echo "<script>swal({
@@ -99,29 +105,22 @@ if($stokhabis != 0){
                 render: function (data, type, row, meta) {
                     return '<span style="font-size: 12px;" class="label label-primary">' + data + '</span>';
                 }
-            }, {
+            },{
                 'targets': 3,
                 'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return number_format(intVal(data), 0, ',', '.');
 
                 }
-            },{
-                'targets': 4,
-                'sClass': "text-right col-md-1",
-                'render': function (data, type, full, meta) {
-                    return number_format(intVal(data), 0, ',', '.');
-
-                }
             }, {
-                'targets': 5,
+                'targets': 4,
                 'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return 'Rp.' + number_format(intVal(data), 0, ',', '.') + ',-';
 
                 }
             },{
-                'targets': 6,
+                'targets': 5,
                 'sClass': "text-right col-md-1",
                 'render': function (data, type, full, meta) {
                     return '<span style="font-size: 12px;"  class="label label-success' +

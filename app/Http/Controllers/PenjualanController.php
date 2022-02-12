@@ -428,8 +428,7 @@ class PenjualanController extends Controller
                                 'data' => 'Sukses koreksi penjualan barang'
                             ]);
                     } else {
-                        dd($hasil);
-                            return response()->json([
+                           return response()->json([
                                 'data' => ['Gagal koreksi transaksi penjualan! Periksa data anda dan pastikan server MySQL anda sedang aktif!']
                             ], 422);
                     }

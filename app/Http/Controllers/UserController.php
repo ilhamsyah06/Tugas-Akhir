@@ -274,14 +274,14 @@ class UserController extends Controller
  
         $user = User::all();
         $cacah = 0;
-        $data = [];
+        $data = []; //variabel untuk menyimpan data bentuk json
 
         foreach ($user as $i => $d) {
         	$data[$cacah] = [
                 $d->id, 
                 $d->name,
                 $d->email,
-                $d->level,
+                $d->level,//memanggil kolom dari tabel lain yg relasi
                 $d->id
         	];
 

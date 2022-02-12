@@ -9,6 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="{{ asset('assets/bootstrap/favicon.ico') }}">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name') }} | @yield('title')</title>
 
@@ -106,6 +107,40 @@
       border-top-left-radius: 5px;
       border-top-right-radius: 5px;
     }
+
+    .pace {
+            -webkit-pointer-events: none;
+            pointer-events: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            -webkit-transform: translate3d(0, -50px, 0);
+            -ms-transform: translate3d(0, -50px, 0);
+            transform: translate3d(0, -50px, 0);
+            -webkit-transition: -webkit-transform .5s ease-out;
+            -ms-transition: -webkit-transform .5s ease-out;
+            transition: transform .5s ease-out;
+        }
+        .pace.pace-active {
+            -webkit-transform: translate3d(0, 0, 0);
+            -ms-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+        }
+        .pace .pace-progress {
+            display: block;
+            position: fixed;
+            z-index: 2000;
+            top: 0;
+            right: 100%;
+            width: 100%;
+            height: 3px;
+            background: #2196f3;
+            pointer-events: none;
+        }
     
   </style>
   @yield('style')
@@ -175,7 +210,7 @@
     <script src="{{ asset('assets/Datejs-master/build/date.js') }}"></script>
 
   <!-- PACE -->
-<script src="{{ asset('js/pace/pace.min.js') }}"></script>
+<script data-pace-options='{ "ajax": false }' src="{{ asset('js/pace/pace.min.js') }}"></script>
 
 <script src="{{ asset('assets/bootstrap-datepicker-master/bootstrap-datepicker.min.js')}}"></script>
 

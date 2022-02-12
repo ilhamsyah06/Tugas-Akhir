@@ -365,7 +365,7 @@ class BarangController extends Controller
     {
         $barang = DB::table('barang')
         ->join('kategori', 'barang.kategori_id', '=', 'kategori.id')
-        ->where('stok_toko', 0 )->get();
+        ->where('stok_gudang', 0 )->get();
         $cacah = 0;
         $data = [];
 
@@ -374,7 +374,6 @@ class BarangController extends Controller
         		$d->kode, 
         		$d->nama_barang,
         		$d->nama, 
-                $d->stok_toko,
                 $d->stok_gudang,
                 $d->harga_jual,
                 $d->profit,

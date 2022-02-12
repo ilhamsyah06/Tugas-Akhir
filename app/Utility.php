@@ -139,7 +139,6 @@ class Utility extends Model
         
         $printer = new Printer($connector);
         // $printer->initialize();
-
         $printer->text("           TOKO ANDIKA\n");
         $printer->text("           BOGEM GURAH\n");
         $printer->text("         HP 085856886313\n");

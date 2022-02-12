@@ -25,7 +25,7 @@ Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
 
 //--------------------------------------------------------------------------------------//
 
-Route::group(['middleware' => ['auth', 'checkLevel:admin,kasir,gudang']], function () {
+Route::group(['middleware' => ['auth', 'checkLevel:admin,gudang,kasir']], function () {
     //Route Kategori Barang
     Route::resource('kategori', 'KategoriController');
     Route::get('api/kategori', 'KategoriController@apiKategori')->name('api.kategori');
